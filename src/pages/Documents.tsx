@@ -1,13 +1,14 @@
-
 import React, { useState } from "react";
 import Layout from "@/components/layout/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { FileText, Search } from "lucide-react";
+import { FileText, Search, Calendar } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const Documents = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const isMobile = useIsMobile();
   
   const documentCategories = [
     {
@@ -17,17 +18,23 @@ const Documents = () => {
         { 
           name: "Articles of Incorporation", 
           type: "PDF",
-          url: "https://townsq-production-resident-files.s3.amazonaws.com/uploads/ibvzw0eg8j92/community_document/file/213315/Articles_of_Incorporation.pdf"
+          url: "https://townsq-production-resident-files.s3.amazonaws.com/uploads/ibvzw0eg8j92/community_document/file/213315/Articles_of_Incorporation.pdf",
+          lastUpdated: "2024-01-15",
+          description: "Legal document establishing the association as a corporation"
         },
         { 
           name: "Bylaws", 
           type: "PDF",
-          url: "https://townsq-production-resident-files.s3.amazonaws.com/uploads/ibvzw0eg8j92/community_document/file/213316/Bylaws.pdf"
+          url: "https://townsq-production-resident-files.s3.amazonaws.com/uploads/ibvzw0eg8j92/community_document/file/213316/Bylaws.pdf",
+          lastUpdated: "2024-02-01",
+          description: "Rules governing the operation of the association"
         },
         { 
           name: "CCRs", 
           type: "PDF",
-          url: "https://townsq-production-resident-files.s3.amazonaws.com/uploads/ibvzw0eg8j92/community_document/file/213317/CCRs.pdf"
+          url: "https://townsq-production-resident-files.s3.amazonaws.com/uploads/ibvzw0eg8j92/community_document/file/213317/CCRs.pdf",
+          lastUpdated: "2024-02-15",
+          description: "Covenants, conditions, and restrictions for the community"
         }
       ]
     },
@@ -84,16 +91,16 @@ const Documents = () => {
 
   return (
     <Layout>
-      <div className="bg-gray-800 text-white py-16">
+      <div className="bg-gray-800 text-white py-8 md:py-16">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl font-bold mb-4">Association Documents</h1>
-          <p className="text-xl max-w-3xl mx-auto">
+          <h1 className="text-3xl md:text-4xl font-bold mb-4">Association Documents</h1>
+          <p className="text-lg md:text-xl max-w-3xl mx-auto">
             Access important community documents and forms
           </p>
         </div>
       </div>
 
-      <div className="py-12 bg-gray-50">
+      <div className="py-8 md:py-12 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="mb-8 flex items-center gap-3 bg-white p-4 rounded-lg shadow-sm">
@@ -110,29 +117,48 @@ const Documents = () => {
             <div className="grid grid-cols-1 gap-6">
               {filteredCategories.length > 0 ? (
                 filteredCategories.map((category, index) => (
-                  <Card key={index}>
-                    <CardHeader>
+                  <Card key={index} className="transition-all duration-300 hover:shadow-md">
+                    <CardHeader className="space-y-2">
                       <CardTitle>{category.title}</CardTitle>
-                      <p className="text-gray-600">{category.description}</p>
+                      <p className="text-gray-600 text-sm md:text-base">{category.description}</p>
                     </CardHeader>
                     <CardContent>
                       <div className="space-y-4">
                         {category.documents.map((doc, docIndex) => (
-                          <div key={docIndex} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                            <div className="flex items-center gap-3">
-                              <FileText className="h-5 w-5 text-primary" />
-                              <div>
+                          <div 
+                            key={docIndex} 
+                            className="flex flex-col md:flex-row md:items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors gap-4"
+                          >
+                            <div className="flex items-start md:items-center gap-3">
+                              <FileText className="h-5 w-5 text-primary mt-1 md:mt-0" />
+                              <div className="space-y-1">
                                 <p className="font-medium">{doc.name}</p>
-                                <p className="text-sm text-gray-500">{doc.type}</p>
+                                <p className="text-sm text-gray-600">{doc.description}</p>
+                                <div className="flex items-center gap-2 text-xs text-gray-500">
+                                  <Calendar className="h-3 w-3" />
+                                  <span>Last updated: {doc.lastUpdated}</span>
+                                </div>
                               </div>
                             </div>
-                            <Button 
-                              variant="outline" 
-                              size="sm"
-                              onClick={() => handleDownload(doc.url)}
-                            >
-                              Download
-                            </Button>
+                            <div className="flex items-center gap-2">
+                              {!isMobile && (
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => window.open(doc.url, 'preview')}
+                                  className="hidden md:inline-flex"
+                                >
+                                  Preview
+                                </Button>
+                              )}
+                              <Button 
+                                variant="outline" 
+                                size="sm"
+                                onClick={() => handleDownload(doc.url)}
+                              >
+                                Download
+                              </Button>
+                            </div>
                           </div>
                         ))}
                       </div>
