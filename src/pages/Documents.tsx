@@ -3,37 +3,73 @@ import React from "react";
 import Layout from "@/components/layout/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { FileText } from "lucide-react";
 
 const Documents = () => {
   const documentCategories = [
     {
-      title: "Governing Documents",
-      description: "Essential documents that outline community rules and regulations",
+      title: "Association Documents",
+      description: "Essential governing documents for our community",
       documents: [
-        { name: "CC&Rs", type: "PDF" },
-        { name: "Bylaws", type: "PDF" },
-        { name: "Articles of Incorporation", type: "PDF" }
+        { 
+          name: "Articles of Incorporation", 
+          type: "PDF",
+          url: "https://townsq-production-resident-files.s3.amazonaws.com/uploads/ibvzw0eg8j92/community_document/file/213315/Articles_of_Incorporation.pdf"
+        },
+        { 
+          name: "Bylaws", 
+          type: "PDF",
+          url: "https://townsq-production-resident-files.s3.amazonaws.com/uploads/ibvzw0eg8j92/community_document/file/213316/Bylaws.pdf"
+        },
+        { 
+          name: "CCRs", 
+          type: "PDF",
+          url: "https://townsq-production-resident-files.s3.amazonaws.com/uploads/ibvzw0eg8j92/community_document/file/213317/CCRs.pdf"
+        }
       ]
     },
     {
-      title: "Architectural Guidelines",
-      description: "Information about home modifications and improvements",
+      title: "Community Guidelines",
+      description: "Important guidelines and forms for residents",
       documents: [
-        { name: "Modification Request Form", type: "PDF" },
-        { name: "Paint Color Guidelines", type: "PDF" },
-        { name: "Landscaping Guidelines", type: "PDF" }
+        { 
+          name: "ACC Guidelines", 
+          type: "PDF",
+          url: "https://townsq-production-resident-files.s3.amazonaws.com/uploads/ibvzw0eg8j92/community_document/file/213318/ACC_Guidelines.pdf"
+        },
+        { 
+          name: "Gate Access Form", 
+          type: "PDF",
+          url: "https://townsq-production-resident-files.s3.amazonaws.com/uploads/ibvzw0eg8j92/community_document/file/213319/Gate_Access_Form.pdf"
+        },
+        { 
+          name: "Pool Rules", 
+          type: "PDF",
+          url: "https://townsq-production-resident-files.s3.amazonaws.com/uploads/ibvzw0eg8j92/community_document/file/213320/Pool_Rules.pdf"
+        }
       ]
     },
     {
       title: "Financial Documents",
-      description: "Budget and financial reporting documents",
+      description: "Budget and assessment information",
       documents: [
-        { name: "Annual Budget", type: "PDF" },
-        { name: "Financial Statements", type: "PDF" },
-        { name: "Reserve Study", type: "PDF" }
+        { 
+          name: "2024 Budget", 
+          type: "PDF",
+          url: "https://townsq-production-resident-files.s3.amazonaws.com/uploads/ibvzw0eg8j92/community_document/file/213321/2024_Budget.pdf"
+        },
+        { 
+          name: "Assessment Information", 
+          type: "PDF",
+          url: "https://townsq-production-resident-files.s3.amazonaws.com/uploads/ibvzw0eg8j92/community_document/file/213322/Assessment_Information.pdf"
+        }
       ]
     }
   ];
+
+  const handleDownload = (url: string) => {
+    window.open(url, '_blank');
+  };
 
   return (
     <Layout>
@@ -59,12 +95,19 @@ const Documents = () => {
                   <CardContent>
                     <div className="space-y-4">
                       {category.documents.map((doc, docIndex) => (
-                        <div key={docIndex} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                          <div>
-                            <p className="font-medium">{doc.name}</p>
-                            <p className="text-sm text-gray-500">{doc.type}</p>
+                        <div key={docIndex} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                          <div className="flex items-center gap-3">
+                            <FileText className="h-5 w-5 text-primary" />
+                            <div>
+                              <p className="font-medium">{doc.name}</p>
+                              <p className="text-sm text-gray-500">{doc.type}</p>
+                            </div>
                           </div>
-                          <Button variant="outline" size="sm">
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            onClick={() => handleDownload(doc.url)}
+                          >
                             Download
                           </Button>
                         </div>
