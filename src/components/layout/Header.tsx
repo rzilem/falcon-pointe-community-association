@@ -1,7 +1,6 @@
-
 import React from "react";
 import { Link } from "react-router-dom";
-import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "@/components/ui/navigation-menu";
+import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuList, NavigationMenuTrigger } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -43,6 +42,9 @@ const Header = () => {
                     </Link>
                     <Link to="/board" className="block p-2 hover:bg-muted rounded-md">
                       Board of Directors
+                    </Link>
+                    <Link to="/faq" className="block p-2 hover:bg-muted rounded-md">
+                      FAQ
                     </Link>
                   </div>
                 </NavigationMenuContent>
