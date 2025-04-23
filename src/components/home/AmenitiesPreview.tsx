@@ -21,7 +21,7 @@ const amenities = [
   {
     title: "Sports Courts",
     description: "Tennis, volleyball, and basketball courts for active residents",
-    location: "sports-courts",
+    location: "tennis-courts",
     fallbackImage: "/public/lovable-uploads/4c2a90e2-ed6a-4fd9-9929-d876a2684ba8.png"
   },
   {
