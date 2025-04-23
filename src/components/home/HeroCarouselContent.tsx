@@ -7,7 +7,7 @@ import { CarouselContent, CarouselItem } from "@/components/ui/carousel";
 const carouselImages = [
   {
     id: "overhead",
-    url: "https://ufhcicqixojqpyykjljw.supabase.co/storage/v1/object/public/site-images//OH%20yeah.jpg", // Updated image URL
+    url: "https://ufhcicqixojqpyykjljw.supabase.co/storage/v1/object/public/site-images//Overhead.jpg",
     title: "Welcome to Falcon Pointe",
     description: "Experience luxury living in our master-planned community in Pflugerville, Texas."
   },
