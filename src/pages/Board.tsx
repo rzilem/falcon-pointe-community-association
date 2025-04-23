@@ -1,9 +1,8 @@
-
 import React from "react";
 import Layout from "@/components/layout/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Mail } from "lucide-react";
+import { Mail, UserRound } from "lucide-react";
 
 const Board = () => {
   const boardMembers = [
@@ -62,12 +61,8 @@ const Board = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {boardMembers.map((member, index) => (
               <Card key={index} className="overflow-hidden">
-                <div className="h-48 overflow-hidden">
-                  <img 
-                    src={member.image} 
-                    alt={member.name} 
-                    className="w-full h-full object-cover"
-                  />
+                <div className="h-48 flex items-center justify-center bg-primary/5">
+                  <UserRound className="h-24 w-24 text-primary/60" />
                 </div>
                 <CardHeader>
                   <CardTitle>{member.name}</CardTitle>
