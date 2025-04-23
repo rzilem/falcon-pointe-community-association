@@ -2,6 +2,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import ImageDisplay from "@/components/cms/ImageDisplay";
 
 const CommunityOverview = () => {
   return (
@@ -9,10 +10,11 @@ const CommunityOverview = () => {
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row items-center">
           <div className="md:w-1/2 mb-8 md:mb-0 md:pr-8">
-            <img 
-              src="/public/lovable-uploads/6c2a5abb-a4c0-42a6-b7e0-39f8bbfdbf83.png" 
+            <ImageDisplay 
+              location="home-community"
+              fallbackSrc="/public/lovable-uploads/6c2a5abb-a4c0-42a6-b7e0-39f8bbfdbf83.png"
               alt="Falcon Pointe Community"
-              className="rounded-lg shadow-lg"
+              className="rounded-lg shadow-lg w-full h-auto"
             />
           </div>
           <div className="md:w-1/2">

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AdminNav from '@/components/admin/AdminNav';
@@ -142,12 +141,22 @@ const Images = () => {
 
   const locationOptions = [
     { value: 'amenities', label: 'Amenities Page' },
+    { value: 'amenities-banner', label: 'Amenities Banner' },
     { value: 'home', label: 'Home Page' },
+    { value: 'home-hero', label: 'Home Hero Image' },
+    { value: 'home-community', label: 'Community Overview Image' },
     { value: 'gallery', label: 'Gallery Page' },
     { value: 'about', label: 'About Page' },
-    { value: 'logo', label: 'Logo' },
-    { value: 'header', label: 'Header' },
-    { value: 'banner', label: 'Banner' }
+    { value: 'about-banner', label: 'About Banner' },
+    { value: 'logo', label: 'Site Logo' },
+    { value: 'header', label: 'Header Images' },
+    { value: 'banner', label: 'General Banners' },
+    { value: 'amenity-center', label: 'Amenity Center Photos' },
+    { value: 'swimming-pools', label: 'Swimming Pools Photos' },
+    { value: 'tennis-courts', label: 'Tennis Courts Photos' },
+    { value: 'volleyball-courts', label: 'Volleyball Courts Photos' },
+    { value: 'basketball-court', label: 'Basketball Court Photos' },
+    { value: 'parks-trails', label: 'Parks & Trails Photos' }
   ];
 
   return (

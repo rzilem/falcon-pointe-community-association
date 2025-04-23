@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
+import ImageDisplay from "@/components/cms/ImageDisplay";
 
 const Footer = () => {
   const { user, signOut } = useAuth();
@@ -12,10 +13,11 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="col-span-1">
             <Link to="/" className="flex items-center mb-4">
-              <img 
-                src="/public/lovable-uploads/899b4f94-1a92-4f7d-a7c0-37faa59f7550.png" 
+              <ImageDisplay 
+                location="logo"
+                fallbackSrc="/public/lovable-uploads/899b4f94-1a92-4f7d-a7c0-37faa59f7550.png"
                 alt="Falcon Pointe Community" 
-                className="h-12 mr-2 bg-white p-1 rounded" 
+                className="h-12 mr-2 bg-white p-1 rounded"
               />
               <div>
                 <h2 className="text-xl font-bold">Falcon Pointe</h2>
