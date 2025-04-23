@@ -9,35 +9,48 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { useImages } from '@/hooks/useImages';
-import { toast } from "sonner";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const Hero = () => {
-  const { images, isLoading, error } = useImages('home');
   const [api, setApi] = useState<any>(null);
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
-  const [usingFallbackImages, setUsingFallbackImages] = useState(false);
 
-  // Handle any errors from image loading
-  useEffect(() => {
-    if (error) {
-      console.error("Error loading images:", error);
-      toast.error("Failed to load carousel images");
+  // Define carousel images with their corresponding text
+  const carouselImages = [
+    {
+      id: "overhead",
+      url: "https://ufhcicqixojqpyykjljw.supabase.co/storage/v1/object/public/site-images//Overhead.jpg",
+      title: "Welcome to Falcon Pointe",
+      description: "Experience luxury living in our master-planned community in Pflugerville, Texas."
+    },
+    {
+      id: "splash-pad",
+      url: "https://ufhcicqixojqpyykjljw.supabase.co/storage/v1/object/public/site-images//splash%20pad.jpg",
+      title: "Family-Friendly Amenities",
+      description: "Enjoy our splash pad and other recreational facilities perfect for the whole family."
+    },
+    {
+      id: "home",
+      url: "https://ufhcicqixojqpyykjljw.supabase.co/storage/v1/object/public/site-images//Home.jpeg",
+      title: "Your Dream Home Awaits",
+      description: "Discover beautifully designed homes in our vibrant community."
+    },
+    {
+      id: "pool",
+      url: "https://ufhcicqixojqpyykjljw.supabase.co/storage/v1/object/public/site-images//Large%20Pool.jpg",
+      title: "Resort-Style Living",
+      description: "Take a dip in our expansive pool and enjoy the best of Texas living."
     }
-  }, [error]);
+  ];
 
   // Set up the carousel when API is available
   useEffect(() => {
     if (!api) return;
     
-    // Get the number of slides and the current slide
-    const slideCount = api.scrollSnapList().length;
-    setCount(slideCount);
+    setCount(api.scrollSnapList().length);
     setCurrent(api.selectedScrollSnap());
     
-    // Set up event listener for slide changes
     const onSelect = () => {
       setCurrent(api.selectedScrollSnap());
     };
@@ -49,7 +62,7 @@ const Hero = () => {
     };
   }, [api]);
 
-  // Set up autoplay with a separate effect
+  // Set up autoplay
   useEffect(() => {
     if (!api) return;
     
@@ -66,50 +79,6 @@ const Hero = () => {
     };
   }, [api]);
 
-  // Check if we should use fallback images
-  useEffect(() => {
-    if (!isLoading && (!images || images.length === 0)) {
-      console.log("Using fallback images as no images were found");
-      setUsingFallbackImages(true);
-    }
-  }, [isLoading, images]);
-
-  // Ensure we have some default images to show
-  const defaultImages = [
-    {
-      id: "large-pool",
-      url: "/lovable-uploads/ebafe490-e728-4ed8-a428-ff945cb1df98.png", // Large Pool image
-      alt_text: "Large Pool"
-    },
-    {
-      id: "amenity-center",
-      url: "/lovable-uploads/229f09a0-dd6e-4287-a457-2523b2859beb.png", // Amenity Center image
-      alt_text: "Amenity Center Front"
-    },
-    {
-      id: "community",
-      url: "/lovable-uploads/fc16efac-61bf-47f5-8eee-4dacc38eae73.png", // Falcon Pointe Community
-      alt_text: "Falcon Pointe Community"
-    },
-    {
-      id: "community-overview",
-      url: "/lovable-uploads/429c53d6-3597-4902-a560-649b9b18b844.png", // Community Overview image
-      alt_text: "Falcon Pointe Community Overview"
-    }
-  ];
-  
-  // Use fetched images or fallback to defaults
-  const displayImages = (images && images.length > 0) ? images : defaultImages;
-  
-  // Log information about the images for debugging
-  useEffect(() => {
-    if (!isLoading) {
-      console.log("Supabase images loaded:", images);
-      console.log("Using fallback images:", usingFallbackImages);
-      console.log("Images being displayed:", displayImages);
-    }
-  }, [isLoading, images, usingFallbackImages, displayImages]);
-
   // Function to handle manual navigation
   const goToSlide = (index: number) => {
     if (api) {
@@ -119,81 +88,76 @@ const Hero = () => {
 
   return (
     <div className="relative h-[600px] overflow-hidden">
-      {isLoading ? (
-        <div className="absolute inset-0 bg-gray-200 animate-pulse" />
-      ) : (
-        <Carousel 
-          setApi={setApi}
-          className="w-full h-full"
-          opts={{ 
-            loop: true,
-            skipSnaps: false,
-            align: 'start'
-          }}
-        >
-          <CarouselContent>
-            {displayImages.map((image, index) => (
-              <CarouselItem key={image.id || index}>
-                <div className="relative h-[600px] w-full">
-                  <img 
-                    src={image.url} 
-                    alt={image.alt_text || 'Community image'}
-                    className="absolute inset-0 w-full h-full object-cover"
-                    onError={(e) => {
-                      console.error(`Error loading image: ${image.url}`);
-                      e.currentTarget.src = "/placeholder.svg";
-                    }}
-                  />
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-black/30 hover:bg-black/50 border-none text-white">
-            <ChevronLeft className="w-6 h-6" />
-          </CarouselPrevious>
-          <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-black/30 hover:bg-black/50 border-none text-white">
-            <ChevronRight className="w-6 h-6" />
-          </CarouselNext>
-          
-          {/* Navigation dots */}
-          {count > 0 && (
-            <div className="absolute bottom-8 left-0 right-0 z-10 flex justify-center gap-3">
-              {Array.from({ length: count }).map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => goToSlide(index)}
-                  aria-label={`Go to slide ${index + 1}`}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                    current === index
-                      ? 'bg-white scale-110'
-                      : 'bg-white/50 hover:bg-white/70'
-                  }`}
+      <Carousel 
+        setApi={setApi}
+        className="w-full h-full"
+        opts={{ 
+          loop: true,
+          skipSnaps: false,
+          align: 'start'
+        }}
+      >
+        <CarouselContent>
+          {carouselImages.map((image, index) => (
+            <CarouselItem key={image.id}>
+              <div className="relative h-[600px] w-full">
+                <img 
+                  src={image.url} 
+                  alt={image.title}
+                  className="absolute inset-0 w-full h-full object-cover"
+                  onError={(e) => {
+                    console.error(`Error loading image: ${image.url}`);
+                    e.currentTarget.src = "/placeholder.svg";
+                  }}
                 />
-              ))}
-            </div>
-          )}
-        </Carousel>
-      )}
-      
-      <div className="absolute inset-0 bg-black/40" />
-      <div className="absolute inset-0 flex items-center">
-        <div className="container mx-auto px-4 text-center text-white">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6">
-            Welcome to Falcon Pointe
-          </h1>
-          <p className="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">
-            A premier master-planned community in Pflugerville, Texas, where modern living meets natural beauty.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg" variant="default" className="bg-red-700 hover:bg-red-800">
-              <Link to="/about">Learn More</Link>
-            </Button>
-            <Button asChild size="lg" variant="outline" className="bg-white/10 hover:bg-white/20 text-white border-white">
-              <Link to="/contact">Contact Us</Link>
-            </Button>
+                <div className="absolute inset-0 bg-black/40" />
+                <div className="absolute inset-0 flex items-center">
+                  <div className="container mx-auto px-4 text-center text-white">
+                    <h1 className="text-4xl md:text-6xl font-bold mb-6">
+                      {image.title}
+                    </h1>
+                    <p className="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">
+                      {image.description}
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                      <Button asChild size="lg" variant="default" className="bg-red-700 hover:bg-red-800">
+                        <Link to="/about">Learn More</Link>
+                      </Button>
+                      <Button asChild size="lg" variant="outline" className="bg-white/10 hover:bg-white/20 text-white border-white">
+                        <Link to="/contact">Contact Us</Link>
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-black/30 hover:bg-black/50 border-none text-white">
+          <ChevronLeft className="w-6 h-6" />
+        </CarouselPrevious>
+        <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-black/30 hover:bg-black/50 border-none text-white">
+          <ChevronRight className="w-6 h-6" />
+        </CarouselNext>
+        
+        {/* Navigation dots */}
+        {count > 0 && (
+          <div className="absolute bottom-8 left-0 right-0 z-10 flex justify-center gap-3">
+            {Array.from({ length: count }).map((_, index) => (
+              <button
+                key={index}
+                onClick={() => goToSlide(index)}
+                aria-label={`Go to slide ${index + 1}`}
+                className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                  current === index
+                    ? 'bg-white scale-110'
+                    : 'bg-white/50 hover:bg-white/70'
+                }`}
+              />
+            ))}
           </div>
-        </div>
-      </div>
+        )}
+      </Carousel>
     </div>
   );
 };
