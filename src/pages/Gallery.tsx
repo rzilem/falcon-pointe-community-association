@@ -3,45 +3,39 @@ import React from "react";
 import Layout from "@/components/layout/Layout";
 import { Card, CardContent } from "@/components/ui/card";
 import { GalleryHorizontal } from "lucide-react";
-import ImageDisplay from "@/components/cms/ImageDisplay";
 
 const Gallery = () => {
+  // Updated with direct paths to local images in public folder
   const images = [
     {
-      location: "amenity-center",
-      fallbackSrc: "https://ufhcicqixojqpyykjljw.supabase.co/storage/v1/object/public/site-images//OH%20yeah.jpg",
       title: "Amenity Center",
-      description: "Our 4,300 sq. ft. community hub"
+      description: "Our 4,300 sq. ft. community hub",
+      imagePath: "/lovable-uploads/229f09a0-dd6e-4287-a457-2523b2859beb.png"
     },
     {
-      location: "swimming-pools",
-      fallbackSrc: "https://ufhcicqixojqpyykjljw.supabase.co/storage/v1/object/public/site-images//Large%20Pool.jpg",
       title: "Swimming Pools",
-      description: "Refreshing pools for all ages"
+      description: "Refreshing pools for all ages",
+      imagePath: "/lovable-uploads/ebafe490-e728-4ed8-a428-ff945cb1df98.png"
     },
     {
-      location: "tennis-courts",
-      fallbackSrc: "https://ufhcicqixojqpyykjljw.supabase.co/storage/v1/object/public/site-images//Large%20Pool.jpg",
       title: "Tennis Courts",
-      description: "Professional-grade tennis facilities"
+      description: "Professional-grade tennis facilities",
+      imagePath: "/lovable-uploads/4c2a90e2-ed6a-4fd9-9929-d876a2684ba8.png"
     },
     {
-      location: "volleyball-courts",
-      fallbackSrc: "https://ufhcicqixojqpyykjljw.supabase.co/storage/v1/object/public/site-images//Large%20Pool.jpg",
       title: "Volleyball Courts",
-      description: "Sand volleyball for beach-style play"
+      description: "Sand volleyball for beach-style play",
+      imagePath: "/lovable-uploads/080cd85e-7544-4e3a-98a9-178087f36beb.png"
     },
     {
-      location: "basketball-court",
-      fallbackSrc: "https://ufhcicqixojqpyykjljw.supabase.co/storage/v1/object/public/site-images//Large%20Pool.jpg",
       title: "Basketball Court",
-      description: "Full-sized court for all skill levels"
+      description: "Full-sized court for all skill levels",
+      imagePath: "/lovable-uploads/899b4f94-1a92-4f7d-a7c0-37faa59f7550.png"
     },
     {
-      location: "parks-trails",
-      fallbackSrc: "https://ufhcicqixojqpyykjljw.supabase.co/storage/v1/object/public/site-images//Large%20Pool.jpg",
       title: "Parks & Trails",
-      description: "Miles of scenic walking trails"
+      description: "Miles of scenic walking trails",
+      imagePath: "/lovable-uploads/1e3c41bc-f71c-4013-957d-4fa60e414905.png"
     }
   ];
 
@@ -65,9 +59,15 @@ const Gallery = () => {
                 <CardContent className="p-0">
                   <div className="relative">
                     <img 
-                      src={image.fallbackSrc}
+                      src={image.imagePath}
                       alt={image.title}
                       className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105"
+                      onError={(e) => {
+                        // Fallback in case the image doesn't load
+                        const target = e.target as HTMLImageElement;
+                        target.onerror = null;
+                        target.src = "/placeholder.svg";
+                      }}
                     />
                     <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4">
                       <h3 className="font-bold">{image.title}</h3>
