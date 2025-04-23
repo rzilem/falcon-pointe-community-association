@@ -1,10 +1,10 @@
-
 import React from "react";
 import Layout from "@/components/layout/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { MapPin, Phone, Clock, Mail } from "lucide-react";
 
 const Contact = () => {
   const handleSubmit = (e: React.FormEvent) => {
@@ -27,50 +27,60 @@ const Contact = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {/* Contact Information */}
               <div className="space-y-6">
                 <Card>
                   <CardHeader>
                     <CardTitle>Office Information</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <div>
-                      <h3 className="font-semibold">Address</h3>
-                      <p className="text-gray-600">1234 Falcon Pointe Blvd</p>
-                      <p className="text-gray-600">Pflugerville, TX 78660</p>
+                    <div className="flex items-start gap-3">
+                      <MapPin className="h-5 w-5 mt-1 text-primary" />
+                      <div>
+                        <h3 className="font-semibold">Address</h3>
+                        <p className="text-gray-600">19015 Falcon Pointe Blvd</p>
+                        <p className="text-gray-600">Pflugerville, TX 78660</p>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="font-semibold">Phone</h3>
-                      <p className="text-gray-600">(512) 555-1234</p>
+                    <div className="flex items-start gap-3">
+                      <Phone className="h-5 w-5 mt-1 text-primary" />
+                      <div>
+                        <h3 className="font-semibold">Phone</h3>
+                        <p className="text-gray-600">(512) 670-1400</p>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="font-semibold">Email</h3>
-                      <p className="text-gray-600">info@falconpointehoa.com</p>
+                    <div className="flex items-start gap-3">
+                      <Mail className="h-5 w-5 mt-1 text-primary" />
+                      <div>
+                        <h3 className="font-semibold">Email</h3>
+                        <p className="text-gray-600">info@falconpointehoa.com</p>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="font-semibold">Office Hours</h3>
-                      <p className="text-gray-600">Monday - Friday: 9:00 AM - 5:00 PM</p>
-                      <p className="text-gray-600">Saturday: 10:00 AM - 2:00 PM</p>
-                      <p className="text-gray-600">Sunday: Closed</p>
+                    <div className="flex items-start gap-3">
+                      <Clock className="h-5 w-5 mt-1 text-primary" />
+                      <div>
+                        <h3 className="font-semibold">Office Hours</h3>
+                        <p className="text-gray-600">Monday - Friday: 9:00 AM - 5:30 PM</p>
+                        <p className="text-gray-600">Saturday - Sunday: Closed</p>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
 
                 <Card>
                   <CardHeader>
-                    <CardTitle>Emergency Contact</CardTitle>
+                    <CardTitle>Amenities</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-gray-600 mb-4">
-                      For after-hours emergencies related to community property,
-                      please call our 24/7 emergency line:
+                      Our Recreation Center features various amenities including:
                     </p>
-                    <p className="text-xl font-bold text-primary">(512) 555-9999</p>
+                    <ul className="list-disc list-inside text-gray-600">
+                      <li>Basketball Court</li>
+                    </ul>
                   </CardContent>
                 </Card>
               </div>
 
-              {/* Contact Form */}
               <Card>
                 <CardHeader>
                   <CardTitle>Send us a Message</CardTitle>
