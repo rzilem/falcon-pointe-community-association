@@ -3,7 +3,7 @@ import * as React from "react"
 import * as NavigationMenuPrimitive from "@radix-ui/react-navigation-menu"
 import { cva } from "class-variance-authority"
 import { ChevronDown } from "lucide-react"
-import { Link } from "react-router-dom"
+import { Link as RouterLink } from "react-router-dom"
 
 import { cn } from "@/lib/utils"
 
@@ -79,6 +79,7 @@ const NavigationMenuContent = React.forwardRef<
 ))
 NavigationMenuContent.displayName = NavigationMenuPrimitive.Content.displayName
 
+// Make sure this correctly handles Link for React Router DOM
 const NavigationMenuLink = NavigationMenuPrimitive.Link
 
 const NavigationMenuViewport = React.forwardRef<
