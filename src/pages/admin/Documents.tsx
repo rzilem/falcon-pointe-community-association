@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import Layout from "@/components/layout/Layout";
 import { useQuery } from "@tanstack/react-query";
@@ -9,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Form, FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import DocumentUploader from "@/components/documents/DocumentUploader";
 
 interface DocumentForm {
   name: string;
@@ -51,7 +51,7 @@ const AdminDocuments = () => {
         if (error) throw error;
         toast.success("Document updated successfully");
       } else {
-        // Create new document
+        // Create new document metadata (actual file upload handled by DocumentUploader)
         const { error } = await supabase
           .from('documents')
           .insert([{
@@ -109,6 +109,17 @@ const AdminDocuments = () => {
             <h2 className="text-xl font-semibold mb-4">
               {selectedDocument ? "Edit Document" : "Add New Document"}
             </h2>
+            
+            {!selectedDocument && (
+              <div className="mb-6">
+                <h3 className="text-lg font-medium mb-2">Upload New Document</h3>
+                <DocumentUploader 
+                  onUploadComplete={refetch}
+                  category={form.watch('category') || 'Association Documents'}
+                />
+              </div>
+            )}
+
             <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
               <FormField
                 control={form.control}
@@ -170,6 +181,7 @@ const AdminDocuments = () => {
                   </FormItem>
                 )}
               />
+              
               <div className="flex gap-2">
                 <Button type="submit">
                   {selectedDocument ? "Update" : "Add"} Document
