@@ -2,7 +2,7 @@ import React from "react";
 import Layout from "@/components/layout/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Mail, User, Users, UserRound, UsersRound, PersonStanding } from "lucide-react";
+import { Mail, User } from "lucide-react";
 
 const Board = () => {
   const boardMembers = [
@@ -43,8 +43,6 @@ const Board = () => {
     }
   ];
 
-  const peopleIcons = [User, Users, UserRound, UsersRound, PersonStanding];
-
   return (
     <Layout>
       {/* Hero Section */}
@@ -64,7 +62,7 @@ const Board = () => {
             {boardMembers.map((member, index) => (
               <Card key={index} className="overflow-hidden">
                 <div className="h-48 flex items-center justify-center bg-primary/5">
-                  {React.createElement(peopleIcons[index], { className: "h-24 w-24 text-primary/60" })}
+                  <User className="h-24 w-24 text-primary/60" />
                 </div>
                 <CardHeader>
                   <CardTitle>{member.name}</CardTitle>
