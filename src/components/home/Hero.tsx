@@ -1,7 +1,8 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import ImageDisplay from "@/components/cms/ImageDisplay";
 import {
   Carousel,
   CarouselContent,
@@ -9,17 +10,32 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import useEmblaCarousel from "embla-carousel-react";
 import { useImages } from '@/hooks/useImages';
 
 const Hero = () => {
   const { images, isLoading } = useImages('home');
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
+
+  useEffect(() => {
+    if (emblaApi) {
+      const autoplay = setInterval(() => {
+        emblaApi.scrollNext();
+      }, 5000); // Advance every 5 seconds
+
+      return () => clearInterval(autoplay);
+    }
+  }, [emblaApi]);
 
   return (
     <div className="relative h-[600px] overflow-hidden">
       {isLoading ? (
         <div className="absolute inset-0 bg-gray-200 animate-pulse" />
       ) : images && images.length > 0 ? (
-        <Carousel className="w-full h-full">
+        <Carousel 
+          ref={emblaRef}
+          className="w-full h-full"
+        >
           <CarouselContent>
             {images.map((image) => (
               <CarouselItem key={image.id}>
@@ -35,6 +51,20 @@ const Hero = () => {
           </CarouselContent>
           <CarouselPrevious className="left-4 z-10" />
           <CarouselNext className="right-4 z-10" />
+          <div className="absolute bottom-4 left-0 right-0 z-10 flex justify-center gap-2">
+            {images.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => emblaApi?.scrollTo(index)}
+                className={`w-2 h-2 rounded-full transition-colors ${
+                  emblaApi?.selectedScrollSnap() === index
+                    ? 'bg-white'
+                    : 'bg-white/50'
+                }`}
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            ))}
+          </div>
         </Carousel>
       ) : (
         <ImageDisplay
@@ -44,6 +74,7 @@ const Hero = () => {
           className="absolute inset-0 w-full h-full object-cover"
         />
       )}
+      
       <div className="absolute inset-0 bg-black/50" />
       <div className="absolute inset-0 flex items-center">
         <div className="container mx-auto px-4 text-center text-white">
@@ -68,3 +99,4 @@ const Hero = () => {
 };
 
 export default Hero;
+
