@@ -11,6 +11,7 @@ import Board from "./pages/Board";
 import Gallery from "./pages/Gallery";
 import Events from "./pages/Events";
 import Documents from "./pages/Documents";
+import AdminDocuments from "./pages/admin/Documents";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 
@@ -30,6 +31,7 @@ const App = () => (
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/events" element={<Events />} />
           <Route path="/documents" element={<Documents />} />
+          <Route path="/admin/documents" element={<AdminDocuments />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

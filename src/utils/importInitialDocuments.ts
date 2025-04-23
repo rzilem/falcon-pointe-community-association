@@ -79,3 +79,15 @@ export const importInitialDocuments = async () => {
   
   return true;
 };
+
+export const runImportFromConsole = async () => {
+  console.log('Starting document import...');
+  const success = await importInitialDocuments();
+  if (success) {
+    console.log('Documents imported successfully!');
+  } else {
+    console.error('Failed to import documents');
+  }
+};
+
+(window as any).importDocuments = runImportFromConsole;

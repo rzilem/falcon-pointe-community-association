@@ -3,11 +3,11 @@ import React, { useState } from "react";
 import Layout from "@/components/layout/Layout";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Document, DocumentCategory } from "@/types/document";
+import { Document, DocumentCategoryType } from "@/types/document";
 import { getCategoryDescription } from "@/utils/documents";
 import Hero from "@/components/documents/Hero";
 import DocumentSearch from "@/components/documents/DocumentSearch";
-import DocumentCategory from "@/components/documents/DocumentCategory";
+import DocumentCategoryComponent from "@/components/documents/DocumentCategory";
 import ContactSection from "@/components/documents/ContactSection";
 
 const Documents = () => {
@@ -27,7 +27,7 @@ const Documents = () => {
     }
   });
 
-  const documentCategories: DocumentCategory[] = documents.reduce((acc: DocumentCategory[], doc: Document) => {
+  const documentCategories: DocumentCategoryType[] = documents.reduce((acc: DocumentCategoryType[], doc: Document) => {
     const existingCategory = acc.find(cat => cat.title === doc.category);
     if (existingCategory) {
       existingCategory.documents.push(doc);
@@ -80,7 +80,7 @@ const Documents = () => {
             <div className="grid grid-cols-1 gap-6">
               {filteredCategories.length > 0 ? (
                 filteredCategories.map((category, index) => (
-                  <DocumentCategory
+                  <DocumentCategoryComponent
                     key={index}
                     title={category.title}
                     description={category.description}
