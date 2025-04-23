@@ -2,32 +2,45 @@
 import React from "react";
 import Layout from "@/components/layout/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Mail } from "lucide-react";
 
 const Board = () => {
   const boardMembers = [
     {
-      name: "John Smith",
+      name: "David Alley",
       position: "President",
-      bio: "Serving since 2022, John brings 15 years of community leadership experience.",
-      image: "/public/lovable-uploads/899b4f94-1a92-4f7d-a7c0-37faa59f7550.png"
+      bio: "Leading our community with dedication and vision since 2023.",
+      email: "david.alley@falconpointecommunity.com",
+      image: "/public/lovable-uploads/6c2a5abb-a4c0-42a6-b7e0-39f8bbfdbf83.png"
     },
     {
-      name: "Sarah Johnson",
+      name: "Carol Serna",
       position: "Vice President",
-      bio: "A resident since 2018, Sarah focuses on community engagement and event planning.",
-      image: "/public/lovable-uploads/41ef6a9e-81d5-4aa9-9169-bba038eba0f5.png"
+      bio: "Bringing years of community leadership experience to Falcon Pointe.",
+      email: "carol.serna@falconpointecommunity.com",
+      image: "/public/lovable-uploads/229f09a0-dd6e-4287-a457-2523b2859beb.png"
     },
     {
-      name: "Michael Chen",
+      name: "Mark Armstrong",
       position: "Treasurer",
-      bio: "With a background in finance, Michael oversees the community's fiscal responsibilities.",
-      image: "/public/lovable-uploads/4c2a90e2-ed6a-4fd9-9929-d876a2684ba8.png"
+      bio: "Managing our community's financial health with expertise and transparency.",
+      email: "mark.armstrong@falconpointecommunity.com",
+      image: "/public/lovable-uploads/080cd85e-7544-4e3a-98a9-178087f36beb.png"
     },
     {
-      name: "Lisa Rodriguez",
+      name: "Jon Jackson",
       position: "Secretary",
-      bio: "Lisa ensures transparent communication between the board and residents.",
-      image: "/public/lovable-uploads/ebafe490-e728-4ed8-a428-ff945cb1df98.png"
+      bio: "Ensuring clear communication and detailed record-keeping for our community.",
+      email: "jon.jackson@falconpointecommunity.com",
+      image: "/public/lovable-uploads/fc16efac-61bf-47f5-8eee-4dacc38eae73.png"
+    },
+    {
+      name: "Position Available",
+      position: "At Large",
+      bio: "This position is currently open. Contact us if you're interested in serving your community.",
+      email: "board@falconpointecommunity.com",
+      image: "/public/lovable-uploads/1e3c41bc-f71c-4013-957d-4fa60e414905.png"
     }
   ];
 
@@ -38,7 +51,7 @@ const Board = () => {
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl font-bold mb-4">Board of Directors</h1>
           <p className="text-xl max-w-3xl mx-auto">
-            Meet the dedicated team working to maintain and improve our community
+            Meet the dedicated team working to maintain and improve our Falcon Pointe community
           </p>
         </div>
       </div>
@@ -46,7 +59,7 @@ const Board = () => {
       {/* Board Members Grid */}
       <div className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {boardMembers.map((member, index) => (
               <Card key={index} className="overflow-hidden">
                 <div className="h-48 overflow-hidden">
@@ -60,8 +73,14 @@ const Board = () => {
                   <CardTitle>{member.name}</CardTitle>
                   <p className="text-primary font-medium">{member.position}</p>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="space-y-4">
                   <p className="text-gray-600">{member.bio}</p>
+                  <Button variant="outline" className="w-full" asChild>
+                    <a href={`mailto:${member.email}`}>
+                      <Mail className="mr-2 h-4 w-4" />
+                      Contact
+                    </a>
+                  </Button>
                 </CardContent>
               </Card>
             ))}
