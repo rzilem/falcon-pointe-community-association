@@ -18,12 +18,13 @@ const Hero = () => {
   const [api, setApi] = useState<any>(null);
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
+  const [usingFallbackImages, setUsingFallbackImages] = useState(false);
 
   // Handle any errors from image loading
   useEffect(() => {
     if (error) {
-      toast.error("Failed to load slide images");
       console.error("Error loading images:", error);
+      toast.error("Failed to load carousel images");
     }
   }, [error]);
 
@@ -65,6 +66,14 @@ const Hero = () => {
     };
   }, [api]);
 
+  // Check if we should use fallback images
+  useEffect(() => {
+    if (!isLoading && (!images || images.length === 0)) {
+      console.log("Using fallback images as no images were found");
+      setUsingFallbackImages(true);
+    }
+  }, [isLoading, images]);
+
   // Ensure we have some default images to show
   const defaultImages = [
     {
@@ -91,6 +100,15 @@ const Hero = () => {
   
   // Use fetched images or fallback to defaults
   const displayImages = (images && images.length > 0) ? images : defaultImages;
+  
+  // Log information about the images for debugging
+  useEffect(() => {
+    if (!isLoading) {
+      console.log("Supabase images loaded:", images);
+      console.log("Using fallback images:", usingFallbackImages);
+      console.log("Images being displayed:", displayImages);
+    }
+  }, [isLoading, images, usingFallbackImages, displayImages]);
 
   // Function to handle manual navigation
   const goToSlide = (index: number) => {
@@ -121,6 +139,10 @@ const Hero = () => {
                     src={image.url} 
                     alt={image.alt_text || 'Community image'}
                     className="absolute inset-0 w-full h-full object-cover"
+                    onError={(e) => {
+                      console.error(`Error loading image: ${image.url}`);
+                      e.currentTarget.src = "/placeholder.svg";
+                    }}
                   />
                 </div>
               </CarouselItem>
