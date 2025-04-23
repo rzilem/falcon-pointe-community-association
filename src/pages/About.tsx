@@ -1,10 +1,8 @@
 import React from "react";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
-
 const About = () => {
-  return (
-    <Layout>
+  return <Layout>
       {/* Hero Section */}
       <div className="bg-gray-800 text-white py-16">
         <div className="container mx-auto px-4 text-center">
@@ -20,11 +18,7 @@ const About = () => {
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center mb-16">
             <div className="md:w-1/2 mb-8 md:mb-0 md:pr-8">
-              <img 
-                src="/public/lovable-uploads/899b4f94-1a92-4f7d-a7c0-37faa59f7550.png" 
-                alt="Falcon Pointe Entrance" 
-                className="rounded-lg shadow-lg"
-              />
+              <img src="/public/lovable-uploads/899b4f94-1a92-4f7d-a7c0-37faa59f7550.png" alt="Falcon Pointe Entrance" className="rounded-lg shadow-lg" />
             </div>
             <div className="md:w-1/2">
               <h2 className="text-3xl font-bold mb-4">Our Community</h2>
@@ -48,11 +42,7 @@ const About = () => {
           {/* Location */}
           <div className="flex flex-col md:flex-row-reverse items-center mb-16">
             <div className="md:w-1/2 mb-8 md:mb-0 md:pl-8">
-              <img 
-                src="/public/lovable-uploads/41ef6a9e-81d5-4aa9-9169-bba038eba0f5.png" 
-                alt="Falcon Pointe Home" 
-                className="rounded-lg shadow-lg"
-              />
+              <img src="/public/lovable-uploads/41ef6a9e-81d5-4aa9-9169-bba038eba0f5.png" alt="Falcon Pointe Home" className="rounded-lg shadow-lg" />
             </div>
             <div className="md:w-1/2">
               <h2 className="text-3xl font-bold mb-4">Location & Accessibility</h2>
@@ -100,20 +90,7 @@ const About = () => {
       </section>
 
       {/* Call to Action */}
-      <section className="py-12 bg-gray-50">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">Join Our Community</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto mb-8">
-            Interested in becoming a part of the Falcon Pointe community? Explore available homes
-            and learn more about what makes our neighborhood special.
-          </p>
-          <Button asChild size="lg">
-            <a href="/contact" id="contact">Get In Touch</a>
-          </Button>
-        </div>
-      </section>
-    </Layout>
-  );
+      
+    </Layout>;
 };
-
 export default About;
