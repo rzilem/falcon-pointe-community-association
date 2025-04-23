@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -9,7 +10,7 @@ const amenities = [
     title: "Amenity Center",
     description: "A 4,300 sq. ft. center with meeting spaces and activities",
     location: "amenity-center",
-    fallbackImage: "https://ufhcicqixojqpyykjljw.supabase.co/storage/v1/object/public/site-images//OH%20yeah.jpg"
+    fallbackImage: "/public/lovable-uploads/229f09a0-dd6e-4287-a457-2523b2859beb.png"
   },
   {
     title: "Pools & Splash Pad",
