@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -11,7 +10,6 @@ const Footer = () => {
     <footer className="bg-gray-800 text-white relative">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Column 1: Logo and Description */}
           <div className="col-span-1">
             <Link to="/" className="flex items-center mb-4">
               <img 
@@ -29,7 +27,6 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* Column 2: Quick Links */}
           <div className="col-span-1">
             <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
@@ -41,7 +38,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Column 3: Resident Resources */}
           <div className="col-span-1">
             <h3 className="text-lg font-semibold mb-4">Resident Resources</h3>
             <ul className="space-y-2">
@@ -52,7 +48,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Column 4: Contact Information */}
           <div className="col-span-1">
             <h3 className="text-lg font-semibold mb-4">Contact Us</h3>
             <address className="not-italic text-gray-300">
@@ -72,16 +67,13 @@ const Footer = () => {
         
         <div className="mt-8 pt-8 border-t border-gray-700 flex justify-between items-center">
           <div className="flex space-x-4">
-            <a 
-              href="https://owner.psprop.net" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="text-gray-300 hover:text-white"
+            <Button 
+              variant="default" 
+              asChild 
+              size="sm"
             >
-              <Button variant="outline" size="sm">
-                Owner Login
-              </Button>
-            </a>
+              <Link to="/auth">Admin Login</Link>
+            </Button>
           </div>
           
           <p className="text-center text-gray-300 text-sm">

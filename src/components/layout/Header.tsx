@@ -103,19 +103,13 @@ const Header = () => {
           <MobileNav />
         )}
         
-        {/* Portal Login/Admin Button */}
+        {/* Owner Login Button - Now at top right */}
         {!isMobile && (
-          <>
-            {user ? (
-              <Button onClick={signOut} variant="outline" size="sm">
-                Sign Out
-              </Button>
-            ) : (
-              <Button asChild variant="default" size="sm">
-                <Link to="/auth">Admin Login</Link>
-              </Button>
-            )}
-          </>
+          <a href="https://owner.psprop.net" target="_blank" rel="noopener noreferrer">
+            <Button variant="default" size="sm">
+              Owner Login
+            </Button>
+          </a>
         )}
       </div>
     </header>
