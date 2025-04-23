@@ -1,11 +1,9 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import FormField from "./form/FormField";
 
 const ContactForm = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -69,48 +67,40 @@ const ContactForm = () => {
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium mb-1">Name</label>
-            <Input
-              name="name"
-              placeholder="Your name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">Email</label>
-            <Input
-              name="email"
-              type="email"
-              placeholder="Your email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">Subject</label>
-            <Input
-              name="subject"
-              placeholder="Message subject"
-              value={formData.subject}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">Message</label>
-            <Textarea
-              name="message"
-              placeholder="Your message"
-              className="h-32"
-              value={formData.message}
-              onChange={handleChange}
-              required
-            />
-          </div>
+          <FormField
+            label="Name"
+            name="name"
+            placeholder="Your name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+          />
+          <FormField
+            label="Email"
+            name="email"
+            type="email"
+            placeholder="Your email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+          <FormField
+            label="Subject"
+            name="subject"
+            placeholder="Message subject"
+            value={formData.subject}
+            onChange={handleChange}
+            required
+          />
+          <FormField
+            label="Message"
+            name="message"
+            type="textarea"
+            placeholder="Your message"
+            value={formData.message}
+            onChange={handleChange}
+            required
+          />
           <Button type="submit" className="w-full" disabled={isLoading}>
             {isLoading ? (
               <>
