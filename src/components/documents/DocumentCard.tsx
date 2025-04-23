@@ -1,6 +1,6 @@
 
 import React from "react";
-import { FileText, Calendar } from "lucide-react";
+import { FileText, Calendar, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Document } from "@/types/document";
@@ -22,7 +22,7 @@ const DocumentCard = ({ document, handleDownload }: DocumentCardProps) => {
           <p className="text-sm text-gray-600">{document.description}</p>
           <div className="flex items-center gap-2 text-xs text-gray-500">
             <Calendar className="h-3 w-3" />
-            <span>Last updated: {document.last_updated}</span>
+            <span>Last updated: {new Date(document.last_updated || '').toLocaleDateString()}</span>
           </div>
         </div>
       </div>
@@ -31,9 +31,10 @@ const DocumentCard = ({ document, handleDownload }: DocumentCardProps) => {
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => window.open(document.url, 'preview')}
-            className="hidden md:inline-flex"
+            onClick={() => window.open(document.url, '_blank')}
+            className="gap-2"
           >
+            <ExternalLink className="h-4 w-4" />
             Preview
           </Button>
         )}
@@ -41,7 +42,9 @@ const DocumentCard = ({ document, handleDownload }: DocumentCardProps) => {
           variant="outline" 
           size="sm"
           onClick={() => handleDownload(document.url)}
+          className="gap-2"
         >
+          <FileText className="h-4 w-4" />
           Download
         </Button>
       </div>

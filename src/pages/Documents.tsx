@@ -9,6 +9,7 @@ import Hero from "@/components/documents/Hero";
 import DocumentSearch from "@/components/documents/DocumentSearch";
 import DocumentCategoryComponent from "@/components/documents/DocumentCategory";
 import ContactSection from "@/components/documents/ContactSection";
+import { toast } from "sonner";
 
 const Documents = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -22,7 +23,10 @@ const Documents = () => {
         .order('category')
         .order('name');
       
-      if (error) throw error;
+      if (error) {
+        toast.error("Error loading documents");
+        throw error;
+      }
       return data || [];
     }
   });
@@ -41,8 +45,14 @@ const Documents = () => {
     return acc;
   }, []);
 
-  const handleDownload = (url: string) => {
-    window.open(url, '_blank');
+  const handleDownload = async (url: string) => {
+    try {
+      window.open(url, '_blank');
+      toast.success("Document download started");
+    } catch (error) {
+      toast.error("Error downloading document");
+      console.error("Download error:", error);
+    }
   };
 
   const filteredCategories = documentCategories
@@ -77,9 +87,9 @@ const Documents = () => {
               setSearchQuery={setSearchQuery}
             />
 
-            <div className="grid grid-cols-1 gap-6">
-              {filteredCategories.length > 0 ? (
-                filteredCategories.map((category, index) => (
+            {filteredCategories.length > 0 ? (
+              <div className="grid grid-cols-1 gap-6">
+                {filteredCategories.map((category, index) => (
                   <DocumentCategoryComponent
                     key={index}
                     title={category.title}
@@ -87,13 +97,13 @@ const Documents = () => {
                     documents={category.documents}
                     handleDownload={handleDownload}
                   />
-                ))
-              ) : (
-                <div className="text-center py-8">
-                  <p className="text-gray-500">No documents found matching your search.</p>
-                </div>
-              )}
-            </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-8">
+                <p className="text-gray-500">No documents found matching your search.</p>
+              </div>
+            )}
           </div>
         </div>
       </div>
