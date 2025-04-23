@@ -2,6 +2,7 @@
 import React from "react";
 import Layout from "@/components/layout/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { supabase } from "@/integrations/supabase/client";
 
 const Events = () => {
   const upcomingEvents = [
@@ -11,7 +12,7 @@ const Events = () => {
       time: "2:00 PM - 6:00 PM",
       location: "Main Pool",
       description: "Join us for our annual summer celebration with food, games, and pool activities.",
-      image: "/public/lovable-uploads/ebafe490-e728-4ed8-a428-ff945cb1df98.png"
+      imageName: "pool-party.jpg"
     },
     {
       title: "Tennis Tournament",
@@ -19,7 +20,7 @@ const Events = () => {
       time: "9:00 AM - 5:00 PM",
       location: "Tennis Courts",
       description: "Community tennis tournament for all skill levels. Sign up at the amenity center.",
-      image: "/public/lovable-uploads/4c2a90e2-ed6a-4fd9-9929-d876a2684ba8.png"
+      imageName: "tennis-tournament.jpg"
     },
     {
       title: "Fall Festival",
@@ -27,9 +28,14 @@ const Events = () => {
       time: "3:00 PM - 8:00 PM",
       location: "Community Park",
       description: "Annual fall celebration with hayrides, pumpkin decorating, and food trucks.",
-      image: "/public/lovable-uploads/1e3c41bc-f71c-4013-957d-4fa60e414905.png"
+      imageName: "fall-festival.jpg"
     }
   ];
+
+  const getImageUrl = (imageName: string) => {
+    const { data } = supabase.storage.from('event-images').getPublicUrl(imageName);
+    return data.publicUrl;
+  };
 
   return (
     <Layout>
@@ -50,9 +56,14 @@ const Events = () => {
               <Card key={index} className="overflow-hidden">
                 <div className="h-48 overflow-hidden">
                   <img 
-                    src={event.image} 
+                    src={getImageUrl(event.imageName)} 
                     alt={event.title}
                     className="w-full h-full object-cover"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.onerror = null;
+                      target.src = "/placeholder.svg";
+                    }}
                   />
                 </div>
                 <CardHeader>
