@@ -1,8 +1,6 @@
 
 import React, { useState } from "react";
 import Layout from "@/components/layout/Layout";
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
 import { Document, DocumentCategoryType } from "@/types/document";
 import { getCategoryDescription } from "@/utils/documents";
 import Hero from "@/components/documents/Hero";
@@ -10,26 +8,21 @@ import DocumentSearch from "@/components/documents/DocumentSearch";
 import DocumentCategoryComponent from "@/components/documents/DocumentCategory";
 import ContactSection from "@/components/documents/ContactSection";
 import { toast } from "sonner";
+import { useDocuments } from "@/hooks/useDocuments";
 
 const Documents = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const { documents, isLoading, error } = useDocuments();
 
-  const { data: documents = [], isLoading } = useQuery({
-    queryKey: ['documents'],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('documents')
-        .select('*')
-        .order('category')
-        .order('name');
-      
-      if (error) {
-        toast.error("Error loading documents");
-        throw error;
-      }
-      return data || [];
+  const handleDownload = async (url: string) => {
+    try {
+      window.open(url, '_blank');
+      toast.success("Document download started");
+    } catch (error) {
+      toast.error("Error downloading document");
+      console.error("Download error:", error);
     }
-  });
+  };
 
   const documentCategories: DocumentCategoryType[] = documents.reduce((acc: DocumentCategoryType[], doc: Document) => {
     const existingCategory = acc.find(cat => cat.title === doc.category);
@@ -44,16 +37,6 @@ const Documents = () => {
     }
     return acc;
   }, []);
-
-  const handleDownload = async (url: string) => {
-    try {
-      window.open(url, '_blank');
-      toast.success("Document download started");
-    } catch (error) {
-      toast.error("Error downloading document");
-      console.error("Download error:", error);
-    }
-  };
 
   const filteredCategories = documentCategories
     .map(category => ({
@@ -70,6 +53,18 @@ const Documents = () => {
       <Layout>
         <div className="flex items-center justify-center min-h-screen">
           <p>Loading documents...</p>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (error) {
+    console.error("Error in documents page:", error);
+    return (
+      <Layout>
+        <div className="flex flex-col items-center justify-center min-h-screen">
+          <p className="text-red-500 mb-2">Error loading documents</p>
+          <p className="text-sm text-gray-600">Please try again later</p>
         </div>
       </Layout>
     );
@@ -101,7 +96,14 @@ const Documents = () => {
               </div>
             ) : (
               <div className="text-center py-8">
-                <p className="text-gray-500">No documents found matching your search.</p>
+                {documents.length > 0 ? (
+                  <p className="text-gray-500">No documents found matching your search.</p>
+                ) : (
+                  <div className="space-y-4">
+                    <p className="text-gray-500">No documents available yet.</p>
+                    <p className="text-sm text-gray-400">Documents will appear here once they are added to the system.</p>
+                  </div>
+                )}
               </div>
             )}
           </div>

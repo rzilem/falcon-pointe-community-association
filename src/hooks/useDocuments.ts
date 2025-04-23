@@ -5,16 +5,23 @@ import { Document } from "@/types/document";
 import { toast } from "sonner";
 
 export const useDocuments = () => {
-  const { data: documents = [], refetch } = useQuery({
-    queryKey: ['admin-documents'],
+  const { data: documents = [], isLoading, error, refetch } = useQuery({
+    queryKey: ['documents'],
     queryFn: async () => {
+      console.log("Fetching documents from Supabase");
       const { data, error } = await supabase
         .from('documents')
         .select('*')
         .order('category')
         .order('name');
       
-      if (error) throw error;
+      if (error) {
+        console.error("Error fetching documents:", error);
+        toast.error("Error loading documents");
+        throw error;
+      }
+      
+      console.log("Documents fetched:", data);
       return data || [];
     }
   });
@@ -37,6 +44,8 @@ export const useDocuments = () => {
 
   return {
     documents,
+    isLoading,
+    error,
     refetch,
     handleDelete
   };
