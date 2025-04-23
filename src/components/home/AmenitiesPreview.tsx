@@ -1,29 +1,34 @@
 
 import React from "react";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import ImageDisplay from "@/components/cms/ImageDisplay";
 
 const amenities = [
   {
     title: "Amenity Center",
     description: "A 4,300 sq. ft. center with meeting spaces and activities",
-    image: "/public/lovable-uploads/229f09a0-dd6e-4287-a457-2523b2859beb.png"
+    location: "amenity-center",
+    fallbackImage: "/public/lovable-uploads/229f09a0-dd6e-4287-a457-2523b2859beb.png"
   },
   {
     title: "Pools & Splash Pad",
     description: "Two full-size pools, one kid pool, and a splash pad",
-    image: "/public/lovable-uploads/ebafe490-e728-4ed8-a428-ff945cb1df98.png"
+    location: "swimming-pools",
+    fallbackImage: "/public/lovable-uploads/ebafe490-e728-4ed8-a428-ff945cb1df98.png"
   },
   {
     title: "Sports Courts",
     description: "Tennis, volleyball, and basketball courts for active residents",
-    image: "/public/lovable-uploads/4c2a90e2-ed6a-4fd9-9929-d876a2684ba8.png"
+    location: "sports-courts",
+    fallbackImage: "/public/lovable-uploads/4c2a90e2-ed6a-4fd9-9929-d876a2684ba8.png"
   },
   {
     title: "Parks & Trails",
     description: "Five miles of trails, 12 parks, and eight playgrounds",
-    image: "/public/lovable-uploads/1e3c41bc-f71c-4013-957d-4fa60e414905.png"
+    location: "parks-trails",
+    fallbackImage: "/public/lovable-uploads/1e3c41bc-f71c-4013-957d-4fa60e414905.png"
   }
 ];
 
@@ -42,10 +47,11 @@ const AmenitiesPreview = () => {
           {amenities.map((amenity, index) => (
             <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow">
               <div className="h-48 overflow-hidden">
-                <img 
-                  src={amenity.image} 
+                <ImageDisplay 
+                  location={amenity.location}
+                  fallbackSrc={amenity.fallbackImage}
                   alt={amenity.title}
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" 
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                 />
               </div>
               <CardHeader className="pb-2">
