@@ -1,4 +1,3 @@
-
 import React from "react";
 import Layout from "@/components/layout/Layout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -33,7 +32,7 @@ const Amenities = () => {
       title: "Basketball Court",
       description: "Full-sized basketball court for pick-up games and practice.",
       details: "Our basketball court features high-quality goals and surface, with lighting for evening play during summer months.",
-      image: "/public/lovable-uploads/fc16efac-61bf-47f5-8eee-4dacc38eae73.png"
+      image: "/public/lovable-uploads/899b4f94-1a92-4f7d-a7c0-37faa59f7550.png"
     },
     {
       title: "Parks & Trails",
