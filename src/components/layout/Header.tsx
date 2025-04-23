@@ -1,9 +1,11 @@
+
 import React from "react";
 import { Link } from "react-router-dom";
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuList, NavigationMenuTrigger } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useAuth } from "@/context/AuthContext";
+import MobileNav from "./MobileNav";
 
 const Header = () => {
   const isMobile = useIsMobile();
@@ -99,7 +101,7 @@ const Header = () => {
             </NavigationMenuList>
           </NavigationMenu>
         ) : (
-          <Button variant="outline" size="sm">Menu</Button>
+          <MobileNav />
         )}
         
         {/* Portal Login/Admin Button */}

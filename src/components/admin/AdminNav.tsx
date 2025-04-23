@@ -3,6 +3,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
+import { Image, FileText } from 'lucide-react';
 
 const AdminNav = () => {
   const { signOut } = useAuth();
@@ -25,17 +26,27 @@ const AdminNav = () => {
           <Link to="/admin/images">
             <Button 
               variant={isActive('/admin/images') ? 'secondary' : 'ghost'}
-              className="text-white"
+              className="text-white flex items-center"
             >
+              <Image className="mr-2 h-4 w-4" />
               Images
             </Button>
           </Link>
           <Link to="/admin/content">
             <Button 
               variant={isActive('/admin/content') ? 'secondary' : 'ghost'}
+              className="text-white flex items-center"
+            >
+              <FileText className="mr-2 h-4 w-4" />
+              Content
+            </Button>
+          </Link>
+          <Link to="/admin/documents">
+            <Button 
+              variant={isActive('/admin/documents') ? 'secondary' : 'ghost'}
               className="text-white"
             >
-              Content
+              Documents
             </Button>
           </Link>
         </div>

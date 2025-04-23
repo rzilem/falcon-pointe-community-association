@@ -18,6 +18,8 @@ import NotFound from "./pages/NotFound";
 import FAQ from "./pages/FAQ";
 import Auth from "./pages/auth/Auth";
 import Dashboard from "./pages/admin/Dashboard";
+import Images from "./pages/admin/Images";
+import Content from "./pages/admin/Content";
 
 const queryClient = new QueryClient();
 
@@ -41,6 +43,8 @@ const App = () => (
             <Route path="/faq" element={<FAQ />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/admin" element={<Dashboard />} />
+            <Route path="/admin/images" element={<Images />} />
+            <Route path="/admin/content" element={<Content />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
