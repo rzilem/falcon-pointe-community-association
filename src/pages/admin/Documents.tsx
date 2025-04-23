@@ -1,13 +1,13 @@
 
 import React, { useState } from "react";
 import Layout from "@/components/layout/Layout";
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
 import { Document } from "@/types/document";
 import { toast } from "sonner";
 import DocumentUploader from "@/components/documents/DocumentUploader";
 import DocumentForm from "@/components/admin/documents/DocumentForm";
 import DocumentList from "@/components/admin/documents/DocumentList";
+import { useDocuments } from "@/hooks/useDocuments";
+import { supabase } from "@/integrations/supabase/client";
 
 interface DocumentFormData {
   name: string;
@@ -19,20 +19,7 @@ interface DocumentFormData {
 
 const AdminDocuments = () => {
   const [selectedDocument, setSelectedDocument] = useState<Document | null>(null);
-
-  const { data: documents = [], refetch } = useQuery({
-    queryKey: ['admin-documents'],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('documents')
-        .select('*')
-        .order('category')
-        .order('name');
-      
-      if (error) throw error;
-      return data || [];
-    }
-  });
+  const { documents, refetch, handleDelete } = useDocuments();
 
   const handleSubmit = async (data: DocumentFormData) => {
     try {
@@ -54,22 +41,6 @@ const AdminDocuments = () => {
     } catch (error) {
       toast.error("Error saving document");
       console.error("Error saving document:", error);
-    }
-  };
-
-  const handleDelete = async (id: string) => {
-    try {
-      const { error } = await supabase
-        .from('documents')
-        .delete()
-        .eq('id', id);
-
-      if (error) throw error;
-      toast.success("Document deleted successfully");
-      refetch();
-    } catch (error) {
-      toast.error("Error deleting document");
-      console.error("Error deleting document:", error);
     }
   };
 
