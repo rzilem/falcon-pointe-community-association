@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -132,7 +131,7 @@ const MobileNav = () => {
                   Association Documents
                 </Button>
               </Link>
-              <a href="https://portal.example.com" target="_blank" rel="noopener noreferrer" onClick={handleLinkClick}>
+              <a href="https://owner.psprop.net" target="_blank" rel="noopener noreferrer" onClick={handleLinkClick}>
                 <Button variant="ghost" className="w-full justify-start text-sm">
                   Resident Portal
                 </Button>

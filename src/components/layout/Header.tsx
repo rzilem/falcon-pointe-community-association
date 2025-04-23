@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Link } from "react-router-dom";
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuList, NavigationMenuTrigger } from "@/components/ui/navigation-menu";
@@ -78,7 +77,7 @@ const Header = () => {
                     <Link to="/documents" className="block p-2 hover:bg-muted rounded-md">
                       Association Documents
                     </Link>
-                    <a href="https://portal.example.com" target="_blank" rel="noopener noreferrer" className="block p-2 hover:bg-muted rounded-md">
+                    <a href="https://owner.psprop.net" target="_blank" rel="noopener noreferrer" className="block p-2 hover:bg-muted rounded-md">
                       Resident Portal
                     </a>
                   </div>
