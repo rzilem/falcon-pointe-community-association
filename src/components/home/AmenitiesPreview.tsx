@@ -45,14 +45,15 @@ const AmenitiesPreview = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {amenities.map((amenity, index) => (
-            <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow">
-              <div className="h-48 overflow-hidden">
+            <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow group">
+              <div className="h-48 overflow-hidden relative">
                 <ImageDisplay 
                   location={amenity.location}
                   fallbackSrc={amenity.fallbackImage}
                   alt={amenity.title}
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
+                <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
               <CardHeader className="pb-2">
                 <CardTitle>{amenity.title}</CardTitle>
