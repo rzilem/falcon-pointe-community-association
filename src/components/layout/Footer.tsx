@@ -8,7 +8,7 @@ const Footer = () => {
   const { user, signOut } = useAuth();
 
   return (
-    <footer className="bg-gray-800 text-white relative">
+    <footer className="bg-gray-800 text-white">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="col-span-1">
@@ -67,32 +67,32 @@ const Footer = () => {
           </div>
         </div>
         
-        <div className="mt-8 pt-8 border-t border-gray-700 flex justify-between items-center">
-          <div className="flex space-x-4">
-            <Button 
-              variant="default" 
-              asChild 
-              size="sm"
-            >
-              <Link to="/auth">Admin Login</Link>
-            </Button>
-          </div>
-          
-          <p className="text-center text-gray-300 text-sm">
+        <div className="mt-8 pt-8 border-t border-gray-700 flex flex-wrap justify-between items-center gap-4">
+          <p className="text-gray-300 text-sm order-1 md:order-2">
             &copy; {new Date().getFullYear()} Falcon Pointe Community Association. All rights reserved.
           </p>
-
-          {user && (
-            <div className="absolute bottom-4 left-4">
+          
+          <div className="ml-auto order-2 md:order-1">
+            {user ? (
               <Button 
-                variant="destructive" 
-                size="sm" 
+                variant="outline"
+                size="sm"
                 onClick={() => signOut()}
+                className="bg-gray-700 hover:bg-gray-600 text-gray-200"
               >
                 Admin Logout
               </Button>
-            </div>
-          )}
+            ) : (
+              <Button 
+                variant="default" 
+                asChild 
+                size="sm"
+                className="bg-primary hover:bg-primary/90"
+              >
+                <Link to="/auth">Admin Login</Link>
+              </Button>
+            )}
+          </div>
         </div>
       </div>
     </footer>
