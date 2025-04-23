@@ -1,10 +1,14 @@
 
 import React from "react";
 import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { useAuth } from "@/context/AuthContext";
 
 const Footer = () => {
+  const { user, signOut } = useAuth();
+
   return (
-    <footer className="bg-gray-800 text-white">
+    <footer className="bg-gray-800 text-white relative">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Column 1: Logo and Description */}
@@ -66,10 +70,35 @@ const Footer = () => {
           </div>
         </div>
         
-        <div className="mt-8 pt-8 border-t border-gray-700">
+        <div className="mt-8 pt-8 border-t border-gray-700 flex justify-between items-center">
+          <div className="flex space-x-4">
+            <a 
+              href="https://owner.psprop.net" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="text-gray-300 hover:text-white"
+            >
+              <Button variant="outline" size="sm">
+                Owner Login
+              </Button>
+            </a>
+          </div>
+          
           <p className="text-center text-gray-300 text-sm">
             &copy; {new Date().getFullYear()} Falcon Pointe Community Association. All rights reserved.
           </p>
+
+          {user && (
+            <div className="absolute bottom-4 left-4">
+              <Button 
+                variant="destructive" 
+                size="sm" 
+                onClick={() => signOut()}
+              >
+                Admin Logout
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </footer>
