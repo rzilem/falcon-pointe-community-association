@@ -42,6 +42,105 @@ export type Database = {
         }
         Relationships: []
       }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          full_name: string | null
+          id: string
+          role: string
+          updated_at: string
+          username: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          full_name?: string | null
+          id: string
+          role?: string
+          updated_at?: string
+          username?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          role?: string
+          updated_at?: string
+          username?: string | null
+        }
+        Relationships: []
+      }
+      site_content: {
+        Row: {
+          active: boolean | null
+          content: string | null
+          created_at: string
+          id: string
+          last_updated_by: string | null
+          section: string
+          title: string | null
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean | null
+          content?: string | null
+          created_at?: string
+          id?: string
+          last_updated_by?: string | null
+          section: string
+          title?: string | null
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean | null
+          content?: string | null
+          created_at?: string
+          id?: string
+          last_updated_by?: string | null
+          section?: string
+          title?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      site_images: {
+        Row: {
+          active: boolean | null
+          alt_text: string | null
+          created_at: string
+          created_by: string
+          description: string | null
+          id: string
+          location: string
+          path: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean | null
+          alt_text?: string | null
+          created_at?: string
+          created_by: string
+          description?: string | null
+          id?: string
+          location: string
+          path: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean | null
+          alt_text?: string | null
+          created_at?: string
+          created_by?: string
+          description?: string | null
+          id?: string
+          location?: string
+          path?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

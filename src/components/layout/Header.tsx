@@ -3,9 +3,11 @@ import { Link } from "react-router-dom";
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuList, NavigationMenuTrigger } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useAuth } from "@/context/AuthContext";
 
 const Header = () => {
   const isMobile = useIsMobile();
+  const { isAdmin, user, signOut } = useAuth();
 
   return (
     <header className="bg-white shadow-sm border-b">
@@ -86,19 +88,33 @@ const Header = () => {
                   Contact
                 </Link>
               </NavigationMenuItem>
+              
+              {isAdmin && (
+                <NavigationMenuItem>
+                  <Link to="/admin" className="px-3 py-2 text-sm font-medium">
+                    Admin
+                  </Link>
+                </NavigationMenuItem>
+              )}
             </NavigationMenuList>
           </NavigationMenu>
         ) : (
           <Button variant="outline" size="sm">Menu</Button>
         )}
         
-        {/* Portal Login Button */}
+        {/* Portal Login/Admin Button */}
         {!isMobile && (
-          <Button asChild variant="default" size="sm">
-            <a href="https://portal.example.com" target="_blank" rel="noopener noreferrer">
-              Resident Portal
-            </a>
-          </Button>
+          <>
+            {user ? (
+              <Button onClick={signOut} variant="outline" size="sm">
+                Sign Out
+              </Button>
+            ) : (
+              <Button asChild variant="default" size="sm">
+                <Link to="/auth">Admin Login</Link>
+              </Button>
+            )}
+          </>
         )}
       </div>
     </header>
