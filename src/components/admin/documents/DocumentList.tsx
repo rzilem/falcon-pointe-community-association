@@ -31,10 +31,13 @@ const DocumentList = ({ documents, onEdit, onDelete }: DocumentListProps) => {
             <FileText className="h-5 w-5 text-primary mt-1" />
             <div>
               <h3 className="font-medium">{doc.name}</h3>
-              <p className="text-sm text-gray-500">{doc.category}</p>
+              <p className="text-sm text-gray-500">{doc.category || "Uncategorized"}</p>
               {doc.description && (
                 <p className="text-xs text-gray-400 mt-1">{doc.description}</p>
               )}
+              <p className="text-xs text-gray-400 mt-1">
+                {doc.type ? doc.type.toUpperCase() : "Unknown type"}
+              </p>
             </div>
           </div>
           <div className="flex gap-2">

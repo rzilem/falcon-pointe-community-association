@@ -12,6 +12,7 @@ interface DocumentCardProps {
 
 const DocumentCard = ({ document, handleDownload }: DocumentCardProps) => {
   const isMobile = useIsMobile();
+  const fileType = document.type ? document.type.toUpperCase() : "";
 
   return (
     <div className="flex flex-col md:flex-row md:items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors gap-4">
@@ -19,10 +20,12 @@ const DocumentCard = ({ document, handleDownload }: DocumentCardProps) => {
         <FileText className="h-5 w-5 text-primary mt-1 md:mt-0" />
         <div className="space-y-1">
           <p className="font-medium">{document.name}</p>
-          <p className="text-sm text-gray-600">{document.description}</p>
+          {document.description && (
+            <p className="text-sm text-gray-600">{document.description}</p>
+          )}
           <div className="flex items-center gap-2 text-xs text-gray-500">
             <Calendar className="h-3 w-3" />
-            <span>Last updated: {new Date(document.last_updated || '').toLocaleDateString()}</span>
+            <span>File type: {fileType}</span>
           </div>
         </div>
       </div>
