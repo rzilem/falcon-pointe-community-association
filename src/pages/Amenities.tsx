@@ -14,7 +14,7 @@ const Amenities = () => {
       title: "Amenity Center",
       description: "Our 4,300 sq. ft. amenity center serves as the heart of community activities.",
       details: "Featuring meeting spaces, event facilities, and areas for various activities, the amenity center is monitored by a security camera system for residents' safety.",
-      image: "/public/lovable-uploads/229f09a0-dd6e-4287-a457-2523b2859beb.png",
+      image: "https://ufhcicqixojqpyykjljw.supabase.co/storage/v1/object/public/site-images//OH%20yeah.jpg",
       location: "amenity-center"
     },
     {
