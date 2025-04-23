@@ -3,44 +3,43 @@ import React from "react";
 import Layout from "@/components/layout/Layout";
 import { Card, CardContent } from "@/components/ui/card";
 import { GalleryHorizontal } from "lucide-react";
-import { useImages } from "@/hooks/useImages";
 import ImageDisplay from "@/components/cms/ImageDisplay";
 
 const Gallery = () => {
   const images = [
     {
       location: "amenity-center",
-      fallbackSrc: "/public/lovable-uploads/229f09a0-dd6e-4287-a457-2523b2859beb.png",
+      fallbackSrc: "https://ufhcicqixojqpyykjljw.supabase.co/storage/v1/object/public/site-images//OH%20yeah.jpg",
       title: "Amenity Center",
       description: "Our 4,300 sq. ft. community hub"
     },
     {
       location: "swimming-pools",
-      fallbackSrc: "/public/lovable-uploads/ebafe490-e728-4ed8-a428-ff945cb1df98.png",
+      fallbackSrc: "https://ufhcicqixojqpyykjljw.supabase.co/storage/v1/object/public/site-images//Large%20Pool.jpg",
       title: "Swimming Pools",
       description: "Refreshing pools for all ages"
     },
     {
       location: "tennis-courts",
-      fallbackSrc: "/public/lovable-uploads/4c2a90e2-ed6a-4fd9-9929-d876a2684ba8.png",
+      fallbackSrc: "https://ufhcicqixojqpyykjljw.supabase.co/storage/v1/object/public/site-images//Large%20Pool.jpg",
       title: "Tennis Courts",
       description: "Professional-grade tennis facilities"
     },
     {
       location: "volleyball-courts",
-      fallbackSrc: "/public/lovable-uploads/080cd85e-7544-4e3a-98a9-178087f36beb.png",
+      fallbackSrc: "https://ufhcicqixojqpyykjljw.supabase.co/storage/v1/object/public/site-images//Large%20Pool.jpg",
       title: "Volleyball Courts",
       description: "Sand volleyball for beach-style play"
     },
     {
       location: "basketball-court",
-      fallbackSrc: "/public/lovable-uploads/fc16efac-61bf-47f5-8eee-4dacc38eae73.png",
+      fallbackSrc: "https://ufhcicqixojqpyykjljw.supabase.co/storage/v1/object/public/site-images//Large%20Pool.jpg",
       title: "Basketball Court",
       description: "Full-sized court for all skill levels"
     },
     {
       location: "parks-trails",
-      fallbackSrc: "/public/lovable-uploads/1e3c41bc-f71c-4013-957d-4fa60e414905.png",
+      fallbackSrc: "https://ufhcicqixojqpyykjljw.supabase.co/storage/v1/object/public/site-images//Large%20Pool.jpg",
       title: "Parks & Trails",
       description: "Miles of scenic walking trails"
     }
@@ -65,9 +64,8 @@ const Gallery = () => {
               <Card key={index} className="overflow-hidden group hover:shadow-lg transition-shadow">
                 <CardContent className="p-0">
                   <div className="relative">
-                    <ImageDisplay 
-                      location={image.location}
-                      fallbackSrc={image.fallbackSrc}
+                    <img 
+                      src={image.fallbackSrc}
                       alt={image.title}
                       className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105"
                     />
