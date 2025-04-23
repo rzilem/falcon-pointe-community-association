@@ -1,8 +1,9 @@
+
 import React from "react";
 import Layout from "@/components/layout/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Mail, UserRound } from "lucide-react";
+import { Mail, Award, Briefcase, Crown, Shield, Star } from "lucide-react";
 
 const Board = () => {
   const boardMembers = [
@@ -62,7 +63,11 @@ const Board = () => {
             {boardMembers.map((member, index) => (
               <Card key={index} className="overflow-hidden">
                 <div className="h-48 flex items-center justify-center bg-primary/5">
-                  <UserRound className="h-24 w-24 text-primary/60" />
+                  {index === 0 && <Crown className="h-24 w-24 text-primary/60" />}
+                  {index === 1 && <Shield className="h-24 w-24 text-primary/60" />}
+                  {index === 2 && <Briefcase className="h-24 w-24 text-primary/60" />}
+                  {index === 3 && <Award className="h-24 w-24 text-primary/60" />}
+                  {index === 4 && <Star className="h-24 w-24 text-primary/60" />}
                 </div>
                 <CardHeader>
                   <CardTitle>{member.name}</CardTitle>
