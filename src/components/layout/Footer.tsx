@@ -53,9 +53,9 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-4">Contact Us</h3>
             <address className="not-italic text-gray-300">
               <p>Falcon Pointe Community Association</p>
-              <p>1234 Falcon Pointe Blvd</p>
+              <p>19015 Falcon Pointe Blvd</p>
               <p>Pflugerville, TX 78660</p>
-              <p className="mt-2">Phone: (512) 555-1234</p>
+              <p className="mt-2">Phone: (512) 670-1400</p>
               <p>Email: info@falconpointehoa.com</p>
             </address>
             <div className="mt-4 flex space-x-4">
