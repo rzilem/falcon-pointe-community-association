@@ -1,4 +1,3 @@
-
 import React from "react";
 import Layout from "@/components/layout/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,7 +11,7 @@ const Events = () => {
       time: "2:00 PM - 6:00 PM",
       location: "Main Pool",
       description: "Join us for our annual summer celebration with food, games, and pool activities.",
-      imageName: "pool-party.jpg"
+      image: "/lovable-uploads/ebafe490-e728-4ed8-a428-ff945cb1df98.png"
     },
     {
       title: "Tennis Tournament",
@@ -20,7 +19,7 @@ const Events = () => {
       time: "9:00 AM - 5:00 PM",
       location: "Tennis Courts",
       description: "Community tennis tournament for all skill levels. Sign up at the amenity center.",
-      imageName: "tennis-tournament.jpg"
+      image: "/lovable-uploads/4c2a90e2-ed6a-4fd9-9929-d876a2684ba8.png"
     },
     {
       title: "Fall Festival",
@@ -28,14 +27,9 @@ const Events = () => {
       time: "3:00 PM - 8:00 PM",
       location: "Community Park",
       description: "Annual fall celebration with hayrides, pumpkin decorating, and food trucks.",
-      imageName: "fall-festival.jpg"
+      image: "/lovable-uploads/1e3c41bc-f71c-4013-957d-4fa60e414905.png"
     }
   ];
-
-  const getImageUrl = (imageName: string) => {
-    const { data } = supabase.storage.from('event-images').getPublicUrl(imageName);
-    return data.publicUrl;
-  };
 
   return (
     <Layout>
@@ -56,7 +50,7 @@ const Events = () => {
               <Card key={index} className="overflow-hidden">
                 <div className="h-48 overflow-hidden">
                   <img 
-                    src={getImageUrl(event.imageName)} 
+                    src={event.image} 
                     alt={event.title}
                     className="w-full h-full object-cover"
                     onError={(e) => {
