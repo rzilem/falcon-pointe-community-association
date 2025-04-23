@@ -39,18 +39,6 @@ const Amenities = () => {
       description: "Extensive network of parks and walking trails throughout the community.",
       details: "With five miles of scenic trails, 12 distinct parks, and eight playgrounds, there's always a perfect outdoor space for recreation, relaxation, or exercise.",
       image: "/public/lovable-uploads/1e3c41bc-f71c-4013-957d-4fa60e414905.png"
-    },
-    {
-      title: "Community Playgrounds",
-      description: "Eight modern playgrounds distributed throughout the neighborhood.",
-      details: "Our playgrounds feature age-appropriate equipment and safety surfaces, providing fun outdoor play options for families with children of all ages.",
-      image: "/public/lovable-uploads/6c2a5abb-a4c0-42a6-b7e0-39f8bbfdbf83.png"
-    },
-    {
-      title: "Security Features",
-      description: "Security camera system monitoring the amenity center and key areas.",
-      details: "For resident peace of mind, our community features a comprehensive security camera system that helps maintain a safe environment for all.",
-      image: "/public/lovable-uploads/fc16efac-61bf-47f5-8eee-4dacc38eae73.png"
     }
   ];
 
