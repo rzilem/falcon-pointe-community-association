@@ -6,11 +6,25 @@ import { FileText, Search, Calendar } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useIsMobile } from "@/hooks/use-mobile";
 
+interface Document {
+  name: string;
+  type: string;
+  url: string;
+  lastUpdated: string;
+  description: string;
+}
+
+interface DocumentCategory {
+  title: string;
+  description: string;
+  documents: Document[];
+}
+
 const Documents = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const isMobile = useIsMobile();
   
-  const documentCategories = [
+  const documentCategories: DocumentCategory[] = [
     {
       title: "Association Documents",
       description: "Essential governing documents for our community",
@@ -45,17 +59,23 @@ const Documents = () => {
         { 
           name: "ACC Guidelines", 
           type: "PDF",
-          url: "https://townsq-production-resident-files.s3.amazonaws.com/uploads/ibvzw0eg8j92/community_document/file/213318/ACC_Guidelines.pdf"
+          url: "https://townsq-production-resident-files.s3.amazonaws.com/uploads/ibvzw0eg8j92/community_document/file/213318/ACC_Guidelines.pdf",
+          lastUpdated: "2024-03-10",
+          description: "Architectural Control Committee guidelines for home modifications"
         },
         { 
           name: "Gate Access Form", 
           type: "PDF",
-          url: "https://townsq-production-resident-files.s3.amazonaws.com/uploads/ibvzw0eg8j92/community_document/file/213319/Gate_Access_Form.pdf"
+          url: "https://townsq-production-resident-files.s3.amazonaws.com/uploads/ibvzw0eg8j92/community_document/file/213319/Gate_Access_Form.pdf",
+          lastUpdated: "2024-03-15",
+          description: "Form to request gate access for visitors and service providers"
         },
         { 
           name: "Pool Rules", 
           type: "PDF",
-          url: "https://townsq-production-resident-files.s3.amazonaws.com/uploads/ibvzw0eg8j92/community_document/file/213320/Pool_Rules.pdf"
+          url: "https://townsq-production-resident-files.s3.amazonaws.com/uploads/ibvzw0eg8j92/community_document/file/213320/Pool_Rules.pdf",
+          lastUpdated: "2024-03-20",
+          description: "Rules and regulations for community pool usage"
         }
       ]
     },
@@ -66,12 +86,16 @@ const Documents = () => {
         { 
           name: "2024 Budget", 
           type: "PDF",
-          url: "https://townsq-production-resident-files.s3.amazonaws.com/uploads/ibvzw0eg8j92/community_document/file/213321/2024_Budget.pdf"
+          url: "https://townsq-production-resident-files.s3.amazonaws.com/uploads/ibvzw0eg8j92/community_document/file/213321/2024_Budget.pdf",
+          lastUpdated: "2024-01-05",
+          description: "Annual budget for the current fiscal year"
         },
         { 
           name: "Assessment Information", 
           type: "PDF",
-          url: "https://townsq-production-resident-files.s3.amazonaws.com/uploads/ibvzw0eg8j92/community_document/file/213322/Assessment_Information.pdf"
+          url: "https://townsq-production-resident-files.s3.amazonaws.com/uploads/ibvzw0eg8j92/community_document/file/213322/Assessment_Information.pdf",
+          lastUpdated: "2024-01-10",
+          description: "Information about HOA dues and payment schedules"
         }
       ]
     }
