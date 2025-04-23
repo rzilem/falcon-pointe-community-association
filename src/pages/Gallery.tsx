@@ -1,8 +1,7 @@
-
 import React from "react";
 import Layout from "@/components/layout/Layout";
 import { Card, CardContent } from "@/components/ui/card";
-import { Gallery as GalleryIcon } from "lucide-react";
+import { GalleryHorizontal } from "lucide-react";
 
 const Gallery = () => {
   const images = [
@@ -42,7 +41,7 @@ const Gallery = () => {
     <Layout>
       <div className="bg-gray-800 text-white py-16">
         <div className="container mx-auto px-4 text-center">
-          <GalleryIcon className="w-12 h-12 mx-auto mb-4" />
+          <GalleryHorizontal className="w-12 h-12 mx-auto mb-4" />
           <h1 className="text-4xl font-bold mb-4">Community Gallery</h1>
           <p className="text-xl max-w-3xl mx-auto">
             Explore the beauty and amenities of Falcon Pointe through our photo gallery
