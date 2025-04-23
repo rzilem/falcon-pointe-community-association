@@ -1,4 +1,3 @@
-
 import React from "react";
 import Layout from "@/components/layout/Layout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -62,12 +61,10 @@ const Amenities = () => {
   return (
     <Layout>
       {/* Hero Section */}
-      <div
-        className="relative h-[300px] bg-cover bg-center"
-      >
+      <div className="relative h-[300px] bg-cover bg-center">
         <ImageDisplay 
           location="amenities-banner" 
-          fallbackSrc="/public/lovable-uploads/080cd85e-7544-4e3a-98a9-178087f36beb.png"
+          fallbackSrc="https://ufhcicqixojqpyykjljw.supabase.co/storage/v1/object/public/site-images//Large%20Pool.jpg"
           alt="Amenities Banner"
           className="absolute inset-0 w-full h-full object-cover"
         />
