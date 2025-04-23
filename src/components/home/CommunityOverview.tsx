@@ -19,7 +19,7 @@ const CommunityOverview = () => {
             <h2 className="text-3xl font-bold mb-4">About Falcon Pointe</h2>
             <p className="text-gray-600 mb-6">
               Falcon Pointe is a master-planned community located in Pflugerville, Texas, home to 
-              nearly 1,700 families. Our community offers a unique blend of modern living and 
+              nearly 1,624 families. Our community offers a unique blend of modern living and 
               natural beauty, with extensive amenities that enhance the quality of life for all residents.
             </p>
             <p className="text-gray-600 mb-6">

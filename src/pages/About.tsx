@@ -1,4 +1,3 @@
-
 import React from "react";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
@@ -30,7 +29,7 @@ const About = () => {
             <div className="md:w-1/2">
               <h2 className="text-3xl font-bold mb-4">Our Community</h2>
               <p className="text-gray-600 mb-4">
-                Falcon Pointe is a thriving community located in Pflugerville, Texas, home to nearly 1,700 families. 
+                Falcon Pointe is a thriving community located in Pflugerville, Texas, home to nearly 1,624 families. 
                 Established with a vision for creating a close-knit neighborhood with exceptional amenities, 
                 Falcon Pointe has grown to be one of the most desirable communities in the area.
               </p>
