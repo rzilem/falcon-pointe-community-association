@@ -1,11 +1,14 @@
 
-import React from "react";
+import React, { useState } from "react";
 import Layout from "@/components/layout/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { FileText } from "lucide-react";
+import { FileText, Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 const Documents = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  
   const documentCategories = [
     {
       title: "Association Documents",
@@ -71,6 +74,14 @@ const Documents = () => {
     window.open(url, '_blank');
   };
 
+  const filteredCategories = documentCategories.map(category => ({
+    ...category,
+    documents: category.documents.filter(doc =>
+      doc.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      category.title.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+  })).filter(category => category.documents.length > 0);
+
   return (
     <Layout>
       <div className="bg-gray-800 text-white py-16">
@@ -85,37 +96,54 @@ const Documents = () => {
       <div className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
+            <div className="mb-8 flex items-center gap-3 bg-white p-4 rounded-lg shadow-sm">
+              <Search className="h-5 w-5 text-gray-400" />
+              <Input
+                type="text"
+                placeholder="Search documents..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="border-none focus-visible:ring-0 focus-visible:ring-offset-0"
+              />
+            </div>
+
             <div className="grid grid-cols-1 gap-6">
-              {documentCategories.map((category, index) => (
-                <Card key={index}>
-                  <CardHeader>
-                    <CardTitle>{category.title}</CardTitle>
-                    <p className="text-gray-600">{category.description}</p>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4">
-                      {category.documents.map((doc, docIndex) => (
-                        <div key={docIndex} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                          <div className="flex items-center gap-3">
-                            <FileText className="h-5 w-5 text-primary" />
-                            <div>
-                              <p className="font-medium">{doc.name}</p>
-                              <p className="text-sm text-gray-500">{doc.type}</p>
+              {filteredCategories.length > 0 ? (
+                filteredCategories.map((category, index) => (
+                  <Card key={index}>
+                    <CardHeader>
+                      <CardTitle>{category.title}</CardTitle>
+                      <p className="text-gray-600">{category.description}</p>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        {category.documents.map((doc, docIndex) => (
+                          <div key={docIndex} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                            <div className="flex items-center gap-3">
+                              <FileText className="h-5 w-5 text-primary" />
+                              <div>
+                                <p className="font-medium">{doc.name}</p>
+                                <p className="text-sm text-gray-500">{doc.type}</p>
+                              </div>
                             </div>
+                            <Button 
+                              variant="outline" 
+                              size="sm"
+                              onClick={() => handleDownload(doc.url)}
+                            >
+                              Download
+                            </Button>
                           </div>
-                          <Button 
-                            variant="outline" 
-                            size="sm"
-                            onClick={() => handleDownload(doc.url)}
-                          >
-                            Download
-                          </Button>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))
+              ) : (
+                <div className="text-center py-8">
+                  <p className="text-gray-500">No documents found matching your search.</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
