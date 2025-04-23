@@ -79,8 +79,35 @@ const NavigationMenuContent = React.forwardRef<
 ))
 NavigationMenuContent.displayName = NavigationMenuPrimitive.Content.displayName
 
-// Make sure this correctly handles Link for React Router DOM
-const NavigationMenuLink = NavigationMenuPrimitive.Link
+// We'll use the standard Radix NavigationMenuLink but not export it directly
+const RadixNavigationMenuLink = NavigationMenuPrimitive.Link
+
+// Instead, we'll create a custom NavigationMenuLink that can handle RouterLink
+const NavigationMenuLink = React.forwardRef<
+  React.ElementRef<typeof NavigationMenuPrimitive.Link>,
+  React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.Link> & {
+    asChild?: boolean;
+  }
+>(({ className, asChild = false, ...props }, ref) => {
+  if (asChild) {
+    return (
+      <RadixNavigationMenuLink
+        ref={ref}
+        className={cn(navigationMenuTriggerStyle(), className)}
+        {...props}
+      />
+    );
+  }
+  return (
+    <RadixNavigationMenuLink
+      ref={ref}
+      className={cn(navigationMenuTriggerStyle(), className)}
+      {...props}
+    />
+  );
+});
+
+NavigationMenuLink.displayName = "NavigationMenuLink";
 
 const NavigationMenuViewport = React.forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.Viewport>,
