@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Document } from "@/types/document";
 
-interface DocumentForm {
+interface DocumentFormData {
   name: string;
   type: string;
   url: string;
@@ -16,12 +16,12 @@ interface DocumentForm {
 
 interface DocumentFormProps {
   initialData?: Document;
-  onSubmit: (data: DocumentForm) => Promise<void>;
+  onSubmit: (data: DocumentFormData) => Promise<void>;
   onCancel?: () => void;
 }
 
 const DocumentForm = ({ initialData, onSubmit, onCancel }: DocumentFormProps) => {
-  const form = useForm<DocumentForm>({
+  const form = useForm<DocumentFormData>({
     defaultValues: initialData ? {
       name: initialData.name,
       type: initialData.type,
@@ -37,7 +37,7 @@ const DocumentForm = ({ initialData, onSubmit, onCancel }: DocumentFormProps) =>
     }
   });
 
-  const handleSubmit = async (data: DocumentForm) => {
+  const handleSubmit = async (data: DocumentFormData) => {
     await onSubmit(data);
   };
 
