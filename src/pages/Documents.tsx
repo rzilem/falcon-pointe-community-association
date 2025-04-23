@@ -1,17 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Layout from "@/components/layout/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FileText, Search, Calendar } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { supabase } from "@/integrations/supabase/client";
+import { useQuery } from "@tanstack/react-query";
 
 interface Document {
+  id: string;
   name: string;
   type: string;
   url: string;
-  lastUpdated: string;
+  category: string;
   description: string;
+  last_updated: string;
 }
 
 interface DocumentCategory {
@@ -23,95 +27,71 @@ interface DocumentCategory {
 const Documents = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const isMobile = useIsMobile();
-  
-  const documentCategories: DocumentCategory[] = [
-    {
-      title: "Association Documents",
-      description: "Essential governing documents for our community",
-      documents: [
-        { 
-          name: "Articles of Incorporation", 
-          type: "PDF",
-          url: "https://townsq-production-resident-files.s3.amazonaws.com/uploads/ibvzw0eg8j92/community_document/file/213315/Articles_of_Incorporation.pdf",
-          lastUpdated: "2024-01-15",
-          description: "Legal document establishing the association as a corporation"
-        },
-        { 
-          name: "Bylaws", 
-          type: "PDF",
-          url: "https://townsq-production-resident-files.s3.amazonaws.com/uploads/ibvzw0eg8j92/community_document/file/213316/Bylaws.pdf",
-          lastUpdated: "2024-02-01",
-          description: "Rules governing the operation of the association"
-        },
-        { 
-          name: "CCRs", 
-          type: "PDF",
-          url: "https://townsq-production-resident-files.s3.amazonaws.com/uploads/ibvzw0eg8j92/community_document/file/213317/CCRs.pdf",
-          lastUpdated: "2024-02-15",
-          description: "Covenants, conditions, and restrictions for the community"
-        }
-      ]
-    },
-    {
-      title: "Community Guidelines",
-      description: "Important guidelines and forms for residents",
-      documents: [
-        { 
-          name: "ACC Guidelines", 
-          type: "PDF",
-          url: "https://townsq-production-resident-files.s3.amazonaws.com/uploads/ibvzw0eg8j92/community_document/file/213318/ACC_Guidelines.pdf",
-          lastUpdated: "2024-03-10",
-          description: "Architectural Control Committee guidelines for home modifications"
-        },
-        { 
-          name: "Gate Access Form", 
-          type: "PDF",
-          url: "https://townsq-production-resident-files.s3.amazonaws.com/uploads/ibvzw0eg8j92/community_document/file/213319/Gate_Access_Form.pdf",
-          lastUpdated: "2024-03-15",
-          description: "Form to request gate access for visitors and service providers"
-        },
-        { 
-          name: "Pool Rules", 
-          type: "PDF",
-          url: "https://townsq-production-resident-files.s3.amazonaws.com/uploads/ibvzw0eg8j92/community_document/file/213320/Pool_Rules.pdf",
-          lastUpdated: "2024-03-20",
-          description: "Rules and regulations for community pool usage"
-        }
-      ]
-    },
-    {
-      title: "Financial Documents",
-      description: "Budget and assessment information",
-      documents: [
-        { 
-          name: "2024 Budget", 
-          type: "PDF",
-          url: "https://townsq-production-resident-files.s3.amazonaws.com/uploads/ibvzw0eg8j92/community_document/file/213321/2024_Budget.pdf",
-          lastUpdated: "2024-01-05",
-          description: "Annual budget for the current fiscal year"
-        },
-        { 
-          name: "Assessment Information", 
-          type: "PDF",
-          url: "https://townsq-production-resident-files.s3.amazonaws.com/uploads/ibvzw0eg8j92/community_document/file/213322/Assessment_Information.pdf",
-          lastUpdated: "2024-01-10",
-          description: "Information about HOA dues and payment schedules"
-        }
-      ]
+
+  const { data: documents = [], isLoading } = useQuery({
+    queryKey: ['documents'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('documents')
+        .select('*')
+        .order('category')
+        .order('name');
+      
+      if (error) throw error;
+      return data || [];
     }
-  ];
+  });
+
+  const documentCategories: DocumentCategory[] = documents.reduce((acc: DocumentCategory[], doc: Document) => {
+    const existingCategory = acc.find(cat => cat.title === doc.category);
+    if (existingCategory) {
+      existingCategory.documents.push(doc);
+    } else {
+      acc.push({
+        title: doc.category,
+        description: getCategoryDescription(doc.category),
+        documents: [doc]
+      });
+    }
+    return acc;
+  }, []);
+
+  const getCategoryDescription = (category: string): string => {
+    switch (category) {
+      case "Association Documents":
+        return "Essential governing documents for our community";
+      case "Community Guidelines":
+        return "Important guidelines and forms for residents";
+      case "Financial Documents":
+        return "Budget and assessment information";
+      default:
+        return "";
+    }
+  };
 
   const handleDownload = (url: string) => {
     window.open(url, '_blank');
   };
 
-  const filteredCategories = documentCategories.map(category => ({
-    ...category,
-    documents: category.documents.filter(doc =>
-      doc.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      category.title.toLowerCase().includes(searchQuery.toLowerCase())
-    )
-  })).filter(category => category.documents.length > 0);
+  const filteredCategories = documentCategories
+    .map(category => ({
+      ...category,
+      documents: category.documents.filter(doc =>
+        doc.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        category.title.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    }))
+    .filter(category => category.documents.length > 0);
+
+  if (isLoading) {
+    return (
+      <Layout>
+        <div className="flex items-center justify-center min-h-screen">
+          <p>Loading documents...</p>
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
@@ -160,7 +140,7 @@ const Documents = () => {
                                 <p className="text-sm text-gray-600">{doc.description}</p>
                                 <div className="flex items-center gap-2 text-xs text-gray-500">
                                   <Calendar className="h-3 w-3" />
-                                  <span>Last updated: {doc.lastUpdated}</span>
+                                  <span>Last updated: {doc.last_updated}</span>
                                 </div>
                               </div>
                             </div>
