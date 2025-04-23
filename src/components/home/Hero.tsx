@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/carousel";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import HeroCarouselContent from "./HeroCarouselContent";
+import AnimatedContainer from "@/components/ui/animated-container";
 
 const Hero = () => {
   const [api, setApi] = useState<any>(null);
@@ -63,7 +64,9 @@ const Hero = () => {
           align: 'start'
         }}
       >
-        <HeroCarouselContent />
+        <AnimatedContainer animation="fade" className="w-full h-full">
+          <HeroCarouselContent />
+        </AnimatedContainer>
         
         <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-black/30 hover:bg-black/50 border-none text-white">
           <ChevronLeft className="w-6 h-6" />
