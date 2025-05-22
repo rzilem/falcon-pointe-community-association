@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -146,7 +145,7 @@ const MobileNav = () => {
             </Button>
           </Link>
 
-          {user && (
+          {isAdmin && (
             <Link to="/admin" onClick={handleLinkClick}>
               <Button variant="ghost" className="w-full justify-start font-semibold text-primary">
                 Admin Dashboard
