@@ -62,19 +62,28 @@ const EventForm: React.FC<EventFormProps> = ({
       
       // If a new image was selected, upload it
       if (imageFile) {
-        // Upload the image to Supabase Storage
-        imagePath = await uploadImage(
-          imageFile,
-          'events',
-          {
-            description: data.title,
-            altText: data.title,
-            userId,
-            existingImagePath: event?.image_path,
+        try {
+          // Upload the image to Supabase Storage
+          const filePath = `${Date.now()}_${imageFile.name}`;
+          
+          const { data: uploadData, error: uploadError } = await supabase.storage
+            .from('event-images')
+            .upload(filePath, imageFile);
+            
+          if (uploadError) {
+            throw uploadError;
           }
-        );
-        
-        if (!imagePath) {
+          
+          // If there was a previous image, delete it
+          if (event?.image_path) {
+            await supabase.storage
+              .from('event-images')
+              .remove([event.image_path]);
+          }
+          
+          imagePath = filePath;
+        } catch (error) {
+          console.error('Error uploading image:', error);
           throw new Error('Failed to upload image');
         }
       }
@@ -253,7 +262,7 @@ const EventForm: React.FC<EventFormProps> = ({
       
       <div className="flex justify-end">
         <Button type="submit" disabled={isSubmitting || uploading}>
-          {isSubmitting || uploading ? (
+          {isSubmitting ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               Saving...

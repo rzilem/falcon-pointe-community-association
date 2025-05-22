@@ -42,6 +42,48 @@ export type Database = {
         }
         Relationships: []
       }
+      events: {
+        Row: {
+          category: string | null
+          created_at: string | null
+          created_by: string | null
+          date: string
+          description: string
+          id: string
+          image_path: string | null
+          is_featured: boolean | null
+          location: string
+          time: string
+          title: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          date: string
+          description: string
+          id?: string
+          image_path?: string | null
+          is_featured?: boolean | null
+          location: string
+          time: string
+          title: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          date?: string
+          description?: string
+          id?: string
+          image_path?: string | null
+          is_featured?: boolean | null
+          location?: string
+          time?: string
+          title?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null

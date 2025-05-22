@@ -84,7 +84,7 @@ export const useEvents = (options?: {
             return { ...event, url };
           });
           
-          setEvents(eventsWithUrls);
+          setEvents(eventsWithUrls as Event[]);
         } else {
           setEvents([]);
         }
@@ -143,7 +143,7 @@ export const useEvent = (id: string) => {
               .getPublicUrl(data.image_path).data.publicUrl;
           }
           
-          setEvent({ ...data, url });
+          setEvent({ ...data, url } as Event);
         } else {
           setEvent(null);
         }
