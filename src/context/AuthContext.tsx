@@ -9,6 +9,7 @@ interface AuthContextType {
   user: User | null;
   session: Session | null;
   isAdmin: boolean;
+  loading: boolean;
   signOut: () => Promise<void>;
   sendPasswordResetEmail: (email: string) => Promise<{ success: boolean; error?: string }>;
 }
@@ -17,6 +18,7 @@ const AuthContext = createContext<AuthContextType>({
   user: null,
   session: null,
   isAdmin: false,
+  loading: true,
   signOut: async () => {},
   sendPasswordResetEmail: async () => ({ success: false }),
 });
@@ -30,37 +32,52 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  // Handle auth state changes
   useEffect(() => {
-    // Set up auth state listener FIRST
+    // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
+      (event, newSession) => {
         console.log("Auth state change event:", event);
-        setSession(session);
-        setUser(session?.user ?? null);
-
-        // Check admin status if user is logged in
-        if (session?.user) {
-          // Use setTimeout to avoid Supabase auth deadlock
-          setTimeout(() => {
-            checkAdminStatus(session.user.id);
-          }, 0);
-        } else {
-          setIsAdmin(false);
+        
+        if (newSession !== session) {
+          setSession(newSession);
+          setUser(newSession?.user ?? null);
+          
+          // Check admin status if user is logged in
+          if (newSession?.user) {
+            // Use setTimeout to avoid Supabase auth deadlock
+            setTimeout(() => {
+              checkAdminStatus(newSession.user.id);
+            }, 0);
+          } else {
+            setIsAdmin(false);
+          }
         }
       }
     );
 
-    // THEN check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      console.log("Initial session check:", session ? "Session found" : "No session");
-      setSession(session);
-      setUser(session?.user ?? null);
-      
-      if (session?.user) {
-        checkAdminStatus(session.user.id);
+    // Initial session check
+    const initAuth = async () => {
+      try {
+        const { data: { session: initialSession } } = await supabase.auth.getSession();
+        console.log("Initial session check:", initialSession ? "Session found" : "No session");
+        
+        if (initialSession) {
+          setSession(initialSession);
+          setUser(initialSession.user);
+          
+          setTimeout(() => {
+            checkAdminStatus(initialSession.user.id);
+          }, 0);
+        }
+      } catch (error) {
+        console.error("Error during auth initialization:", error);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
-    });
+    };
+
+    initAuth();
 
     return () => {
       subscription.unsubscribe();
@@ -87,6 +104,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } catch (err) {
       console.error("Unexpected error during admin status check:", err);
       setIsAdmin(false);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -137,15 +156,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  if (loading) {
-    return <div className="flex items-center justify-center min-h-screen">Loading auth...</div>;
-  }
-
   return (
     <AuthContext.Provider value={{ 
       user, 
       session, 
       isAdmin, 
+      loading,
       signOut,
       sendPasswordResetEmail
     }}>

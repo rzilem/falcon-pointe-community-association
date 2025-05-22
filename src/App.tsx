@@ -23,6 +23,7 @@ import Images from "./pages/admin/Images";
 import Content from "./pages/admin/Content";
 import AdminEvents from "./pages/admin/Events";
 import Messages from "./pages/admin/Messages";
+import Layout from "./components/layout/Layout";
 
 const queryClient = new QueryClient();
 
@@ -34,6 +35,7 @@ const App = () => (
       <BrowserRouter>
         <AuthProvider>
           <Routes>
+            {/* Public pages with Layout */}
             <Route path="/" element={<Index />} />
             <Route path="/about" element={<About />} />
             <Route path="/amenities" element={<Amenities />} />
@@ -41,16 +43,22 @@ const App = () => (
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/events" element={<Events />} />
             <Route path="/documents" element={<Documents />} />
-            <Route path="/admin/documents" element={<AdminDocuments />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/faq" element={<FAQ />} />
+            
+            {/* Auth pages - no Layout */}
             <Route path="/auth" element={<Auth />} />
             <Route path="/auth/reset-password" element={<PasswordReset />} />
+            
+            {/* Admin pages - custom navigation */}
             <Route path="/admin" element={<Dashboard />} />
+            <Route path="/admin/documents" element={<AdminDocuments />} />
             <Route path="/admin/images" element={<Images />} />
             <Route path="/admin/events" element={<AdminEvents />} />
             <Route path="/admin/content" element={<Content />} />
             <Route path="/admin/messages" element={<Messages />} />
+            
+            {/* 404 page */}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
