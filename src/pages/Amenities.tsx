@@ -21,35 +21,35 @@ const Amenities = () => {
       title: "Swimming Pools",
       description: "Multiple pool options for residents of all ages.",
       details: "Enjoy our two full-size pools, dedicated kid's pool, and exciting splash pad perfect for hot summer days. Lounge areas and shade structures provide comfort for all visitors.",
-      image: "/public/lovable-uploads/ebafe490-e728-4ed8-a428-ff945cb1df98.png",
+      image: "/lovable-uploads/ebafe490-e728-4ed8-a428-ff945cb1df98.png",
       location: "swimming-pools"
     },
     {
       title: "Tennis Courts",
       description: "Two full-sized tennis courts for casual play or competitive matches.",
       details: "Our well-maintained tennis courts are available for resident use year-round. Court lighting allows for evening play during summer months.",
-      image: "/public/lovable-uploads/4c2a90e2-ed6a-4fd9-9929-d876a2684ba8.png",
+      image: "/lovable-uploads/4c2a90e2-ed6a-4fd9-9929-d876a2684ba8.png",
       location: "tennis-courts"
     },
     {
       title: "Volleyball Courts",
       description: "Two sand volleyball courts for beach-style play.",
       details: "Perfect for friendly games or organized community tournaments, our volleyball courts offer a great way to stay active and meet neighbors.",
-      image: "/public/lovable-uploads/080cd85e-7544-4e3a-98a9-178087f36beb.png",
+      image: "/lovable-uploads/080cd85e-7544-4e3a-98a9-178087f36beb.png",
       location: "volleyball-courts"
     },
     {
       title: "Basketball Court",
       description: "Full-sized basketball court for pick-up games and practice.",
       details: "Our basketball court features high-quality goals and surface, with lighting for evening play during summer months.",
-      image: "/public/lovable-uploads/899b4f94-1a92-4f7d-a7c0-37faa59f7550.png",
+      image: "/lovable-uploads/899b4f94-1a92-4f7d-a7c0-37faa59f7550.png",
       location: "basketball-court"
     },
     {
       title: "Parks & Trails",
       description: "Extensive network of parks and walking trails throughout the community.",
       details: "With five miles of scenic trails, 12 distinct parks, and eight playgrounds, there's always a perfect outdoor space for recreation, relaxation, or exercise.",
-      image: "/public/lovable-uploads/1e3c41bc-f71c-4013-957d-4fa60e414905.png",
+      image: "/lovable-uploads/1e3c41bc-f71c-4013-957d-4fa60e414905.png",
       location: "parks-trails"
     }
   ];

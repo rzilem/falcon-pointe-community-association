@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -15,19 +16,19 @@ const amenities = [
     title: "Pools & Splash Pad",
     description: "Two full-size pools, one kid pool, and a splash pad",
     location: "swimming-pools",
-    fallbackImage: "/public/lovable-uploads/ebafe490-e728-4ed8-a428-ff945cb1df98.png"
+    fallbackImage: "/lovable-uploads/ebafe490-e728-4ed8-a428-ff945cb1df98.png"
   },
   {
     title: "Sports Courts",
     description: "Tennis, volleyball, and basketball courts for active residents",
     location: "tennis-courts",
-    fallbackImage: "/public/lovable-uploads/4c2a90e2-ed6a-4fd9-9929-d876a2684ba8.png"
+    fallbackImage: "/lovable-uploads/4c2a90e2-ed6a-4fd9-9929-d876a2684ba8.png"
   },
   {
     title: "Parks & Trails",
     description: "Five miles of trails, 12 parks, and eight playgrounds",
     location: "parks-trails",
-    fallbackImage: "/public/lovable-uploads/1e3c41bc-f71c-4013-957d-4fa60e414905.png"
+    fallbackImage: "/lovable-uploads/1e3c41bc-f71c-4013-957d-4fa60e414905.png"
   }
 ];
 

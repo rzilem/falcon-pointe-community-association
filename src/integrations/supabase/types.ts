@@ -42,6 +42,87 @@ export type Database = {
         }
         Relationships: []
       }
+      events: {
+        Row: {
+          category: string | null
+          created_at: string | null
+          created_by: string | null
+          date: string
+          description: string
+          id: string
+          image_path: string | null
+          is_featured: boolean | null
+          location: string
+          time: string
+          title: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          date: string
+          description: string
+          id?: string
+          image_path?: string | null
+          is_featured?: boolean | null
+          location: string
+          time: string
+          title: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          date?: string
+          description?: string
+          id?: string
+          image_path?: string | null
+          is_featured?: boolean | null
+          location?: string
+          time?: string
+          title?: string
+        }
+        Relationships: []
+      }
+      messages: {
+        Row: {
+          admin_notes: string | null
+          created_at: string | null
+          email: string
+          id: string
+          message: string
+          name: string
+          read_status: boolean | null
+          replied_at: string | null
+          replied_status: boolean | null
+          subject: string
+        }
+        Insert: {
+          admin_notes?: string | null
+          created_at?: string | null
+          email: string
+          id?: string
+          message: string
+          name: string
+          read_status?: boolean | null
+          replied_at?: string | null
+          replied_status?: boolean | null
+          subject: string
+        }
+        Update: {
+          admin_notes?: string | null
+          created_at?: string | null
+          email?: string
+          id?: string
+          message?: string
+          name?: string
+          read_status?: boolean | null
+          replied_at?: string | null
+          replied_status?: boolean | null
+          subject?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -110,7 +191,7 @@ export type Database = {
           active: boolean | null
           alt_text: string | null
           created_at: string
-          created_by: string
+          created_by: string | null
           description: string | null
           id: string
           location: string
@@ -121,7 +202,7 @@ export type Database = {
           active?: boolean | null
           alt_text?: string | null
           created_at?: string
-          created_by: string
+          created_by?: string | null
           description?: string | null
           id?: string
           location: string
@@ -132,12 +213,33 @@ export type Database = {
           active?: boolean | null
           alt_text?: string | null
           created_at?: string
-          created_by?: string
+          created_by?: string | null
           description?: string | null
           id?: string
           location?: string
           path?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: string
+          user_id?: string
         }
         Relationships: []
       }

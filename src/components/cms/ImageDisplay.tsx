@@ -27,6 +27,7 @@ const ImageDisplay: React.FC<ImageDisplayProps> = ({
   const { image, isLoading } = useImage(location);
   const { isAdmin } = useAuth();
   const [showControls, setShowControls] = useState(false);
+  const [imgError, setImgError] = useState(false);
   
   if (isLoading) {
     return (
@@ -37,7 +38,8 @@ const ImageDisplay: React.FC<ImageDisplayProps> = ({
     );
   }
 
-  const imageSrc = image?.url || fallbackSrc;
+  // Use image from Supabase if available, otherwise use fallback
+  const imageSrc = !imgError && image?.url ? image.url : fallbackSrc;
   const imageAlt = image?.alt_text || alt;
 
   if (!imageSrc) {
@@ -55,6 +57,11 @@ const ImageDisplay: React.FC<ImageDisplayProps> = ({
         alt={imageAlt} 
         className={className} 
         style={style}
+        onError={() => {
+          if (!imgError && fallbackSrc) {
+            setImgError(true);
+          }
+        }}
       />
       
       {showHoverControls && isAdmin && showControls && (
@@ -73,6 +80,7 @@ const ImageDisplay: React.FC<ImageDisplayProps> = ({
                 location={location} 
                 onSuccess={() => {
                   toast.success("Image replaced successfully");
+                  setImgError(false);
                 }} 
               />
             </DialogContent>

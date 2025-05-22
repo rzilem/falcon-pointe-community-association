@@ -40,7 +40,7 @@ const MobileNav = () => {
         <SheetHeader>
           <SheetTitle className="text-center flex items-center justify-center">
             <img 
-              src="/public/lovable-uploads/899b4f94-1a92-4f7d-a7c0-37faa59f7550.png" 
+              src="/lovable-uploads/899b4f94-1a92-4f7d-a7c0-37faa59f7550.png" 
               alt="Falcon Pointe Community" 
               className="h-12 mr-2" 
             />

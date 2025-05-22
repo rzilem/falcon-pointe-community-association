@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { GalleryHorizontal } from "lucide-react";
 
 const Gallery = () => {
-  // Updated with direct paths to local images in public folder
+  // Updated with correct paths (removed /public/ prefix)
   const images = [
     {
       title: "Amenity Center",
