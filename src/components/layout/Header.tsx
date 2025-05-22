@@ -9,7 +9,7 @@ import MobileNav from "./MobileNav";
 
 const Header = () => {
   const isMobile = useIsMobile();
-  const { isAdmin, user, signOut } = useAuth();
+  const { user, signOut } = useAuth();
 
   return (
     <header className="bg-white shadow-sm border-b">
@@ -91,7 +91,7 @@ const Header = () => {
                 </Link>
               </NavigationMenuItem>
               
-              {isAdmin && (
+              {user && (
                 <NavigationMenuItem>
                   <Link to="/admin" className="px-3 py-2 text-sm font-medium">
                     Admin

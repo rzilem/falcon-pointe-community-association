@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -15,7 +16,7 @@ import { useAuth } from '@/context/AuthContext';
 const MobileNav = () => {
   const [open, setOpen] = useState(false);
   const [openSections, setOpenSections] = useState<string[]>([]);
-  const { user, isAdmin, signOut } = useAuth();
+  const { user, signOut } = useAuth();
 
   const handleToggleSection = (section: string) => {
     if (openSections.includes(section)) {
@@ -145,7 +146,7 @@ const MobileNav = () => {
             </Button>
           </Link>
 
-          {isAdmin && (
+          {user && (
             <Link to="/admin" onClick={handleLinkClick}>
               <Button variant="ghost" className="w-full justify-start font-semibold text-primary">
                 Admin Dashboard
