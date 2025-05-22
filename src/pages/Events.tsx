@@ -1,40 +1,32 @@
-import React from "react";
+
+import React, { useState } from "react";
 import Layout from "@/components/layout/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { supabase } from "@/integrations/supabase/client";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { CalendarDays, ListFilter } from "lucide-react";
+import { useEvents } from "@/hooks/useEvents";
+import { format } from "date-fns";
+import EventCalendar from "@/components/events/EventCalendar";
+import ImageDisplay from "@/components/cms/ImageDisplay";
 
 const Events = () => {
-  const upcomingEvents = [
-    {
-      title: "Summer Pool Party",
-      date: "July 4th, 2025",
-      time: "2:00 PM - 6:00 PM",
-      location: "Main Pool",
-      description: "Join us for our annual summer celebration with food, games, and pool activities.",
-      image: "/lovable-uploads/ebafe490-e728-4ed8-a428-ff945cb1df98.png"
-    },
-    {
-      title: "Tennis Tournament",
-      date: "August 15th, 2025",
-      time: "9:00 AM - 5:00 PM",
-      location: "Tennis Courts",
-      description: "Community tennis tournament for all skill levels. Sign up at the amenity center.",
-      image: "/lovable-uploads/4c2a90e2-ed6a-4fd9-9929-d876a2684ba8.png"
-    },
-    {
-      title: "Fall Festival",
-      date: "October 23rd, 2025",
-      time: "3:00 PM - 8:00 PM",
-      location: "Community Park",
-      description: "Annual fall celebration with hayrides, pumpkin decorating, and food trucks.",
-      image: "/lovable-uploads/1e3c41bc-f71c-4013-957d-4fa60e414905.png"
-    }
-  ];
+  const [activeTab, setActiveTab] = useState("list");
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+  
+  // Fetch all upcoming events
+  const { events, isLoading, error } = useEvents({ 
+    futureOnly: true,
+    ...(selectedDate && { 
+      startDate: format(selectedDate, 'yyyy-MM-dd'),
+      endDate: format(selectedDate, 'yyyy-MM-dd')
+    })
+  });
 
   return (
     <Layout>
       <div className="bg-gray-800 text-white py-16">
         <div className="container mx-auto px-4 text-center">
+          <CalendarDays className="w-12 h-12 mx-auto mb-4" />
           <h1 className="text-4xl font-bold mb-4">Community Events</h1>
           <p className="text-xl max-w-3xl mx-auto">
             Stay connected with your neighbors through our exciting community events
@@ -44,42 +36,93 @@ const Events = () => {
 
       <div className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-8 text-center">Upcoming Events</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {upcomingEvents.map((event, index) => (
-              <Card key={index} className="overflow-hidden">
-                <div className="h-48 overflow-hidden">
-                  <img 
-                    src={event.image} 
-                    alt={event.title}
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.onerror = null;
-                      target.src = "/placeholder.svg";
-                    }}
-                  />
+          <Tabs defaultValue="list" value={activeTab} onValueChange={setActiveTab} className="mb-8">
+            <div className="flex justify-center">
+              <TabsList>
+                <TabsTrigger value="list" className="flex items-center gap-2">
+                  <ListFilter className="h-4 w-4" />
+                  List View
+                </TabsTrigger>
+                <TabsTrigger value="calendar" className="flex items-center gap-2">
+                  <CalendarDays className="h-4 w-4" />
+                  Calendar View
+                </TabsTrigger>
+              </TabsList>
+            </div>
+            
+            <TabsContent value="list" className="mt-6">
+              {isLoading ? (
+                <div className="flex justify-center py-12">
+                  <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
                 </div>
-                <CardHeader>
-                  <CardTitle>{event.title}</CardTitle>
-                  <div className="text-sm text-gray-600">
-                    <p className="font-medium">{event.date}</p>
-                    <p>{event.time}</p>
-                    <p>{event.location}</p>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600">{event.description}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </div>
+              ) : error ? (
+                <div className="text-center text-red-500 py-8">
+                  <p>Failed to load events. Please try again later.</p>
+                </div>
+              ) : events.length === 0 ? (
+                <div className="text-center py-12">
+                  <p className="text-gray-500">No upcoming events found.</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {events.map((event) => {
+                    const eventDate = new Date(event.date);
+                    const formattedDate = format(eventDate, "MMMM d, yyyy");
+                    
+                    return (
+                      <Card key={event.id} className="overflow-hidden">
+                        <div className="h-48 overflow-hidden">
+                          {event.url ? (
+                            <img 
+                              src={event.url} 
+                              alt={event.title}
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                const target = e.target as HTMLImageElement;
+                                target.onerror = null;
+                                target.src = "/placeholder.svg";
+                              }}
+                            />
+                          ) : (
+                            <ImageDisplay 
+                              location="events"
+                              fallbackSrc="/placeholder.svg"
+                              className="w-full h-full object-cover"
+                              alt="Event"
+                            />
+                          )}
+                        </div>
+                        <CardHeader>
+                          <CardTitle>{event.title}</CardTitle>
+                          <div className="text-sm text-gray-600">
+                            <p className="font-medium">{formattedDate}</p>
+                            <p>{event.time}</p>
+                            <p>{event.location}</p>
+                          </div>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-gray-600">{event.description}</p>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
+                </div>
+              )}
+            </TabsContent>
+            
+            <TabsContent value="calendar" className="mt-6">
+              <EventCalendar 
+                onDateSelect={(date) => {
+                  setSelectedDate(date);
+                  if (activeTab === "calendar") {
+                    setActiveTab("list");
+                  }
+                }}
+              />
+            </TabsContent>
+          </Tabs>
 
-      <div className="py-12">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto">
+          <div className="max-w-3xl mx-auto mt-16">
             <h2 className="text-3xl font-bold mb-6 text-center">Event Guidelines</h2>
             <div className="space-y-6">
               <div className="bg-white p-6 rounded-lg shadow-md">

@@ -21,6 +21,7 @@ import PasswordReset from "./pages/auth/PasswordReset";
 import Dashboard from "./pages/admin/Dashboard";
 import Images from "./pages/admin/Images";
 import Content from "./pages/admin/Content";
+import AdminEvents from "./pages/admin/Events";
 
 const queryClient = new QueryClient();
 
@@ -46,6 +47,7 @@ const App = () => (
             <Route path="/auth/reset-password" element={<PasswordReset />} />
             <Route path="/admin" element={<Dashboard />} />
             <Route path="/admin/images" element={<Images />} />
+            <Route path="/admin/events" element={<AdminEvents />} />
             <Route path="/admin/content" element={<Content />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
