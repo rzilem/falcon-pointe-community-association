@@ -2,6 +2,7 @@
 import React from 'react';
 import StatCard from './StatCard';
 import { Image, FileText, File, Mail } from 'lucide-react';
+import ErrorIcon from './ErrorIcon';
 
 interface StatsSectionProps {
   stats: {
@@ -56,7 +57,7 @@ const StatsSection: React.FC<StatsSectionProps> = ({
       <StatCard 
         title="Errors" 
         value={errors.length} 
-        icon={() => <div className="text-red-500">!</div>} 
+        icon={ErrorIcon}
       />
     </div>
   );
