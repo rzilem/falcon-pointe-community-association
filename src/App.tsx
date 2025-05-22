@@ -22,6 +22,7 @@ import Dashboard from "./pages/admin/Dashboard";
 import Images from "./pages/admin/Images";
 import Content from "./pages/admin/Content";
 import AdminEvents from "./pages/admin/Events";
+import Messages from "./pages/admin/Messages";
 
 const queryClient = new QueryClient();
 
@@ -49,6 +50,7 @@ const App = () => (
             <Route path="/admin/images" element={<Images />} />
             <Route path="/admin/events" element={<AdminEvents />} />
             <Route path="/admin/content" element={<Content />} />
+            <Route path="/admin/messages" element={<Messages />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>

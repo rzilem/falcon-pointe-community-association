@@ -3,11 +3,14 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
-import { Image, FileText, Calendar, LayoutDashboard, File } from 'lucide-react';
+import { Image, FileText, Calendar, LayoutDashboard, File, Mail } from 'lucide-react';
+import { useUnreadMessagesCount } from '@/hooks/useMessages';
+import { Badge } from '@/components/ui/badge';
 
 const AdminNav = () => {
   const { signOut } = useAuth();
   const location = useLocation();
+  const { count: unreadCount } = useUnreadMessagesCount();
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -58,6 +61,20 @@ const AdminNav = () => {
             >
               <File className="h-4 w-4" />
               Documents
+            </Button>
+          </Link>
+          <Link to="/admin/messages">
+            <Button 
+              variant={isActive('/admin/messages') ? 'secondary' : 'ghost'}
+              className="text-white flex items-center gap-2 relative"
+            >
+              <Mail className="h-4 w-4" />
+              Messages
+              {unreadCount > 0 && (
+                <Badge variant="destructive" className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 text-xs">
+                  {unreadCount}
+                </Badge>
+              )}
             </Button>
           </Link>
         </div>

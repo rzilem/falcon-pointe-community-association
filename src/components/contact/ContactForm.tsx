@@ -1,9 +1,11 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2 } from "lucide-react";
+import { Loader2, Mail, Send } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import FormField from "./form/FormField";
+import { supabase } from "@/integrations/supabase/client";
 
 const ContactForm = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -20,29 +22,22 @@ const ContactForm = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch("https://api.cloudmailin.com/api/v0.1/email", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          to: "81db3b5010b969547658@cloudmailin.net",
-          from: formData.email,
-          subject: formData.subject,
-          plain: `Name: ${formData.name}\nEmail: ${formData.email}\n\n${formData.message}`,
-        }),
+      // Call our Supabase Edge Function
+      const { data, error } = await supabase.functions.invoke("contact-form", {
+        body: JSON.stringify(formData),
       });
 
-      if (response.ok) {
-        toast({
-          title: "Message Sent",
-          description: "We'll get back to you as soon as possible.",
-        });
-        setFormData({ name: "", email: "", subject: "", message: "" });
-      } else {
-        throw new Error("Failed to send message");
+      if (error) {
+        throw new Error(error.message);
       }
+
+      toast({
+        title: "Message Sent",
+        description: "We'll get back to you as soon as possible.",
+      });
+      setFormData({ name: "", email: "", subject: "", message: "" });
     } catch (error) {
+      console.error("Error submitting contact form:", error);
       toast({
         title: "Error",
         description: "Failed to send message. Please try again later.",
@@ -63,7 +58,10 @@ const ContactForm = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Send us a Message</CardTitle>
+        <CardTitle className="flex items-center gap-2">
+          <Mail className="h-5 w-5" />
+          Send us a Message
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -108,7 +106,10 @@ const ContactForm = () => {
                 Sending...
               </>
             ) : (
-              "Send Message"
+              <>
+                <Send className="mr-2 h-4 w-4" />
+                Send Message
+              </>
             )}
           </Button>
         </form>

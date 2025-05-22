@@ -84,6 +84,45 @@ export type Database = {
         }
         Relationships: []
       }
+      messages: {
+        Row: {
+          admin_notes: string | null
+          created_at: string | null
+          email: string
+          id: string
+          message: string
+          name: string
+          read_status: boolean | null
+          replied_at: string | null
+          replied_status: boolean | null
+          subject: string
+        }
+        Insert: {
+          admin_notes?: string | null
+          created_at?: string | null
+          email: string
+          id?: string
+          message: string
+          name: string
+          read_status?: boolean | null
+          replied_at?: string | null
+          replied_status?: boolean | null
+          subject: string
+        }
+        Update: {
+          admin_notes?: string | null
+          created_at?: string | null
+          email?: string
+          id?: string
+          message?: string
+          name?: string
+          read_status?: boolean | null
+          replied_at?: string | null
+          replied_status?: boolean | null
+          subject?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
