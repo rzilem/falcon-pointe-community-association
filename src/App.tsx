@@ -17,6 +17,7 @@ import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import FAQ from "./pages/FAQ";
 import Auth from "./pages/auth/Auth";
+import PasswordReset from "./pages/auth/PasswordReset";
 import Dashboard from "./pages/admin/Dashboard";
 import Images from "./pages/admin/Images";
 import Content from "./pages/admin/Content";
@@ -42,6 +43,7 @@ const App = () => (
             <Route path="/contact" element={<Contact />} />
             <Route path="/faq" element={<FAQ />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/auth/reset-password" element={<PasswordReset />} />
             <Route path="/admin" element={<Dashboard />} />
             <Route path="/admin/images" element={<Images />} />
             <Route path="/admin/content" element={<Content />} />
