@@ -51,8 +51,42 @@ serve(async (req) => {
       );
     }
 
-    // Send notification email to admins (could be implemented with Resend or similar)
-    // This would require additional configuration and is left as an enhancement
+    // Send notification email to admin
+    try {
+      // Determine the admin email - this should be configured properly in your environment
+      // For now, we'll send a notification back to the sender as a confirmation
+      const adminEmail = Deno.env.get("ADMIN_EMAIL") || email; // Fallback to sender's email
+      
+      // Format the email content
+      const emailHtml = `
+        <h2>New Contact Form Submission</h2>
+        <p><strong>From:</strong> ${name} (${email})</p>
+        <p><strong>Subject:</strong> ${subject}</p>
+        <p><strong>Message:</strong></p>
+        <div style="border-left: 4px solid #ccc; padding-left: 16px; margin: 16px 0;">
+          ${message.replace(/\n/g, '<br>')}
+        </div>
+        <p>You can respond to this message by replying directly to this email or through the admin dashboard.</p>
+      `;
+
+      // Call the send-email function
+      const sendEmailResponse = await supabaseClient.functions.invoke('send-email', {
+        body: { 
+          to: adminEmail, 
+          subject: `Contact Form: ${subject}`, 
+          html: emailHtml,
+          from: "Neighborhood HOA <notifications@yourhoa.com>" 
+        }
+      });
+
+      if (sendEmailResponse.error) {
+        // Log the error but don't fail the request
+        console.error("Error sending notification email:", sendEmailResponse.error);
+      }
+    } catch (emailError) {
+      // Log the error but don't fail the request
+      console.error("Error in email notification process:", emailError);
+    }
 
     return new Response(
       JSON.stringify({ 
