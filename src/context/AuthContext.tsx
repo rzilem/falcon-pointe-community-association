@@ -3,12 +3,14 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
+import { toast } from '@/hooks/use-toast';
 
 interface AuthContextType {
   user: User | null;
   session: Session | null;
   isAdmin: boolean;
   signOut: () => Promise<void>;
+  sendPasswordResetEmail: (email: string) => Promise<{ success: boolean; error?: string }>;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -16,6 +18,7 @@ const AuthContext = createContext<AuthContextType>({
   session: null,
   isAdmin: false,
   signOut: async () => {},
+  sendPasswordResetEmail: async () => ({ success: false }),
 });
 
 export const useAuth = () => useContext(AuthContext);
@@ -88,8 +91,50 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const signOut = async () => {
-    await supabase.auth.signOut();
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error("Error signing out:", error);
+      toast({
+        variant: "destructive",
+        title: "Sign out failed",
+        description: error.message,
+      });
+      return;
+    }
     navigate('/auth');
+  };
+
+  const sendPasswordResetEmail = async (email: string) => {
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/auth/reset-password`,
+      });
+
+      if (error) {
+        console.error('Error sending password reset:', error);
+        toast({
+          variant: 'destructive',
+          title: 'Password reset failed',
+          description: error.message,
+        });
+        return { success: false, error: error.message };
+      }
+
+      toast({
+        title: 'Password reset email sent',
+        description: 'Please check your inbox for further instructions',
+      });
+      
+      return { success: true };
+    } catch (err: any) {
+      console.error('Error sending password reset:', err);
+      toast({
+        variant: 'destructive',
+        title: 'Password reset failed',
+        description: err.message,
+      });
+      return { success: false, error: err.message };
+    }
   };
 
   if (loading) {
@@ -97,7 +142,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }
 
   return (
-    <AuthContext.Provider value={{ user, session, isAdmin, signOut }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      session, 
+      isAdmin, 
+      signOut,
+      sendPasswordResetEmail
+    }}>
       {children}
     </AuthContext.Provider>
   );

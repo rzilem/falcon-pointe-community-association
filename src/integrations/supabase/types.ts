@@ -191,7 +191,7 @@ export type Database = {
           active: boolean | null
           alt_text: string | null
           created_at: string
-          created_by: string
+          created_by: string | null
           description: string | null
           id: string
           location: string
@@ -202,7 +202,7 @@ export type Database = {
           active?: boolean | null
           alt_text?: string | null
           created_at?: string
-          created_by: string
+          created_by?: string | null
           description?: string | null
           id?: string
           location: string
@@ -213,12 +213,33 @@ export type Database = {
           active?: boolean | null
           alt_text?: string | null
           created_at?: string
-          created_by?: string
+          created_by?: string | null
           description?: string | null
           id?: string
           location?: string
           path?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: string
+          user_id?: string
         }
         Relationships: []
       }
