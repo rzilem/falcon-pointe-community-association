@@ -16,7 +16,7 @@ import { useAuth } from '@/context/AuthContext';
 const MobileNav = () => {
   const [open, setOpen] = useState(false);
   const [openSections, setOpenSections] = useState<string[]>([]);
-  const { user, signOut } = useAuth();
+  const { user, isAdmin, signOut } = useAuth();
 
   const handleToggleSection = (section: string) => {
     if (openSections.includes(section)) {

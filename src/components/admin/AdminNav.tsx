@@ -3,7 +3,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
-import { Image, FileText, Calendar, LayoutDashboard, File, Mail } from 'lucide-react';
+import { Image, FileText, Calendar, LayoutDashboard, File, Mail, Users } from 'lucide-react';
 import { useUnreadMessagesCount } from '@/hooks/useMessages';
 import { Badge } from '@/components/ui/badge';
 
@@ -75,6 +75,15 @@ const AdminNav = () => {
                   {unreadCount}
                 </Badge>
               )}
+            </Button>
+          </Link>
+          <Link to="/admin/users">
+            <Button 
+              variant={isActive('/admin/users') ? 'secondary' : 'ghost'}
+              className="text-white flex items-center gap-2"
+            >
+              <Users className="h-4 w-4" />
+              Users
             </Button>
           </Link>
         </div>

@@ -9,7 +9,7 @@ import MobileNav from "./MobileNav";
 
 const Header = () => {
   const isMobile = useIsMobile();
-  const { user, signOut } = useAuth();
+  const { user, isAdmin } = useAuth();
 
   return (
     <header className="bg-white shadow-sm border-b">

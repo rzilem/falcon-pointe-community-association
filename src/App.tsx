@@ -23,6 +23,7 @@ import Images from "./pages/admin/Images";
 import Content from "./pages/admin/Content";
 import AdminEvents from "./pages/admin/Events";
 import Messages from "./pages/admin/Messages";
+import Users from "./pages/admin/Users";
 import Layout from "./components/layout/Layout";
 
 const queryClient = new QueryClient();
@@ -57,6 +58,7 @@ const App = () => (
             <Route path="/admin/events" element={<AdminEvents />} />
             <Route path="/admin/content" element={<Content />} />
             <Route path="/admin/messages" element={<Messages />} />
+            <Route path="/admin/users" element={<Users />} />
             
             {/* 404 page */}
             <Route path="*" element={<NotFound />} />
