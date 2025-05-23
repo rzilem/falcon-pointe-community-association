@@ -13,22 +13,9 @@ import {
   AccordionItem, 
   AccordionTrigger 
 } from "@/components/ui/accordion";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ChevronDown } from "lucide-react";
+import { Calendar, Users } from "lucide-react";
 
 const Reservations = () => {
-  const [openDetails, setOpenDetails] = useState<{[key: string]: boolean}>({
-    'pool-pavilion': false,
-    'event-room': false
-  });
-
-  const toggleDetails = (section: string) => {
-    setOpenDetails({
-      ...openDetails,
-      [section]: !openDetails[section]
-    });
-  };
-
   return <Layout>
       <CalendlyScript />
       
@@ -62,8 +49,7 @@ const Reservations = () => {
                 <p className="text-gray-600">
                   Falcon Pointe offers two beautiful spaces that can be reserved for private events. 
                   Whether you're planning a birthday party, family gathering, or community meeting, 
-                  our amenities provide the perfect setting. Please review the reservation guidelines 
-                  before booking.
+                  our amenities provide the perfect setting.
                 </p>
               } 
             />
@@ -71,32 +57,44 @@ const Reservations = () => {
 
           <div className="max-w-6xl mx-auto">
             <Tabs defaultValue="pool-pavilion" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 mb-4">
-                <TabsTrigger value="pool-pavilion">Pool Pavilion</TabsTrigger>
-                <TabsTrigger value="event-room">Indoor Event Room</TabsTrigger>
+              <TabsList className="grid w-full grid-cols-2 mb-6">
+                <TabsTrigger value="pool-pavilion" className="text-lg font-semibold py-3 flex gap-2 items-center">
+                  <Users className="h-5 w-5" /> 
+                  <span>Pool Pavilion</span>
+                </TabsTrigger>
+                <TabsTrigger value="event-room" className="text-lg font-semibold py-3 flex gap-2 items-center">
+                  <Calendar className="h-5 w-5" />
+                  <span>Indoor Event Room</span>
+                </TabsTrigger>
               </TabsList>
               
               <TabsContent value="pool-pavilion">
                 <Card className="overflow-hidden border-0 shadow-md">
                   <CardContent className="p-0">
-                    <div className="flex flex-col md:flex-row">
-                      {/* Left Column - Information */}
-                      <div className="w-full md:w-1/3 p-4 bg-white border-r border-gray-100">
-                        <div className="sticky top-4">
-                          <h2 className="text-2xl font-bold mb-3">Pool Pavilion</h2>
+                    <div className="flex flex-col">
+                      {/* Info Section */}
+                      <div className="p-6 bg-white border-b border-gray-100 flex flex-col md:flex-row gap-6">
+                        <div className="w-full md:w-1/3">
                           <ImageDisplay 
                             location="pool-pavilion" 
                             fallbackSrc="/lovable-uploads/ebafe490-e728-4ed8-a428-ff945cb1df98.png" 
                             alt="Pool Pavilion" 
-                            className="w-full h-48 object-cover rounded-lg mb-4"
+                            className="w-full h-48 object-cover rounded-lg"
                           />
+                        </div>
+                        
+                        <div className="w-full md:w-2/3">
+                          <h2 className="text-2xl font-bold mb-3">Pool Pavilion</h2>
+                          <p className="text-gray-600 mb-4">
+                            The Pool Pavilion offers a covered outdoor space perfect for summer gatherings, 
+                            featuring seating areas, access to the pool, and outdoor grills.
+                          </p>
                           
                           <Accordion type="single" collapsible className="w-full">
                             <AccordionItem value="details">
-                              <AccordionTrigger className="py-3">About the Pool Pavilion</AccordionTrigger>
+                              <AccordionTrigger className="text-base font-medium">Amenity Details</AccordionTrigger>
                               <AccordionContent>
                                 <div className="space-y-3 text-sm">
-                                  <p>The Pool Pavilion offers a covered outdoor space perfect for summer gatherings. It features:</p>
                                   <ul className="list-disc pl-5 space-y-1">
                                     <li>Covered seating area</li>
                                     <li>Access to pool area</li>
@@ -112,14 +110,15 @@ const Reservations = () => {
                             </AccordionItem>
                             
                             <AccordionItem value="guidelines">
-                              <AccordionTrigger className="py-3">Reservation Guidelines</AccordionTrigger>
+                              <AccordionTrigger className="text-base font-medium">Reservation Guidelines</AccordionTrigger>
                               <AccordionContent>
                                 <div className="space-y-2 text-sm">
                                   <ul className="list-disc pl-5 space-y-1 text-gray-600">
-                                    <li>Reservations must be made at least 7 days in advance.</li>
-                                    <li>Residents must be in good standing with HOA dues.</li>
-                                    <li>A refundable cleaning deposit may be required.</li>
-                                    <li>The resident making the reservation must be present throughout the event.</li>
+                                    <li>Reservations must be made at least 7 days in advance</li>
+                                    <li>Residents must be in good standing with HOA dues</li>
+                                    <li>A refundable cleaning deposit may be required</li>
+                                    <li>The resident making the reservation must be present throughout the event</li>
+                                    <li>All community rules apply during reserved events</li>
                                   </ul>
                                 </div>
                               </AccordionContent>
@@ -128,13 +127,14 @@ const Reservations = () => {
                         </div>
                       </div>
                       
-                      {/* Right Column - Calendar */}
-                      <div className="w-full md:w-2/3 bg-white">
+                      {/* Calendar - Full Width */}
+                      <div className="bg-white" style={{ height: 'calc(70vh - 100px)', minHeight: '400px' }}>
                         <div className="calendly-inline-widget" 
                           data-url="https://calendly.com/falconpointe/pool-pavilion?hide_gdpr_banner=1" 
                           style={{
-                            minWidth: "320px",
-                            height: "700px"
+                            width: "100%",
+                            height: "100%",
+                            overflow: "hidden"
                           }}>
                         </div>
                       </div>
@@ -146,24 +146,30 @@ const Reservations = () => {
               <TabsContent value="event-room">
                 <Card className="overflow-hidden border-0 shadow-md">
                   <CardContent className="p-0">
-                    <div className="flex flex-col md:flex-row">
-                      {/* Left Column - Information */}
-                      <div className="w-full md:w-1/3 p-4 bg-white border-r border-gray-100">
-                        <div className="sticky top-4">
-                          <h2 className="text-2xl font-bold mb-3">Indoor Event Room</h2>
+                    <div className="flex flex-col">
+                      {/* Info Section */}
+                      <div className="p-6 bg-white border-b border-gray-100 flex flex-col md:flex-row gap-6">
+                        <div className="w-full md:w-1/3">
                           <ImageDisplay 
                             location="event-room" 
                             fallbackSrc="https://ufhcicqixojqpyykjljw.supabase.co/storage/v1/object/public/site-images//OH%20yeah.jpg" 
                             alt="Indoor Event Room" 
-                            className="w-full h-48 object-cover rounded-lg mb-4"
+                            className="w-full h-48 object-cover rounded-lg"
                           />
+                        </div>
+                        
+                        <div className="w-full md:w-2/3">
+                          <h2 className="text-2xl font-bold mb-3">Indoor Event Room</h2>
+                          <p className="text-gray-600 mb-4">
+                            Our climate-controlled event room is perfect for meetings and gatherings year-round,
+                            with flexible setup options and amenities for your convenience.
+                          </p>
                           
                           <Accordion type="single" collapsible className="w-full">
                             <AccordionItem value="details">
-                              <AccordionTrigger className="py-3">About the Event Room</AccordionTrigger>
+                              <AccordionTrigger className="text-base font-medium">Amenity Details</AccordionTrigger>
                               <AccordionContent>
                                 <div className="space-y-3 text-sm">
-                                  <p>Our climate-controlled event room is perfect for meetings and gatherings year-round. It includes:</p>
                                   <ul className="list-disc pl-5 space-y-1">
                                     <li>Tables and chairs for flexible setup</li>
                                     <li>Kitchen area with sink and refrigerator</li>
@@ -175,14 +181,15 @@ const Reservations = () => {
                             </AccordionItem>
                             
                             <AccordionItem value="guidelines">
-                              <AccordionTrigger className="py-3">Reservation Guidelines</AccordionTrigger>
+                              <AccordionTrigger className="text-base font-medium">Reservation Guidelines</AccordionTrigger>
                               <AccordionContent>
                                 <div className="space-y-2 text-sm">
                                   <ul className="list-disc pl-5 space-y-1 text-gray-600">
-                                    <li>Reservations must be made at least 7 days in advance.</li>
-                                    <li>Residents must be in good standing with HOA dues.</li>
-                                    <li>A refundable cleaning deposit may be required.</li>
-                                    <li>The resident making the reservation must be present throughout the event.</li>
+                                    <li>Reservations must be made at least 7 days in advance</li>
+                                    <li>Residents must be in good standing with HOA dues</li>
+                                    <li>A refundable cleaning deposit may be required</li>
+                                    <li>The resident making the reservation must be present throughout the event</li>
+                                    <li>All community rules apply during reserved events</li>
                                   </ul>
                                 </div>
                               </AccordionContent>
@@ -191,13 +198,14 @@ const Reservations = () => {
                         </div>
                       </div>
                       
-                      {/* Right Column - Calendar */}
-                      <div className="w-full md:w-2/3 bg-white">
+                      {/* Calendar - Full Width */}
+                      <div className="bg-white" style={{ height: 'calc(70vh - 100px)', minHeight: '400px' }}>
                         <div className="calendly-inline-widget" 
                           data-url="https://calendly.com/falconpointe/30min?hide_gdpr_banner=1" 
                           style={{
-                            minWidth: "320px",
-                            height: "700px"
+                            width: "100%",
+                            height: "100%", 
+                            overflow: "hidden"
                           }}>
                         </div>
                       </div>
@@ -206,32 +214,6 @@ const Reservations = () => {
                 </Card>
               </TabsContent>
             </Tabs>
-            
-            <Collapsible className="mt-6 bg-white p-4 rounded-lg shadow-sm">
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold">Additional Reservation Guidelines</h3>
-                <CollapsibleTrigger className="flex items-center text-sm text-gray-500 hover:text-gray-700">
-                  <span>View {openDetails['guidelines'] ? 'Less' : 'More'}</span>
-                  <ChevronDown className={`h-4 w-4 ml-1 transform ${openDetails['guidelines'] ? 'rotate-180' : ''}`} />
-                </CollapsibleTrigger>
-              </div>
-              
-              <CollapsibleContent className="mt-2">
-                <ContentDisplay 
-                  section="reservation-guidelines" 
-                  fallbackContent={
-                    <ul className="list-disc pl-5 space-y-2 text-gray-600">
-                      <li>Reservations must be made at least 7 days in advance.</li>
-                      <li>Residents must be in good standing with HOA dues to reserve amenities.</li>
-                      <li>A refundable cleaning deposit may be required depending on the event type.</li>
-                      <li>The resident making the reservation must be present during the entire event.</li>
-                      <li>All community rules and regulations apply during reserved events.</li>
-                      <li>Cancellations must be made at least 48 hours in advance.</li>
-                    </ul>
-                  } 
-                />
-              </CollapsibleContent>
-            </Collapsible>
           </div>
         </div>
       </div>
