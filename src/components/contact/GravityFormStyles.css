@@ -2,25 +2,27 @@
 /* Container styling */
 .gravity-form-container {
   background: rgba(255, 255, 255, 0.6);
-  border-radius: 8px;
+  border-radius: 12px;
   transition: all 0.3s ease;
+  overflow: hidden;
 }
 
 .gravity-form-card {
   border: 1px solid rgba(var(--accent), 0.3);
-  box-shadow: 0 4px 24px -8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 30px -8px rgba(0, 0, 0, 0.15);
   backdrop-filter: blur(8px);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 16px;
 }
 
 .gravity-form-card:hover {
-  box-shadow: 0 8px 32px -12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 12px 36px -12px rgba(0, 0, 0, 0.2);
   transform: translateY(-2px);
 }
 
 /* Gravity Form custom styling */
 .gform_wrapper form {
-  padding: 10px !important;
+  padding: 16px !important;
 }
 
 /* Style form inputs */
@@ -29,10 +31,12 @@
 .gform_wrapper input[type="tel"],
 .gform_wrapper textarea {
   border: 1px solid hsl(var(--border)) !important;
-  border-radius: 6px !important;
-  padding: 12px !important;
-  background-color: rgba(255, 255, 255, 0.8) !important;
+  border-radius: 8px !important;
+  padding: 16px !important;
+  background-color: rgba(255, 255, 255, 0.9) !important;
   transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+  font-size: 16px !important;
+  margin-bottom: 10px !important;
 }
 
 .gform_wrapper input[type="text"]:focus,
@@ -40,7 +44,7 @@
 .gform_wrapper input[type="tel"]:focus,
 .gform_wrapper textarea:focus {
   border-color: hsl(var(--primary)) !important;
-  box-shadow: 0 0 0 2px rgba(var(--primary), 0.2) !important;
+  box-shadow: 0 0 0 3px rgba(var(--primary), 0.2) !important;
   outline: none !important;
 }
 
@@ -49,26 +53,85 @@
   background-color: hsl(var(--primary)) !important;
   color: white !important;
   border: none !important;
-  border-radius: 6px !important;
-  padding: 12px 24px !important;
+  border-radius: 8px !important;
+  padding: 14px 28px !important;
   font-weight: 600 !important;
   cursor: pointer !important;
   transition: background-color 0.2s ease, transform 0.1s ease !important;
+  font-size: 16px !important;
+  letter-spacing: 0.5px !important;
+  width: auto !important;
+  min-width: 160px !important;
+  text-transform: uppercase !important;
 }
 
 .gform_wrapper .gform_footer input[type="submit"]:hover {
   background-color: hsl(var(--primary), 0.9) !important;
-  transform: translateY(-1px) !important;
+  transform: translateY(-2px) !important;
+}
+
+.gform_wrapper .gform_footer input[type="submit"]:active {
+  transform: translateY(0) !important;
 }
 
 /* Improve styling of labels */
 .gform_wrapper .gfield_label {
   font-weight: 500 !important;
-  margin-bottom: 8px !important;
+  margin-bottom: 10px !important;
   color: hsl(var(--foreground)) !important;
+  font-size: 16px !important;
 }
 
 /* Fix for iframe height */
 .gfiframe {
-  min-height: 680px;
+  min-height: 840px;
+}
+
+/* Additional form spacing */
+.gform_wrapper .gfield {
+  margin-bottom: 20px !important;
+}
+
+/* Style form descriptions */
+.gform_wrapper .gfield_description {
+  color: rgba(var(--foreground), 0.7) !important;
+  font-size: 14px !important;
+  font-style: italic !important;
+  margin-top: 5px !important;
+}
+
+/* Style required field indicator */
+.gform_wrapper .gfield_required {
+  color: hsl(var(--primary)) !important;
+  margin-left: 4px !important;
+}
+
+/* Style validation error messages */
+.gform_wrapper .validation_message {
+  color: hsl(var(--destructive)) !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  margin-top: 5px !important;
+  padding: 5px 8px !important;
+  background-color: rgba(var(--destructive), 0.1) !important;
+  border-radius: 4px !important;
+  display: inline-block !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .gfiframe {
+    min-height: 900px;
+  }
+  
+  .gform_wrapper .gfield_label {
+    font-size: 15px !important;
+  }
+  
+  .gform_wrapper input[type="text"],
+  .gform_wrapper input[type="email"],
+  .gform_wrapper input[type="tel"],
+  .gform_wrapper textarea {
+    padding: 14px !important;
+  }
 }

@@ -4,19 +4,34 @@
 }
 
 .contact-tabs-trigger {
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   position: relative;
+  border-radius: 10px !important;
+  font-size: 16px;
+}
+
+.contact-tabs-trigger:hover {
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
 }
 
 .contact-tabs-trigger::after {
   content: '';
   position: absolute;
-  bottom: -1px;
+  bottom: -2px;
   left: 0;
   width: 100%;
-  height: 2px;
+  height: 3px;
   background-color: transparent;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.3s ease;
+  border-radius: 3px;
+}
+
+.contact-tabs-trigger[data-state="active"] {
+  background-color: white;
+  box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
 }
 
 .contact-tabs-trigger[data-state="active"]::after {
@@ -25,16 +40,17 @@
 
 .contact-tabs-content {
   will-change: transform, opacity;
+  padding: 1rem;
 }
 
 .contact-tabs-content[data-state="active"] {
-  animation: slideIn 0.3s ease-out forwards;
+  animation: slideIn 0.4s ease-out forwards;
 }
 
 @keyframes slideIn {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(15px);
   }
   to {
     opacity: 1;
@@ -64,10 +80,10 @@
 }
 
 .chat-container:hover {
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.15);
 }
 
-/* New styles for enhanced tabs */
+/* Enhanced styles for tabs */
 .tabs-container {
   position: relative;
   z-index: 1;
@@ -79,10 +95,10 @@
   top: -40px;
   left: 50%;
   transform: translateX(-50%);
-  width: 80px;
-  height: 80px;
-  background-color: rgba(var(--accent), 0.1);
-  filter: blur(40px);
+  width: 120px;
+  height: 120px;
+  background-color: rgba(var(--accent), 0.15);
+  filter: blur(60px);
   border-radius: 50%;
   z-index: -1;
 }
@@ -90,11 +106,13 @@
 .contact-card {
   border: 1px solid rgba(var(--accent), 0.2);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 16px;
+  overflow: hidden;
 }
 
 .contact-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.1);
 }
 
 /* Decorative elements */
@@ -110,18 +128,24 @@
   top: 20px;
   right: 20%;
   opacity: 0.7;
+  width: 8px;
+  height: 8px;
 }
 
 .decorator-dot-2 {
   bottom: 40px;
   left: 15%;
   opacity: 0.5;
+  width: 10px;
+  height: 10px;
 }
 
 .decorator-dot-3 {
   top: 40%;
   left: 8%;
   opacity: 0.6;
+  width: 12px;
+  height: 12px;
 }
 
 /* Mobile optimization */
@@ -129,5 +153,10 @@
   .contact-tabs-trigger {
     padding-left: 0.75rem;
     padding-right: 0.75rem;
+    font-size: 14px;
+  }
+  
+  .contact-tabs-content {
+    padding: 0.5rem;
   }
 }

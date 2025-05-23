@@ -32,39 +32,39 @@ const Contact = () => {
       </div>
 
       <div className="py-16 bg-gradient-to-b from-gray-50 to-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto tabs-container">
+        <div className="container mx-auto px-6">
+          <div className="max-w-6xl mx-auto tabs-container">
             <Tabs 
               defaultValue="office" 
               className="w-full" 
               value={activeTab}
               onValueChange={setActiveTab}
             >
-              <div className="flex justify-center mb-8">
-                <TabsList className="grid grid-cols-3 h-auto p-1 w-full max-w-lg bg-white/80 backdrop-blur-sm shadow-sm">
+              <div className="flex justify-center mb-10">
+                <TabsList className="grid grid-cols-3 h-auto p-2 w-full max-w-2xl bg-gradient-to-r from-gray-50 via-white to-gray-50 backdrop-blur-sm shadow-md rounded-xl">
                   <TabsTrigger 
                     value="office" 
-                    className="contact-tabs-trigger flex items-center gap-2 py-3 data-[state=active]:bg-white"
+                    className="contact-tabs-trigger flex items-center gap-3 py-4 data-[state=active]:bg-white"
                   >
-                    <Building2 className="h-4 w-4" />
-                    <span className="hidden sm:inline">Office Information</span>
-                    <span className="sm:hidden">Office</span>
+                    <Building2 className="h-5 w-5" />
+                    <span className="hidden sm:inline font-medium">Office Information</span>
+                    <span className="sm:hidden font-medium">Office</span>
                   </TabsTrigger>
                   <TabsTrigger 
                     value="contact" 
-                    className="contact-tabs-trigger flex items-center gap-2 py-3 data-[state=active]:bg-white"
+                    className="contact-tabs-trigger flex items-center gap-3 py-4 data-[state=active]:bg-white"
                   >
-                    <Mail className="h-4 w-4" />
-                    <span className="hidden sm:inline">Contact Form</span>
-                    <span className="sm:hidden">Form</span>
+                    <Mail className="h-5 w-5" />
+                    <span className="hidden sm:inline font-medium">Contact Form</span>
+                    <span className="sm:hidden font-medium">Form</span>
                   </TabsTrigger>
                   <TabsTrigger 
                     value="chat" 
-                    className="contact-tabs-trigger flex items-center gap-2 py-3 data-[state=active]:bg-white"
+                    className="contact-tabs-trigger flex items-center gap-3 py-4 data-[state=active]:bg-white"
                   >
-                    <MessageSquareText className="h-4 w-4" />
-                    <span className="hidden sm:inline">HOA Assistant</span>
-                    <span className="sm:hidden">Chat</span>
+                    <MessageSquareText className="h-5 w-5" />
+                    <span className="hidden sm:inline font-medium">HOA Assistant</span>
+                    <span className="sm:hidden font-medium">Chat</span>
                   </TabsTrigger>
                 </TabsList>
               </div>
@@ -81,11 +81,11 @@ const Contact = () => {
               </TabsContent>
 
               <TabsContent value="contact" className="contact-tabs-content">
-                <div className="max-w-3xl mx-auto">
+                <div className="max-w-4xl mx-auto">
                   <AnimatedContainer animation="fade" delay="medium">
                     <div className="mb-6">
-                      <h2 className="text-2xl font-bold text-center mb-2">Send Us a Message</h2>
-                      <p className="text-center text-gray-600 mb-6">
+                      <h2 className="text-2xl font-bold text-center mb-3">Send Us a Message</h2>
+                      <p className="text-center text-gray-600 mb-8">
                         Fill out the form below and our team will get back to you as soon as possible
                       </p>
                     </div>
@@ -95,11 +95,11 @@ const Contact = () => {
               </TabsContent>
 
               <TabsContent value="chat" className="contact-tabs-content">
-                <div className="max-w-3xl mx-auto">
+                <div className="max-w-4xl mx-auto">
                   <AnimatedContainer animation="fade" delay="medium">
                     <div className="mb-6">
-                      <h2 className="text-2xl font-bold text-center mb-2">Falcon Pointe HOA Assistant</h2>
-                      <p className="text-center text-gray-600">
+                      <h2 className="text-2xl font-bold text-center mb-3">Falcon Pointe HOA Assistant</h2>
+                      <p className="text-center text-gray-600 mb-8">
                         Get instant answers to frequently asked questions
                       </p>
                     </div>

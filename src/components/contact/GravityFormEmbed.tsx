@@ -22,12 +22,12 @@ const GravityFormEmbed = () => {
 
   return (
     <Card className="gravity-form-card">
-      <CardContent className="p-6">
+      <CardContent className="p-6 md:p-8">
         <div className="w-full gravity-form-container">
           <iframe 
             src="//psprop.net/gfembed/?f=34" 
             width="100%" 
-            height="680" 
+            height="840" 
             frameBorder="0" 
             className="gfiframe"
             title="Contact Form"
