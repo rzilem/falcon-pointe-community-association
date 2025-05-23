@@ -3,7 +3,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
-import { Image, FileText } from 'lucide-react';
+import { Image, FileText, Calendar } from 'lucide-react';
 
 const AdminNav = () => {
   const { signOut } = useAuth();
@@ -14,7 +14,7 @@ const AdminNav = () => {
   return (
     <nav className="bg-gray-800 text-white p-4">
       <div className="container mx-auto flex items-center justify-between">
-        <div className="flex space-x-4">
+        <div className="flex space-x-4 overflow-x-auto pb-2">
           <Link to="/admin">
             <Button 
               variant={isActive('/admin') ? 'secondary' : 'ghost'}
@@ -39,6 +39,15 @@ const AdminNav = () => {
             >
               <FileText className="mr-2 h-4 w-4" />
               Content
+            </Button>
+          </Link>
+          <Link to="/admin/events">
+            <Button 
+              variant={isActive('/admin/events') ? 'secondary' : 'ghost'}
+              className="text-white flex items-center"
+            >
+              <Calendar className="mr-2 h-4 w-4" />
+              Events
             </Button>
           </Link>
           <Link to="/admin/documents">
