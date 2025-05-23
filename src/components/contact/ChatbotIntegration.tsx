@@ -15,7 +15,7 @@ const ChatbotIntegration = () => {
             <iframe
               src="https://app.cassidyai.com/embed/chat/v2/cmae9e9cw08ijujx069f8xwib"
               style={{ border: "none" }}
-              className="h-[580px] w-full max-w-[650px]"
+              className="h-[580px] w-full"
               title="Falcon Pointe HOA Assistant"
             />
           </div>
