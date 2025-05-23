@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Layout from "@/components/layout/Layout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
@@ -16,6 +16,18 @@ import {
 import { Calendar, Users } from "lucide-react";
 
 const Reservations = () => {
+  // Track active tab to help with Calendly reinitialization
+  const [activeTab, setActiveTab] = useState<string>("pool-pavilion");
+
+  // Effect to handle Calendly visibility when tabs change
+  useEffect(() => {
+    // Force redraw of Calendly widgets when tab changes
+    const activeWidget = document.querySelector(`.calendly-${activeTab}`);
+    if (activeWidget) {
+      activeWidget.classList.add('calendly-active');
+    }
+  }, [activeTab]);
+
   return <Layout>
       <CalendlyScript />
       
@@ -56,13 +68,23 @@ const Reservations = () => {
           </div>
 
           <div className="max-w-6xl mx-auto">
-            <Tabs defaultValue="pool-pavilion" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 mb-6">
-                <TabsTrigger value="pool-pavilion" className="text-lg font-semibold py-3 flex gap-2 items-center">
+            <Tabs 
+              defaultValue="pool-pavilion" 
+              className="w-full"
+              onValueChange={(value) => setActiveTab(value)}
+            >
+              <TabsList className="grid w-full grid-cols-2 mb-4">
+                <TabsTrigger 
+                  value="pool-pavilion" 
+                  className="text-xl font-semibold py-4 flex gap-2 items-center"
+                >
                   <Users className="h-5 w-5" /> 
                   <span>Pool Pavilion</span>
                 </TabsTrigger>
-                <TabsTrigger value="event-room" className="text-lg font-semibold py-3 flex gap-2 items-center">
+                <TabsTrigger 
+                  value="event-room" 
+                  className="text-xl font-semibold py-4 flex gap-2 items-center"
+                >
                   <Calendar className="h-5 w-5" />
                   <span>Indoor Event Room</span>
                 </TabsTrigger>
@@ -72,8 +94,8 @@ const Reservations = () => {
                 <Card className="overflow-hidden border-0 shadow-md">
                   <CardContent className="p-0">
                     <div className="flex flex-col">
-                      {/* Info Section */}
-                      <div className="p-6 bg-white border-b border-gray-100 flex flex-col md:flex-row gap-6">
+                      {/* Info Section - Compact Design */}
+                      <div className="p-4 md:p-6 bg-white border-b border-gray-100 flex flex-col md:flex-row gap-4">
                         <div className="w-full md:w-1/3">
                           <ImageDisplay 
                             location="pool-pavilion" 
@@ -84,17 +106,17 @@ const Reservations = () => {
                         </div>
                         
                         <div className="w-full md:w-2/3">
-                          <h2 className="text-2xl font-bold mb-3">Pool Pavilion</h2>
-                          <p className="text-gray-600 mb-4">
+                          <h2 className="text-2xl font-bold mb-2">Pool Pavilion</h2>
+                          <p className="text-gray-600 mb-3">
                             The Pool Pavilion offers a covered outdoor space perfect for summer gatherings, 
                             featuring seating areas, access to the pool, and outdoor grills.
                           </p>
                           
                           <Accordion type="single" collapsible className="w-full">
                             <AccordionItem value="details">
-                              <AccordionTrigger className="text-base font-medium">Amenity Details</AccordionTrigger>
+                              <AccordionTrigger className="text-base font-medium py-2">Amenity Details</AccordionTrigger>
                               <AccordionContent>
-                                <div className="space-y-3 text-sm">
+                                <div className="space-y-2 text-sm">
                                   <ul className="list-disc pl-5 space-y-1">
                                     <li>Covered seating area</li>
                                     <li>Access to pool area</li>
@@ -110,7 +132,7 @@ const Reservations = () => {
                             </AccordionItem>
                             
                             <AccordionItem value="guidelines">
-                              <AccordionTrigger className="text-base font-medium">Reservation Guidelines</AccordionTrigger>
+                              <AccordionTrigger className="text-base font-medium py-2">Reservation Guidelines</AccordionTrigger>
                               <AccordionContent>
                                 <div className="space-y-2 text-sm">
                                   <ul className="list-disc pl-5 space-y-1 text-gray-600">
@@ -127,14 +149,15 @@ const Reservations = () => {
                         </div>
                       </div>
                       
-                      {/* Calendar - Full Width */}
-                      <div className="bg-white" style={{ height: 'calc(70vh - 100px)', minHeight: '400px' }}>
-                        <div className="calendly-inline-widget" 
+                      {/* Calendar - Full Width with increased height */}
+                      <div className="bg-white" style={{ height: 'calc(80vh - 50px)', minHeight: '600px' }}>
+                        <div className="calendly-inline-widget calendly-pool-pavilion" 
                           data-url="https://calendly.com/falconpointe/pool-pavilion?hide_gdpr_banner=1" 
                           style={{
                             width: "100%",
                             height: "100%",
-                            overflow: "hidden"
+                            overflow: "hidden",
+                            display: "block"
                           }}>
                         </div>
                       </div>
@@ -147,8 +170,8 @@ const Reservations = () => {
                 <Card className="overflow-hidden border-0 shadow-md">
                   <CardContent className="p-0">
                     <div className="flex flex-col">
-                      {/* Info Section */}
-                      <div className="p-6 bg-white border-b border-gray-100 flex flex-col md:flex-row gap-6">
+                      {/* Info Section - Compact Design */}
+                      <div className="p-4 md:p-6 bg-white border-b border-gray-100 flex flex-col md:flex-row gap-4">
                         <div className="w-full md:w-1/3">
                           <ImageDisplay 
                             location="event-room" 
@@ -159,17 +182,17 @@ const Reservations = () => {
                         </div>
                         
                         <div className="w-full md:w-2/3">
-                          <h2 className="text-2xl font-bold mb-3">Indoor Event Room</h2>
-                          <p className="text-gray-600 mb-4">
+                          <h2 className="text-2xl font-bold mb-2">Indoor Event Room</h2>
+                          <p className="text-gray-600 mb-3">
                             Our climate-controlled event room is perfect for meetings and gatherings year-round,
                             with flexible setup options and amenities for your convenience.
                           </p>
                           
                           <Accordion type="single" collapsible className="w-full">
                             <AccordionItem value="details">
-                              <AccordionTrigger className="text-base font-medium">Amenity Details</AccordionTrigger>
+                              <AccordionTrigger className="text-base font-medium py-2">Amenity Details</AccordionTrigger>
                               <AccordionContent>
-                                <div className="space-y-3 text-sm">
+                                <div className="space-y-2 text-sm">
                                   <ul className="list-disc pl-5 space-y-1">
                                     <li>Tables and chairs for flexible setup</li>
                                     <li>Kitchen area with sink and refrigerator</li>
@@ -181,7 +204,7 @@ const Reservations = () => {
                             </AccordionItem>
                             
                             <AccordionItem value="guidelines">
-                              <AccordionTrigger className="text-base font-medium">Reservation Guidelines</AccordionTrigger>
+                              <AccordionTrigger className="text-base font-medium py-2">Reservation Guidelines</AccordionTrigger>
                               <AccordionContent>
                                 <div className="space-y-2 text-sm">
                                   <ul className="list-disc pl-5 space-y-1 text-gray-600">
@@ -198,14 +221,15 @@ const Reservations = () => {
                         </div>
                       </div>
                       
-                      {/* Calendar - Full Width */}
-                      <div className="bg-white" style={{ height: 'calc(70vh - 100px)', minHeight: '400px' }}>
-                        <div className="calendly-inline-widget" 
+                      {/* Calendar - Full Width with increased height */}
+                      <div className="bg-white" style={{ height: 'calc(80vh - 50px)', minHeight: '600px' }}>
+                        <div className="calendly-inline-widget calendly-event-room" 
                           data-url="https://calendly.com/falconpointe/30min?hide_gdpr_banner=1" 
                           style={{
                             width: "100%",
-                            height: "100%", 
-                            overflow: "hidden"
+                            height: "100%",
+                            overflow: "hidden",
+                            display: "block"
                           }}>
                         </div>
                       </div>
@@ -217,6 +241,19 @@ const Reservations = () => {
           </div>
         </div>
       </div>
+
+      {/* Add custom styles to ensure Calendly displays correctly */}
+      <style jsx global>{`
+        .calendly-inline-widget iframe {
+          height: 100% !important;
+          min-height: 600px !important;
+        }
+        
+        /* Ensure Calendly doesn't add scrollbars */
+        .calendly-badge-widget {
+          margin-bottom: 0 !important;
+        }
+      `}</style>
     </Layout>;
 };
 
