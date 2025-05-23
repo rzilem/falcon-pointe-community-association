@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
-import { supabase } from '@/integrations/supabase/client';
 import { Image } from 'lucide-react';
 
 interface ImageUploadProps {
@@ -30,7 +29,6 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onImageUploaded, existingImag
       // Generate a unique file name
       const fileExt = file.name.split('.').pop();
       const fileName = `${Math.random().toString(36).substring(2, 15)}.${fileExt}`;
-      const filePath = `event-images/${fileName}`;
       
       // Upload file to public/lovable-uploads folder
       const formData = new FormData();
@@ -95,6 +93,21 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onImageUploaded, existingImag
           className="hidden"
         />
       </div>
+      
+      {existingImageUrl && (
+        <div className="mt-2">
+          <img 
+            src={existingImageUrl} 
+            alt="Preview" 
+            className="max-h-40 rounded border"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.onerror = null;
+              target.src = "/placeholder.svg";
+            }}
+          />
+        </div>
+      )}
       
       <p className="text-sm text-gray-500">
         Recommended: JPG, PNG, or GIF. Max size: 5MB.

@@ -22,6 +22,8 @@ import Dashboard from "./pages/admin/Dashboard";
 import Images from "./pages/admin/Images";
 import Content from "./pages/admin/Content";
 import AdminEvents from "./pages/admin/Events";
+import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
 
 const queryClient = new QueryClient();
 
@@ -40,6 +42,8 @@ const App = () => (
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/events" element={<Events />} />
             <Route path="/documents" element={<Documents />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:slug" element={<BlogPost />} />
             <Route path="/admin/documents" element={<AdminDocuments />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/faq" element={<FAQ />} />
