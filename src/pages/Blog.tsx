@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import Layout from '@/components/layout/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { useContent } from '@/hooks/useContent';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
 import { SiteContent } from '@/types/content';
@@ -43,7 +42,14 @@ const Blog = () => {
       const { data, error } = await query;
       
       if (error) throw error;
-      setBlogPosts(data || []);
+      
+      // Ensure section_type is set for all items
+      const typedData: SiteContent[] = (data || []).map(item => ({
+        ...item,
+        section_type: item.section_type || 'blog'
+      }));
+      
+      setBlogPosts(typedData);
     } catch (error) {
       console.error('Error fetching blog posts:', error);
     } finally {

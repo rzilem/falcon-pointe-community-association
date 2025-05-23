@@ -56,7 +56,13 @@ export const useContentManagement = () => {
         );
       }
       
-      setContent(filteredData);
+      // Make sure all returned items have the required section_type field
+      const typedData: SiteContent[] = filteredData.map(item => ({
+        ...item,
+        section_type: item.section_type || 'static' // Default to 'static' if section_type is missing
+      }));
+      
+      setContent(typedData);
     } catch (err) {
       console.error('Error fetching content:', err);
       setError('Failed to load content');

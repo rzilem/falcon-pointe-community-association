@@ -35,7 +35,13 @@ const BlogPost = () => {
       
       if (error) throw error;
       
-      setPost(data);
+      // Ensure section_type is set
+      const typedData: SiteContent = {
+        ...data,
+        section_type: data.section_type || 'blog'
+      };
+      
+      setPost(typedData);
     } catch (error) {
       console.error('Error fetching blog post:', error);
       setError('Failed to load blog post');

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AdminNav from '@/components/admin/AdminNav';
@@ -16,17 +15,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Switch } from '@/components/ui/switch';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { format } from 'date-fns';
-
-interface SiteContent {
-  id: string;
-  section: string;
-  title: string | null;
-  content: string | null;
-  active: boolean;
-  updated_at: string;
-  created_at: string;
-  last_updated_by: string | null;
-}
+import { SiteContent } from '@/types/content';
 
 const Content = () => {
   const { isAdmin, user } = useAuth();
@@ -40,7 +29,7 @@ const Content = () => {
   const [saving, setSaving] = useState(false);
   const [openSections, setOpenSections] = useState<string[]>([]);
   const [activeTab, setActiveTab] = useState('static');
-  const [blogPosts, setBlogPosts] = useState<any[]>([]);
+  const [blogPosts, setBlogPosts] = useState<SiteContent[]>([]);
   const [blogLoading, setBlogLoading] = useState(true);
   const [sortField, setSortField] = useState('updated_at');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
@@ -66,7 +55,14 @@ const Content = () => {
         .order('section', { ascending: true });
       
       if (error) throw error;
-      setContent(data || []);
+      
+      // Ensure section_type is set
+      const typedData: SiteContent[] = (data || []).map(item => ({
+        ...item,
+        section_type: item.section_type || 'static'
+      }));
+      
+      setContent(typedData);
     } catch (error) {
       console.error('Error fetching content:', error);
       toast.error('Failed to load content');
@@ -86,7 +82,13 @@ const Content = () => {
       
       if (error) throw error;
 
-      let filteredData = data || [];
+      // Ensure section_type is set
+      const typedData: SiteContent[] = (data || []).map(item => ({
+        ...item,
+        section_type: item.section_type || 'blog'
+      }));
+      
+      let filteredData = typedData;
       
       if (filterText) {
         filteredData = filteredData.filter(post => 
@@ -118,6 +120,8 @@ const Content = () => {
     try {
       setSaving(true);
       
+      const contentType = activeTab === 'blog' ? 'blog' : 'static';
+      
       const { error } = await supabase
         .from('site_content')
         .insert({
@@ -125,8 +129,8 @@ const Content = () => {
           title: newTitle || null,
           content: newContent || null,
           last_updated_by: user?.id,
-          section_type: activeTab === 'blog' ? 'blog' : 'static',
-          category: activeTab === 'blog' ? newCategory : null
+          section_type: contentType,
+          category: contentType === 'blog' ? newCategory : null
         });
       
       if (error) throw error;
@@ -137,7 +141,7 @@ const Content = () => {
       setNewContent('');
       setNewCategory('general');
       
-      if (activeTab === 'static') {
+      if (contentType === 'static') {
         fetchContent();
       } else {
         fetchBlogPosts();
@@ -150,12 +154,12 @@ const Content = () => {
     }
   };
 
-  const handleUpdateContent = async (id: string, updatedData: Partial<SiteContent>) => {
+  const handleUpdateContent = async (id: string, updates: Partial<SiteContent>) => {
     try {
       const { error } = await supabase
         .from('site_content')
         .update({
-          ...updatedData,
+          ...updates,
           last_updated_by: user?.id,
           updated_at: new Date().toISOString()
         })
@@ -165,7 +169,11 @@ const Content = () => {
       
       toast.success('Content updated successfully');
       
-      if (updatedData.section_type === 'blog' || (content.find(c => c.id === id)?.section_type === 'blog')) {
+      // Determine which content type was updated
+      const contentType = content.find(c => c.id === id)?.section_type || 
+                         blogPosts.find(b => b.id === id)?.section_type;
+                         
+      if (contentType === 'blog') {
         fetchBlogPosts();
       } else {
         fetchContent();

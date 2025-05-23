@@ -28,7 +28,13 @@ const BlogPreview = () => {
       
       if (error) throw error;
       
-      setPosts(data || []);
+      // Ensure all items have the section_type field
+      const typedData: SiteContent[] = (data || []).map(item => ({
+        ...item,
+        section_type: item.section_type || 'blog' // Default to 'blog' for these items
+      }));
+      
+      setPosts(typedData);
     } catch (error) {
       console.error('Error fetching recent posts:', error);
     } finally {
