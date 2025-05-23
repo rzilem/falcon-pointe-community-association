@@ -4,7 +4,7 @@ import Layout from "@/components/layout/Layout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ContentDisplay from "@/components/cms/ContentDisplay";
 import CalendlyScript from "@/components/reservations/CalendlyScript";
-import { Building2, SwimmingPool } from "lucide-react";
+import { Building2, Waves } from "lucide-react";
 import ReservationHero from "@/components/reservations/ReservationHero";
 import PoolPavilionTab from "@/components/reservations/PoolPavilionTab";
 import EventRoomTab from "@/components/reservations/EventRoomTab";
@@ -50,7 +50,7 @@ const Reservations = () => {
                   value="pool-pavilion" 
                   className="text-xl font-semibold py-4 flex gap-2 items-center"
                 >
-                  <SwimmingPool className="h-5 w-5" /> 
+                  <Waves className="h-5 w-5" /> 
                   <span>Pool Pavilion</span>
                 </TabsTrigger>
                 <TabsTrigger 
