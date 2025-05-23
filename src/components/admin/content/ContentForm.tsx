@@ -3,12 +3,13 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { SiteContent } from '@/types/content';
 import { useAuth } from '@/context/AuthContext';
 import ImageUpload from '../events/ImageUpload';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import RichTextEditor from './RichTextEditor';
+import { Calendar } from 'lucide-react';
 
 interface ContentFormProps {
   initialContent?: SiteContent;
@@ -25,6 +26,8 @@ const ContentForm: React.FC<ContentFormProps> = ({ initialContent, onSave, conte
   const [active, setActive] = useState(initialContent?.active !== false);
   const [imagePath, setImagePath] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [publishDate, setPublishDate] = useState<string>(new Date().toISOString().split('T')[0]);
+  const [useSchedulePublish, setUseSchedulePublish] = useState(false);
 
   const sectionOptions = contentType === 'static' ? [
     { value: 'home-hero', label: 'Home Page - Hero Section' },
@@ -55,9 +58,10 @@ const ContentForm: React.FC<ContentFormProps> = ({ initialContent, onSave, conte
         section,
         content: content || null,
         category: contentType === 'blog' ? category : null,
-        active,
+        active: useSchedulePublish ? false : active, // If scheduled, set to draft
         section_type: contentType,
         last_updated_by: user?.id
+        // We could add scheduled_publish_at for future enhancement
       });
       
       if (!initialContent) {
@@ -68,12 +72,17 @@ const ContentForm: React.FC<ContentFormProps> = ({ initialContent, onSave, conte
         setCategory('general');
         setActive(true);
         setImagePath(null);
+        setUseSchedulePublish(false);
       }
     } catch (error) {
       console.error('Error saving content:', error);
     } finally {
       setSaving(false);
     }
+  };
+
+  const handleContentChange = (value: string) => {
+    setContent(value);
   };
 
   return (
@@ -159,23 +168,52 @@ const ContentForm: React.FC<ContentFormProps> = ({ initialContent, onSave, conte
           
           <div className="grid gap-2">
             <Label htmlFor="content">Content</Label>
-            <Textarea
-              id="content"
+            <RichTextEditor
               value={content}
-              onChange={(e) => setContent(e.target.value)}
+              onChange={handleContentChange}
               placeholder={contentType === 'static' ? 'Content text' : 'Blog post content'}
-              className="min-h-[200px]"
             />
           </div>
           
           {contentType === 'blog' && (
-            <div className="grid gap-2">
-              <Label>Featured Image (Optional)</Label>
-              <ImageUpload
-                onImageUploaded={(url) => setImagePath(url)}
-                existingImageUrl={imagePath}
-              />
-            </div>
+            <>
+              <div className="grid gap-2">
+                <Label>Featured Image (Optional)</Label>
+                <ImageUpload
+                  onImageUploaded={(url) => setImagePath(url)}
+                  existingImageUrl={imagePath}
+                />
+              </div>
+              
+              <div className="space-y-4 border-t border-b py-4">
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="schedule-publish"
+                    checked={useSchedulePublish}
+                    onCheckedChange={setUseSchedulePublish}
+                  />
+                  <Label htmlFor="schedule-publish">
+                    Schedule Publication
+                  </Label>
+                </div>
+                
+                {useSchedulePublish && (
+                  <div className="grid gap-2 pl-6">
+                    <Label htmlFor="publish-date" className="flex items-center">
+                      <Calendar className="mr-2 h-4 w-4" />
+                      Publication Date
+                    </Label>
+                    <Input
+                      id="publish-date"
+                      type="date"
+                      value={publishDate}
+                      onChange={(e) => setPublishDate(e.target.value)}
+                      min={new Date().toISOString().split('T')[0]}
+                    />
+                  </div>
+                )}
+              </div>
+            </>
           )}
           
           <div className="flex items-center space-x-2">
@@ -183,6 +221,7 @@ const ContentForm: React.FC<ContentFormProps> = ({ initialContent, onSave, conte
               id="active"
               checked={active}
               onCheckedChange={setActive}
+              disabled={useSchedulePublish}
             />
             <Label htmlFor="active">
               {contentType === 'blog' ? 'Publish Post' : 'Active'}
