@@ -156,31 +156,40 @@ export type Database = {
       site_content: {
         Row: {
           active: boolean | null
+          category: string | null
           content: string | null
           created_at: string
+          featured_image: string | null
           id: string
           last_updated_by: string | null
           section: string
+          section_type: string | null
           title: string | null
           updated_at: string
         }
         Insert: {
           active?: boolean | null
+          category?: string | null
           content?: string | null
           created_at?: string
+          featured_image?: string | null
           id?: string
           last_updated_by?: string | null
           section: string
+          section_type?: string | null
           title?: string | null
           updated_at?: string
         }
         Update: {
           active?: boolean | null
+          category?: string | null
           content?: string | null
           created_at?: string
+          featured_image?: string | null
           id?: string
           last_updated_by?: string | null
           section?: string
+          section_type?: string | null
           title?: string | null
           updated_at?: string
         }

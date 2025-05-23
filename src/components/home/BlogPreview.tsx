@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -5,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { SiteContent } from '@/types/content';
 import { format } from 'date-fns';
+import RichContentRenderer from '@/components/blog/RichContentRenderer';
 
 const BlogPreview = () => {
   const [posts, setPosts] = useState<SiteContent[]>([]);
@@ -27,13 +29,7 @@ const BlogPreview = () => {
       
       if (error) throw error;
       
-      // Ensure all items have the section_type field
-      const typedData: SiteContent[] = (data || []).map(item => ({
-        ...item,
-        section_type: item.section_type || 'blog' // Default to 'blog' for these items
-      }));
-      
-      setPosts(typedData);
+      setPosts(data as SiteContent[]);
     } catch (error) {
       console.error('Error fetching recent posts:', error);
     } finally {
@@ -85,6 +81,15 @@ const BlogPreview = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {posts.map((post) => (
                 <Card key={post.id} className="h-full flex flex-col">
+                  {post.featured_image && (
+                    <div className="w-full h-40 overflow-hidden">
+                      <img 
+                        src={post.featured_image} 
+                        alt={post.title || 'Blog post'} 
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  )}
                   <CardHeader>
                     <CardTitle className="line-clamp-2">{post.title || 'Untitled Post'}</CardTitle>
                     <CardDescription>
@@ -93,9 +98,9 @@ const BlogPreview = () => {
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="flex-grow">
-                    <p className="text-gray-600 line-clamp-3">
-                      {post.content}
-                    </p>
+                    <div className="text-gray-600 line-clamp-3">
+                      <RichContentRenderer content={post.content} truncate maxLength={120} />
+                    </div>
                   </CardContent>
                   <CardFooter>
                     <Button asChild variant="outline" className="w-full">

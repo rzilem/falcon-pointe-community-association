@@ -7,6 +7,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { SiteContent } from '@/types/content';
 import { format } from 'date-fns';
 import { ArrowLeft } from 'lucide-react';
+import RichContentRenderer from '@/components/blog/RichContentRenderer';
 
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -35,13 +36,7 @@ const BlogPost = () => {
       
       if (error) throw error;
       
-      // Ensure section_type is set
-      const typedData: SiteContent = {
-        ...data,
-        section_type: data.section_type || 'blog'
-      };
-      
-      setPost(typedData);
+      setPost(data as SiteContent);
     } catch (error) {
       console.error('Error fetching blog post:', error);
       setError('Failed to load blog post');
@@ -106,6 +101,16 @@ const BlogPost = () => {
             </Link>
           </Button>
           
+          {post.featured_image && (
+            <div className="mb-8 rounded-lg overflow-hidden">
+              <img 
+                src={post.featured_image} 
+                alt={post.title || 'Blog post'} 
+                className="w-full h-auto object-cover max-h-96"
+              />
+            </div>
+          )}
+          
           <h1 className="text-3xl md:text-4xl font-bold mb-4">{post.title}</h1>
           
           <div className="flex items-center text-gray-600 mb-8">
@@ -118,10 +123,8 @@ const BlogPost = () => {
             )}
           </div>
           
-          <div className="prose max-w-none">
-            {post.content?.split('\n').map((paragraph, index) => (
-              <p key={index} className="mb-4">{paragraph}</p>
-            ))}
+          <div className="prose prose-lg max-w-none">
+            <RichContentRenderer content={post.content} />
           </div>
         </div>
       </div>
