@@ -1,18 +1,35 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 
 const GravityFormEmbed = () => {
+  useEffect(() => {
+    // Create script element for Gravity Form functionality
+    const script = document.createElement("script");
+    script.src = "/wp-content/plugins/gravity-forms-iframe-master/assets/scripts/gfembed.min.js";
+    script.type = "text/javascript";
+    script.async = true;
+    
+    // Append script to document body
+    document.body.appendChild(script);
+    
+    // Clean up when component unmounts
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
   return (
     <Card>
       <CardContent className="p-6">
         <div className="w-full">
           <iframe 
-            src="about:blank" // Replace with actual Gravity Form URL
-            height="500" 
+            src="//psprop.net/gfembed/?f=34" 
             width="100%" 
-            title="Contact Form" 
-            style={{ border: "none" }}
+            height="500" 
+            frameBorder="0" 
+            className="gfiframe"
+            title="Contact Form"
           />
         </div>
       </CardContent>
