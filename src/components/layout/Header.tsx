@@ -61,6 +61,9 @@ const Header = () => {
                     <Link to="/amenities" className="block p-2 hover:bg-muted rounded-md">
                       All Amenities
                     </Link>
+                    <Link to="/reservations" className="block p-2 hover:bg-muted rounded-md">
+                      Reservations
+                    </Link>
                     <Link to="/gallery" className="block p-2 hover:bg-muted rounded-md">
                       Photo Gallery
                     </Link>

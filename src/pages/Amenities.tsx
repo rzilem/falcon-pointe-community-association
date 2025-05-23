@@ -5,6 +5,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import ContentDisplay from "@/components/cms/ContentDisplay";
 import ImageDisplay from "@/components/cms/ImageDisplay";
 import { useImages } from "@/hooks/useImages";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const Amenities = () => {
   const { images } = useImages('amenities');
@@ -83,7 +85,7 @@ const Amenities = () => {
       {/* Amenities Overview */}
       <div className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
+          <div className="text-center mb-8">
             <ContentDisplay
               section="amenities-description"
               fallbackTitle="World-Class Amenities"
@@ -94,6 +96,11 @@ const Amenities = () => {
                 </p>
               }
             />
+            <div className="mt-6">
+              <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
+                <Link to="/reservations">Reserve Amenities</Link>
+              </Button>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -151,10 +158,15 @@ const Amenities = () => {
                       Some amenities may require reservations for private events or gatherings. 
                       Please contact the management office or use the resident portal to make reservations.
                     </p>
-                    <p className="text-gray-600">
+                    <p className="text-gray-600 mb-4">
                       Amenity center reservations must be made at least two weeks in advance and require 
                       a refundable security deposit.
                     </p>
+                    <div className="text-center mt-6">
+                      <Button asChild>
+                        <Link to="/reservations">Make a Reservation</Link>
+                      </Button>
+                    </div>
                   </>
                 }
               />
