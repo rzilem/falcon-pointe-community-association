@@ -1,0 +1,74 @@
+
+/* Container styling */
+.gravity-form-container {
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.gravity-form-card {
+  border: 1px solid rgba(var(--accent), 0.3);
+  box-shadow: 0 4px 24px -8px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(8px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gravity-form-card:hover {
+  box-shadow: 0 8px 32px -12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Gravity Form custom styling */
+.gform_wrapper form {
+  padding: 10px !important;
+}
+
+/* Style form inputs */
+.gform_wrapper input[type="text"],
+.gform_wrapper input[type="email"],
+.gform_wrapper input[type="tel"],
+.gform_wrapper textarea {
+  border: 1px solid hsl(var(--border)) !important;
+  border-radius: 6px !important;
+  padding: 12px !important;
+  background-color: rgba(255, 255, 255, 0.8) !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.gform_wrapper input[type="text"]:focus,
+.gform_wrapper input[type="email"]:focus,
+.gform_wrapper input[type="tel"]:focus,
+.gform_wrapper textarea:focus {
+  border-color: hsl(var(--primary)) !important;
+  box-shadow: 0 0 0 2px rgba(var(--primary), 0.2) !important;
+  outline: none !important;
+}
+
+/* Style submit button */
+.gform_wrapper .gform_footer input[type="submit"] {
+  background-color: hsl(var(--primary)) !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 6px !important;
+  padding: 12px 24px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: background-color 0.2s ease, transform 0.1s ease !important;
+}
+
+.gform_wrapper .gform_footer input[type="submit"]:hover {
+  background-color: hsl(var(--primary), 0.9) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Improve styling of labels */
+.gform_wrapper .gfield_label {
+  font-weight: 500 !important;
+  margin-bottom: 8px !important;
+  color: hsl(var(--foreground)) !important;
+}
+
+/* Fix for iframe height */
+.gfiframe {
+  min-height: 680px;
+}

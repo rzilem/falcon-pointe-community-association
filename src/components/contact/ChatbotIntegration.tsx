@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 
 const ChatbotIntegration = () => {
   return (
@@ -10,14 +10,16 @@ const ChatbotIntegration = () => {
       </p>
       
       <Card className="rounded-lg overflow-hidden bg-white/50 backdrop-blur-sm shadow-md border border-accent/30">
-        <div className="w-full flex justify-center p-2">
-          <iframe
-            src="https://app.cassidyai.com/embed/chat/v2/cmae9e9cw08ijujx069f8xwib"
-            style={{ border: "none" }}
-            className="h-[500px] w-full max-w-[600px]"
-            title="Falcon Pointe HOA Assistant"
-          />
-        </div>
+        <CardContent className="p-2">
+          <div className="w-full flex justify-center">
+            <iframe
+              src="https://app.cassidyai.com/embed/chat/v2/cmae9e9cw08ijujx069f8xwib"
+              style={{ border: "none" }}
+              className="h-[500px] w-full max-w-[600px]"
+              title="Falcon Pointe HOA Assistant"
+            />
+          </div>
+        </CardContent>
       </Card>
     </div>
   );

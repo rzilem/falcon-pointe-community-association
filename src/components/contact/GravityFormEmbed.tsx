@@ -1,6 +1,7 @@
 
 import React, { useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
+import "./GravityFormStyles.css";
 
 const GravityFormEmbed = () => {
   useEffect(() => {
@@ -20,13 +21,13 @@ const GravityFormEmbed = () => {
   }, []);
 
   return (
-    <Card>
+    <Card className="gravity-form-card">
       <CardContent className="p-6">
-        <div className="w-full">
+        <div className="w-full gravity-form-container">
           <iframe 
             src="//psprop.net/gfembed/?f=34" 
             width="100%" 
-            height="500" 
+            height="680" 
             frameBorder="0" 
             className="gfiframe"
             title="Contact Form"

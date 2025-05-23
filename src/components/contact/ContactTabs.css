@@ -66,3 +66,68 @@
 .chat-container:hover {
   box-shadow: 0 10px 25px rgba(0,0,0,0.1);
 }
+
+/* New styles for enhanced tabs */
+.tabs-container {
+  position: relative;
+  z-index: 1;
+}
+
+.tabs-container::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 80px;
+  background-color: rgba(var(--accent), 0.1);
+  filter: blur(40px);
+  border-radius: 50%;
+  z-index: -1;
+}
+
+.contact-card {
+  border: 1px solid rgba(var(--accent), 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* Decorative elements */
+.decorator-dot {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background-color: hsl(var(--primary), 0.5);
+  border-radius: 50%;
+}
+
+.decorator-dot-1 {
+  top: 20px;
+  right: 20%;
+  opacity: 0.7;
+}
+
+.decorator-dot-2 {
+  bottom: 40px;
+  left: 15%;
+  opacity: 0.5;
+}
+
+.decorator-dot-3 {
+  top: 40%;
+  left: 8%;
+  opacity: 0.6;
+}
+
+/* Mobile optimization */
+@media (max-width: 768px) {
+  .contact-tabs-trigger {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+}
