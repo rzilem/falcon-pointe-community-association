@@ -12,10 +12,12 @@ import { toast } from 'sonner';
 import RichTextEditor from './RichTextEditor';
 import { Copy, Save, Trash } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
+import { useAuth } from '@/context/AuthContext';
 
 const TemplatesPanel: React.FC = () => {
   const { content, loading, fetchContent, addContent, updateContent, deleteContent } = useContentManagement();
   const { openConfirmation } = useConfirmation();
+  const { user } = useAuth(); // Add this to get the current user
   const [templates, setTemplates] = useState<SiteContent[]>([]);
   const [activeTab, setActiveTab] = useState('static');
   const [newTemplate, setNewTemplate] = useState({
@@ -52,7 +54,10 @@ const TemplatesPanel: React.FC = () => {
         section: newTemplate.title.toLowerCase().replace(/\s+/g, '-'),
         section_type: 'template',
         category: activeTab, // Use the active tab as the template category (static, blog, etc.)
-        active: true
+        active: true,
+        last_updated_by: user?.id || null, // Add the missing property
+        description: newTemplate.description || null, // Make sure we provide this optional field as well
+        featured_image: null // Add other optional fields with default values
       });
       
       toast.success('Template created successfully');
