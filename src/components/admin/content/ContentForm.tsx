@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -9,7 +9,8 @@ import { useAuth } from '@/context/AuthContext';
 import ImageUpload from '../events/ImageUpload';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import RichTextEditor from './RichTextEditor';
-import { Calendar } from 'lucide-react';
+import { Calendar, FileText } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface ContentFormProps {
   initialContent?: SiteContent;
@@ -24,10 +25,11 @@ const ContentForm: React.FC<ContentFormProps> = ({ initialContent, onSave, conte
   const [content, setContent] = useState(initialContent?.content || '');
   const [category, setCategory] = useState(initialContent?.category || 'general');
   const [active, setActive] = useState(initialContent?.active !== false);
-  const [imagePath, setImagePath] = useState<string | null>(null);
+  const [imagePath, setImagePath] = useState<string | null>(initialContent?.featured_image || null);
   const [saving, setSaving] = useState(false);
   const [publishDate, setPublishDate] = useState<string>(new Date().toISOString().split('T')[0]);
   const [useSchedulePublish, setUseSchedulePublish] = useState(false);
+  const [hasLoadedTemplate, setHasLoadedTemplate] = useState(false);
 
   const sectionOptions = contentType === 'static' ? [
     { value: 'home-hero', label: 'Home Page - Hero Section' },
@@ -47,6 +49,40 @@ const ContentForm: React.FC<ContentFormProps> = ({ initialContent, onSave, conte
     { value: 'community', label: 'Community' }
   ];
 
+  // Check for templates on initial load or when tab changes
+  useEffect(() => {
+    const savedTemplate = localStorage.getItem('content_template');
+    
+    if (savedTemplate && !initialContent && !hasLoadedTemplate) {
+      try {
+        const template = JSON.parse(savedTemplate);
+        
+        // Only load if the template is for the current content type
+        if ((template.section_type === 'static' && contentType === 'static') || 
+            (template.section_type === 'blog' && contentType === 'blog')) {
+          
+          setContent(template.content || '');
+          
+          if (template.title && contentType === 'blog') {
+            setTitle(template.title);
+          }
+          
+          if (template.category && contentType === 'blog') {
+            setCategory(template.category);
+          }
+          
+          setHasLoadedTemplate(true);
+          toast.success('Template loaded successfully');
+          
+          // Clear the template from localStorage to prevent reloading
+          localStorage.removeItem('content_template');
+        }
+      } catch (error) {
+        console.error('Error loading template:', error);
+      }
+    }
+  }, [contentType, initialContent, hasLoadedTemplate]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -60,7 +96,8 @@ const ContentForm: React.FC<ContentFormProps> = ({ initialContent, onSave, conte
         category: contentType === 'blog' ? category : null,
         active: useSchedulePublish ? false : active, // If scheduled, set to draft
         section_type: contentType,
-        last_updated_by: user?.id
+        last_updated_by: user?.id,
+        featured_image: imagePath || null
         // We could add scheduled_publish_at for future enhancement
       });
       
@@ -73,6 +110,7 @@ const ContentForm: React.FC<ContentFormProps> = ({ initialContent, onSave, conte
         setActive(true);
         setImagePath(null);
         setUseSchedulePublish(false);
+        setHasLoadedTemplate(false);
       }
     } catch (error) {
       console.error('Error saving content:', error);
@@ -88,7 +126,12 @@ const ContentForm: React.FC<ContentFormProps> = ({ initialContent, onSave, conte
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{initialContent ? 'Edit' : 'Add New'} {contentType === 'static' ? 'Static Content' : 'Blog Post'}</CardTitle>
+        <CardTitle className="flex items-center">
+          {initialContent ? 'Edit' : 'Add New'} {contentType === 'static' ? 
+            <><FileText className="ml-2 h-5 w-5" /> Static Content</> : 
+            <><FileText className="ml-2 h-5 w-5" /> Blog Post</>
+          }
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-6">

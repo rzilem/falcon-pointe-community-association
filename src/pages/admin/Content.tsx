@@ -1,9 +1,8 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AdminNav from '@/components/admin/AdminNav';
 import { useAuth } from '@/context/AuthContext';
-import { toast } from 'sonner';
 import { ConfirmationDialog } from '@/components/ui/confirmation-dialog';
 import { useConfirmation } from '@/hooks/useConfirmation';
 import ContentManagementTabs from '@/components/admin/content/ContentManagementTabs';
@@ -14,7 +13,6 @@ const Content = () => {
 
   const {
     isConfirmationOpen,
-    openConfirmation,
     closeConfirmation,
     handleConfirmAction,
     confirmationTitle,

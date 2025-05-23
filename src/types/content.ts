@@ -8,13 +8,14 @@ export interface SiteContent {
   updated_at: string;
   created_at: string;
   last_updated_by: string | null;
-  section_type: 'static' | 'blog' | 'system';
+  section_type: 'static' | 'blog' | 'system' | 'template';
   category?: string | null;
   featured_image?: string | null;
+  description?: string | null;
 }
 
 export interface ContentFilter {
-  section_type?: 'static' | 'blog' | 'system';
+  section_type?: 'static' | 'blog' | 'system' | 'template';
   category?: string | null;
   active?: boolean;
   searchQuery?: string;
