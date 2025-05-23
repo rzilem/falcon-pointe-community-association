@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AdminNav from '@/components/admin/AdminNav';
@@ -12,9 +13,11 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { format, parseISO } from 'date-fns';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import EventForm from '@/components/admin/events/EventForm';
+import EventCalendar from '@/components/admin/events/EventCalendar';
 import { Calendar, Edit, Trash2, Filter } from 'lucide-react';
 import { ConfirmationDialog } from '@/components/ui/confirmation-dialog';
 import { useConfirmation } from '@/hooks/useConfirmation';
+import { useEventManagement } from '@/hooks/useEventManagement';
 
 interface Event {
   id: string;
@@ -39,6 +42,7 @@ const Events = () => {
   const [sortField, setSortField] = useState('date');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [searchQuery, setSearchQuery] = useState('');
+  const [activeView, setActiveView] = useState<'list' | 'calendar'>('list');
   
   const {
     isConfirmationOpen,
@@ -154,6 +158,11 @@ const Events = () => {
     'other'
   ];
 
+  // Function to toggle between list and calendar views
+  const toggleView = (view: 'list' | 'calendar') => {
+    setActiveView(view);
+  };
+
   return (
     <div>
       <AdminNav />
@@ -164,6 +173,9 @@ const Events = () => {
           <TabsList className="mb-8">
             <TabsTrigger value="list" onClick={() => setEditingEvent(null)}>
               Event List
+            </TabsTrigger>
+            <TabsTrigger value="calendar" onClick={() => setEditingEvent(null)}>
+              Calendar View
             </TabsTrigger>
             <TabsTrigger value="create" onClick={() => setEditingEvent(null)}>
               Create Event
@@ -306,6 +318,21 @@ const Events = () => {
                     </div>
                   )}
                 </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="calendar">
+            <Card>
+              <CardHeader>
+                <CardTitle>Calendar View</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <EventCalendar
+                  events={events}
+                  onEditEvent={handleEditEvent}
+                  onDeleteEvent={handleDeleteEvent}
+                />
               </CardContent>
             </Card>
           </TabsContent>

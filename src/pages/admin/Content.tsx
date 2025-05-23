@@ -5,7 +5,6 @@ import AdminNav from '@/components/admin/AdminNav';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { toast } from 'sonner';
 import { Switch } from '@/components/ui/switch';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { format } from 'date-fns';
@@ -22,6 +21,8 @@ import {
   CollapsibleTrigger 
 } from '@/components/ui/collapsible';
 import { ChevronDown, Calendar, Tag, Edit, Trash, Eye } from 'lucide-react';
+import { ConfirmationDialog } from '@/components/ui/confirmation-dialog';
+import { useConfirmation } from '@/hooks/useConfirmation';
 
 const Content = () => {
   const { isAdmin, user } = useAuth();
@@ -45,6 +46,18 @@ const Content = () => {
   const [filterText, setFilterText] = useState('');
   const [showPublishedOnly, setShowPublishedOnly] = useState(false);
   
+  const {
+    isConfirmationOpen,
+    openConfirmation,
+    closeConfirmation,
+    handleConfirmAction,
+    confirmationTitle,
+    confirmationDescription,
+    confirmationVariant,
+    confirmationButtonLabel,
+    cancelButtonLabel
+  } = useConfirmation();
+
   useEffect(() => {
     if (!isAdmin) {
       navigate('/auth', { replace: true });
@@ -72,15 +85,14 @@ const Content = () => {
       
       const sortOptions = {
         field: sortField as any,
-        direction: sortDirection
+        direction: sortDirection as 'asc' | 'desc'
       };
       
-      // Reuse the same hook with specific parameters
-      const { content: fetchedPosts } = await fetchContent(filter, sortOptions);
-      setBlogPosts(fetchedPosts || []);
+      // Fetch posts using our hook
+      const posts = await fetchContent(filter, sortOptions);
+      setBlogPosts(posts);
     } catch (error) {
       console.error('Error fetching blog posts:', error);
-      toast.error('Failed to load blog posts');
     } finally {
       setBlogLoading(false);
     }
@@ -88,16 +100,22 @@ const Content = () => {
 
   const handleAddContent = async (newContent: Partial<SiteContent>) => {
     try {
-      await addContent({
+      // Create required properties for the content
+      const contentToAdd = {
         ...newContent,
-        section_type: activeTab === 'blog' ? 'blog' : 'static',
-      });
+        section_type: activeTab === 'blog' ? 'blog' as const : 'static' as const,
+        section: newContent.section || 'general',
+        title: newContent.title || null,
+        content: newContent.content || null,
+        active: newContent.active !== undefined ? newContent.active : true,
+        last_updated_by: user?.id || null
+      } as Omit<SiteContent, 'id' | 'created_at' | 'updated_at'>;
       
-      toast.success('Content added successfully');
+      await addContent(contentToAdd);
       fetchContentData();
+      toast.success('Content added successfully');
     } catch (error) {
       console.error('Error adding content:', error);
-      toast.error('Failed to add content');
     }
   };
 
@@ -111,16 +129,22 @@ const Content = () => {
   };
 
   const handleDeleteContent = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this content? This action cannot be undone.")) {
-      return;
-    }
-    
-    try {
-      await deleteContent(id);
-      fetchContentData();
-    } catch (error) {
-      console.error('Error deleting content:', error);
-    }
+    openConfirmation({
+      itemId: id,
+      title: "Delete Content",
+      description: "Are you sure you want to delete this content? This action cannot be undone.",
+      variant: "delete",
+      confirmLabel: "Delete",
+      cancelLabel: "Cancel",
+      onConfirm: async (contentId) => {
+        try {
+          await deleteContent(contentId);
+          fetchContentData();
+        } catch (error) {
+          console.error('Error deleting content:', error);
+        }
+      }
+    });
   };
 
   const handleToggleSection = (section: string) => {
@@ -338,6 +362,17 @@ const Content = () => {
           </TabsContent>
         </Tabs>
       </div>
+
+      <ConfirmationDialog
+        isOpen={isConfirmationOpen}
+        onClose={closeConfirmation}
+        onConfirm={handleConfirmAction}
+        title={confirmationTitle}
+        description={confirmationDescription}
+        confirmLabel={confirmationButtonLabel}
+        cancelLabel={cancelButtonLabel}
+        variant={confirmationVariant}
+      />
     </div>
   );
 };

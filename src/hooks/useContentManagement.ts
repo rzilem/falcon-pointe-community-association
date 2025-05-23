@@ -60,14 +60,16 @@ export const useContentManagement = () => {
       // Make sure all returned items have the required section_type field
       const typedData: SiteContent[] = filteredData.map(item => ({
         ...item,
-        section_type: item.section_type || 'static' // Default to 'static' if section_type is missing
+        section_type: (item.section_type || 'static') as 'static' | 'blog' | 'system'
       }));
       
       setContent(typedData);
+      return typedData;
     } catch (err) {
       console.error('Error fetching content:', err);
       setError('Failed to load content');
       toast.error('Failed to load content');
+      return [] as SiteContent[];
     } finally {
       setLoading(false);
     }
@@ -84,7 +86,7 @@ export const useContentManagement = () => {
       if (error) throw error;
       
       toast.success('Content added successfully');
-      return data;
+      return data as SiteContent;
     } catch (err) {
       console.error('Error adding content:', err);
       toast.error('Failed to add content');
@@ -107,7 +109,7 @@ export const useContentManagement = () => {
       if (error) throw error;
       
       toast.success('Content updated successfully');
-      return data;
+      return data as SiteContent;
     } catch (err) {
       console.error('Error updating content:', err);
       toast.error('Failed to update content');
