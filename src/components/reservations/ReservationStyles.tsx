@@ -3,7 +3,8 @@ import React from 'react';
 
 const ReservationStyles = () => {
   return (
-    <style jsx global>{`
+    <style dangerouslySetInnerHTML={{
+      __html: `
       .calendly-inline-widget iframe {
         height: 100% !important;
         min-height: 600px !important;
@@ -13,7 +14,7 @@ const ReservationStyles = () => {
       .calendly-badge-widget {
         margin-bottom: 0 !important;
       }
-    `}</style>
+    `}} />
   );
 };
 

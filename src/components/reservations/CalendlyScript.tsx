@@ -42,7 +42,7 @@ const CalendlyScript = () => {
     tabTriggers.forEach(trigger => {
       trigger.addEventListener('click', () => {
         // Slight delay to ensure DOM is updated
-        setTimeout(reinitializeCalendly, 100);
+        setTimeout(reinitializeCalendly, 200);
       });
     });
 
@@ -52,7 +52,7 @@ const CalendlyScript = () => {
         reinitializeCalendly();
         clearInterval(intervalId);
       }
-    }, 200);
+    }, 300);
 
     return () => {
       // Cleanup event listeners

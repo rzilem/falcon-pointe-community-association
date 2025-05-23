@@ -9,8 +9,8 @@ const PoolPavilionTab = () => {
     <Card className="overflow-hidden border-0 shadow-md">
       <CardContent className="p-0">
         <div className="flex flex-col">
-          {/* Info Section - Compact Design */}
-          <div className="p-4 md:p-6 bg-white border-b border-gray-100 flex flex-col md:flex-row gap-4">
+          {/* Info Section - More Compact Design */}
+          <div className="p-3 md:p-4 bg-white border-b border-gray-100 flex flex-col md:flex-row gap-4">
             <div className="w-full md:w-1/3">
               <ImageDisplay 
                 location="pool-pavilion" 
@@ -64,15 +64,17 @@ const PoolPavilionTab = () => {
             </div>
           </div>
           
-          {/* Calendar - Full Width with increased height */}
-          <div className="bg-white" style={{ height: 'calc(80vh - 50px)', minHeight: '600px' }}>
+          {/* Calendar - Full Width with increased height (added 200px) */}
+          <div className="bg-white" style={{ height: 'calc(80vh + 150px)', minHeight: '800px' }}>
             <div className="calendly-inline-widget calendly-pool-pavilion" 
               data-url="https://calendly.com/falconpointe/pool-pavilion?hide_gdpr_banner=1" 
               style={{
                 width: "100%",
                 height: "100%",
                 overflow: "hidden",
-                display: "block"
+                display: "block",
+                padding: "0px",
+                margin: "0px"
               }}>
             </div>
           </div>
