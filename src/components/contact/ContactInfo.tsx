@@ -1,13 +1,16 @@
 
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { MapPin, Phone, Clock, Mail } from "lucide-react";
+import { MapPin, Phone, Clock, Mail, Building2 } from "lucide-react";
 
 const ContactInfo = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Office Information</CardTitle>
+        <CardTitle className="flex items-center gap-2">
+          <Building2 className="h-5 w-5 text-primary" />
+          Office Information
+        </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="flex items-start gap-3">
