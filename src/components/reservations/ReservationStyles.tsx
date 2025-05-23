@@ -7,7 +7,7 @@ const ReservationStyles = () => {
       __html: `
       .calendly-inline-widget iframe {
         height: 100% !important;
-        min-height: 700px !important;
+        min-height: 1050px !important;
       }
       
       /* Ensure Calendly doesn't add scrollbars */
@@ -25,6 +25,14 @@ const ReservationStyles = () => {
         position: relative !important;
         min-width: 320px;
         height: 100%;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+
+      /* Remove extra space around Calendly */
+      .calendly-container {
+        padding: 0 !important;
+        margin: 0 !important;
       }
 
       /* Improve visibility during tab switching */

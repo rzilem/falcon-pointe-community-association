@@ -4,7 +4,7 @@ import Layout from "@/components/layout/Layout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ContentDisplay from "@/components/cms/ContentDisplay";
 import CalendlyScript from "@/components/reservations/CalendlyScript";
-import { Calendar, Users } from "lucide-react";
+import { Building2, SwimmingPool } from "lucide-react";
 import ReservationHero from "@/components/reservations/ReservationHero";
 import PoolPavilionTab from "@/components/reservations/PoolPavilionTab";
 import EventRoomTab from "@/components/reservations/EventRoomTab";
@@ -23,9 +23,9 @@ const Reservations = () => {
       <ReservationHero />
 
       {/* Reservations Content */}
-      <div className="py-8 bg-gray-50">
+      <div className="py-6 bg-gray-50">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto mb-6">
+          <div className="max-w-4xl mx-auto mb-4">
             <ContentDisplay 
               section="reservations-info" 
               fallbackTitle="Reserve Our Community Spaces" 
@@ -50,14 +50,14 @@ const Reservations = () => {
                   value="pool-pavilion" 
                   className="text-xl font-semibold py-4 flex gap-2 items-center"
                 >
-                  <Users className="h-5 w-5" /> 
+                  <SwimmingPool className="h-5 w-5" /> 
                   <span>Pool Pavilion</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="event-room" 
                   className="text-xl font-semibold py-4 flex gap-2 items-center"
                 >
-                  <Calendar className="h-5 w-5" />
+                  <Building2 className="h-5 w-5" />
                   <span>Indoor Event Room</span>
                 </TabsTrigger>
               </TabsList>
