@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AdminNav from '@/components/admin/AdminNav';
@@ -7,16 +6,15 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Switch } from '@/components/ui/switch';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { format, parseISO } from 'date-fns';
-import ImageUpload from '@/components/admin/events/ImageUpload';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import EventForm from '@/components/admin/events/EventForm';
 import { Calendar, Edit, Trash2, Filter } from 'lucide-react';
+import { ConfirmationDialog } from '@/components/ui/confirmation-dialog';
+import { useConfirmation } from '@/hooks/useConfirmation';
 
 interface Event {
   id: string;
@@ -41,6 +39,18 @@ const Events = () => {
   const [sortField, setSortField] = useState('date');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [searchQuery, setSearchQuery] = useState('');
+  
+  const {
+    isConfirmationOpen,
+    openConfirmation,
+    closeConfirmation,
+    handleConfirmAction,
+    confirmationTitle,
+    confirmationDescription,
+    confirmationVariant,
+    confirmationButtonLabel,
+    cancelButtonLabel
+  } = useConfirmation();
 
   useEffect(() => {
     if (!isAdmin) {
@@ -87,24 +97,30 @@ const Events = () => {
   };
 
   const handleDeleteEvent = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this event?')) {
-      return;
-    }
+    openConfirmation({
+      itemId: id,
+      title: "Delete Event",
+      description: "Are you sure you want to delete this event? This action cannot be undone.",
+      variant: "delete",
+      confirmLabel: "Delete",
+      cancelLabel: "Cancel",
+      onConfirm: async (eventId) => {
+        try {
+          const { error } = await supabase
+            .from('events')
+            .delete()
+            .eq('id', eventId);
 
-    try {
-      const { error } = await supabase
-        .from('events')
-        .delete()
-        .eq('id', id);
+          if (error) throw error;
 
-      if (error) throw error;
-
-      toast.success('Event deleted successfully');
-      fetchEvents();
-    } catch (error) {
-      console.error('Error deleting event:', error);
-      toast.error('Failed to delete event');
-    }
+          toast.success('Event deleted successfully');
+          fetchEvents();
+        } catch (error) {
+          console.error('Error deleting event:', error);
+          toast.error('Failed to delete event');
+        }
+      }
+    });
   };
 
   const handleEditEvent = (event: Event) => {
@@ -315,6 +331,17 @@ const Events = () => {
           </TabsContent>
         </Tabs>
       </div>
+      
+      <ConfirmationDialog
+        isOpen={isConfirmationOpen}
+        onClose={closeConfirmation}
+        onConfirm={handleConfirmAction}
+        title={confirmationTitle}
+        description={confirmationDescription}
+        confirmLabel={confirmationButtonLabel}
+        cancelLabel={cancelButtonLabel}
+        variant={confirmationVariant}
+      />
     </div>
   );
 };

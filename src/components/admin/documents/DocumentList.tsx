@@ -1,8 +1,9 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Document } from "@/types/document";
 import { FileText } from "lucide-react";
+import { ConfirmationDialog } from "@/components/ui/confirmation-dialog";
 
 interface DocumentListProps {
   documents: Document[];
@@ -11,6 +12,21 @@ interface DocumentListProps {
 }
 
 const DocumentList = ({ documents, onEdit, onDelete }: DocumentListProps) => {
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [documentToDelete, setDocumentToDelete] = useState<string | null>(null);
+
+  const handleDeleteClick = (id: string) => {
+    setDocumentToDelete(id);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (documentToDelete) {
+      onDelete(documentToDelete);
+      setDocumentToDelete(null);
+    }
+  };
+
   if (documents.length === 0) {
     return (
       <div className="p-8 text-center border rounded-lg">
@@ -51,13 +67,24 @@ const DocumentList = ({ documents, onEdit, onDelete }: DocumentListProps) => {
             <Button
               variant="destructive"
               size="sm"
-              onClick={() => onDelete(doc.id)}
+              onClick={() => handleDeleteClick(doc.id)}
             >
               Delete
             </Button>
           </div>
         </div>
       ))}
+
+      <ConfirmationDialog
+        isOpen={deleteDialogOpen}
+        onClose={() => setDeleteDialogOpen(false)}
+        onConfirm={handleConfirmDelete}
+        title="Delete Document"
+        description="Are you sure you want to delete this document? This action cannot be undone."
+        confirmLabel="Delete"
+        cancelLabel="Cancel"
+        variant="delete"
+      />
     </div>
   );
 };

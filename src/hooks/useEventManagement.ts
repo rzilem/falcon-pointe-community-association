@@ -39,6 +39,7 @@ export const useEventManagement = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const fetchEvents = async (
     filter?: EventFilter,
@@ -144,6 +145,7 @@ export const useEventManagement = () => {
 
   const deleteEvent = async (id: string) => {
     try {
+      setIsDeleting(true);
       const { error } = await supabase
         .from('events')
         .delete()
@@ -156,6 +158,8 @@ export const useEventManagement = () => {
       console.error('Error deleting event:', err);
       toast.error('Failed to delete event');
       throw err;
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -181,6 +185,7 @@ export const useEventManagement = () => {
     events,
     loading,
     error,
+    isDeleting,
     fetchEvents,
     addEvent,
     updateEvent,

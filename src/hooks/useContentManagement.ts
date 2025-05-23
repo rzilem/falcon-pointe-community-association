@@ -8,6 +8,7 @@ export const useContentManagement = () => {
   const [content, setContent] = useState<SiteContent[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const fetchContent = async (
     filter?: ContentFilter,
@@ -116,6 +117,7 @@ export const useContentManagement = () => {
 
   const deleteContent = async (id: string) => {
     try {
+      setIsDeleting(true);
       const { error } = await supabase
         .from('site_content')
         .delete()
@@ -128,6 +130,8 @@ export const useContentManagement = () => {
       console.error('Error deleting content:', err);
       toast.error('Failed to delete content');
       throw err;
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -135,6 +139,7 @@ export const useContentManagement = () => {
     content,
     loading,
     error,
+    isDeleting,
     fetchContent,
     addContent,
     updateContent,
