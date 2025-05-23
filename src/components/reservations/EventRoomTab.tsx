@@ -60,7 +60,7 @@ const EventRoomTab = () => {
             </div>
           </div>
           
-          {/* Calendar - Full Width with increased height (added 200px) */}
+          {/* Calendar - Full Width with increased height */}
           <div className="bg-white" style={{ height: 'calc(80vh + 150px)', minHeight: '800px' }}>
             <div className="calendly-inline-widget calendly-event-room" 
               data-url="https://calendly.com/falconpointe/30min?hide_gdpr_banner=1" 
@@ -72,6 +72,9 @@ const EventRoomTab = () => {
                 padding: "0px",
                 margin: "0px"
               }}>
+              <div className="flex items-center justify-center w-full h-32">
+                <p className="text-gray-400 text-sm">Loading calendar...</p>
+              </div>
             </div>
           </div>
         </div>

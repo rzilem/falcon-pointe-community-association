@@ -14,18 +14,10 @@ const Reservations = () => {
   // Track active tab to help with Calendly reinitialization
   const [activeTab, setActiveTab] = useState<string>("pool-pavilion");
 
-  // Effect to handle Calendly visibility when tabs change
-  useEffect(() => {
-    // Force redraw of Calendly widgets when tab changes
-    const activeWidget = document.querySelector(`.calendly-${activeTab}`);
-    if (activeWidget) {
-      activeWidget.classList.add('calendly-active');
-    }
-  }, [activeTab]);
-
   return (
     <Layout>
-      <CalendlyScript />
+      {/* Pass the active tab to CalendlyScript */}
+      <CalendlyScript activeTab={activeTab} />
       
       {/* Hero Section */}
       <ReservationHero />
@@ -70,11 +62,11 @@ const Reservations = () => {
                 </TabsTrigger>
               </TabsList>
               
-              <TabsContent value="pool-pavilion">
+              <TabsContent value="pool-pavilion" className="calendly-tab-content">
                 <PoolPavilionTab />
               </TabsContent>
               
-              <TabsContent value="event-room">
+              <TabsContent value="event-room" className="calendly-tab-content">
                 <EventRoomTab />
               </TabsContent>
             </Tabs>
