@@ -37,17 +37,55 @@ const ReservationStyles = () => {
 
       /* Improve visibility during tab switching */
       .calendly-tab-content {
-        transition: opacity 0.2s ease-out;
+        transition: opacity 0.3s ease-out, transform 0.3s ease-out;
       }
       
       .calendly-tab-content[data-state="active"] {
         opacity: 1;
+        transform: translateY(0);
       }
       
       .calendly-tab-content[data-state="inactive"] {
         opacity: 0;
+        transform: translateY(10px);
         pointer-events: none;
         position: absolute;
+      }
+
+      /* Add animation for fade in */
+      .animate-fade-in {
+        animation: fadeIn 0.5s ease-out forwards;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Enhanced tab styles */
+      [role="tab"][data-state="active"] {
+        background-color: #ffffff;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        transition: all 0.2s ease;
+      }
+      
+      [role="tab"] {
+        transition: all 0.2s ease;
+      }
+
+      /* Make images nicer */
+      .hover-image {
+        transition: transform 0.5s ease;
+      }
+      
+      .hover-image:hover {
+        transform: scale(1.05);
       }
     `}} />
   );
