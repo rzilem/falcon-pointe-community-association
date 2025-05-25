@@ -1,10 +1,10 @@
-
 import React, { useState, useEffect } from "react";
 import Layout from "@/components/layout/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
 import { Calendar, FileText } from "lucide-react";
+import { getImageUrl, getContentTypeLabel } from "@/utils/newsEventsUtils";
 
 interface Event {
   id: string;
@@ -102,7 +102,7 @@ const NewsEvents = () => {
         .eq('active', true)
         .order('created_at', { ascending: false });
       
-      if (filter === "announcements" || filter === "news" || filter === "community") {
+      if (filter === "announcements" || filter === "news" || filter === "community" || filter === "maintenance") {
         blogQuery = blogQuery.eq('category', filter);
       } else if (filter === "blog") {
         // Show all blog posts when "blog" filter is selected
@@ -189,44 +189,11 @@ const NewsEvents = () => {
     }
   };
 
-  const getImageUrl = (imagePath: string | null) => {
-    if (!imagePath) return null;
-    
-    // If it's already a full URL (like the fallback images), return as-is
-    if (imagePath.startsWith('http') || imagePath.startsWith('/lovable-uploads/')) {
-      return imagePath;
-    }
-    
-    // If it's a Supabase storage path, get the public URL
-    const { data } = supabase.storage
-      .from('site-images')
-      .getPublicUrl(imagePath);
-    
-    return data.publicUrl;
-  };
-
-  const getContentTypeLabel = (item: ContentItem) => {
-    if (item.type === 'event') {
-      return 'Event';
-    } else {
-      switch (item.category) {
-        case 'announcements':
-          return 'Announcement';
-        case 'news':
-          return 'News';
-        case 'community':
-          return 'Community Update';
-        default:
-          return 'Blog Post';
-      }
-    }
-  };
-
   const getContentIcon = (item: ContentItem) => {
     return item.type === 'event' ? Calendar : FileText;
   };
 
-  // Fallback events in case none are found in the database
+  // Updated fallback events with relevant categories
   const fallbackEvents: Event[] = [
     {
       id: "fallback-1",
@@ -242,13 +209,13 @@ const NewsEvents = () => {
     },
     {
       id: "fallback-2",
-      title: "Tennis Tournament",
+      title: "HOA Board Meeting",
       date: "2025-08-15",
-      time: "9:00 AM - 5:00 PM",
-      location: "Tennis Courts",
-      description: "Community tennis tournament for all skill levels. Sign up at the amenity center.",
+      time: "7:00 PM - 9:00 PM",
+      location: "Community Center",
+      description: "Monthly HOA board meeting. All residents welcome to attend.",
       image_path: "/lovable-uploads/4c2a90e2-ed6a-4fd9-9929-d876a2684ba8.png",
-      category: "sport",
+      category: "meeting",
       type: 'event',
       display_date: "2025-08-15"
     },
@@ -268,17 +235,17 @@ const NewsEvents = () => {
 
   const displayContent = content.length > 0 ? content : fallbackEvents;
   
+  // Updated categories - removed sports and other irrelevant categories
   const categories = [
     { id: "all", name: "All Content" },
     { id: "community", name: "Community" },
     { id: "social", name: "Social" },
-    { id: "sport", name: "Sports" },
     { id: "meeting", name: "Meetings" },
     { id: "holiday", name: "Holiday" },
     { id: "announcements", name: "Announcements" },
     { id: "news", name: "News" },
-    { id: "blog", name: "Blog Posts" },
-    { id: "other", name: "Other" }
+    { id: "maintenance", name: "Maintenance" },
+    { id: "blog", name: "Blog Posts" }
   ];
 
   return (
@@ -363,9 +330,20 @@ const NewsEvents = () => {
                           className="w-full h-full object-cover"
                           onError={(e) => {
                             const target = e.target as HTMLImageElement;
-                            target.onerror = null;
-                            target.src = "/placeholder.svg";
+                            console.log('Image failed to load, replacing with placeholder');
+                            target.style.display = 'none';
+                            const parent = target.parentElement;
+                            if (parent) {
+                              parent.innerHTML = `
+                                <div class="w-full h-full bg-gray-200 flex items-center justify-center">
+                                  <div class="h-12 w-12 text-gray-400">
+                                    ${item.type === 'event' ? '📅' : '📄'}
+                                  </div>
+                                </div>
+                              `;
+                            }
                           }}
+                          onLoad={() => console.log('Image loaded successfully:', imageUrl)}
                         />
                       ) : (
                         <div className="w-full h-full bg-gray-200 flex items-center justify-center">

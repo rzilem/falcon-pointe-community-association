@@ -12,10 +12,14 @@ export const formatDate = (dateString: string) => {
 };
 
 export const getImageUrl = (imagePath: string | null) => {
-  if (!imagePath) return null;
+  if (!imagePath) {
+    console.log('No image path provided');
+    return null;
+  }
   
   // If it's already a full URL (like the fallback images), return as-is
   if (imagePath.startsWith('http') || imagePath.startsWith('/lovable-uploads/')) {
+    console.log('Using direct image path:', imagePath);
     return imagePath;
   }
   
@@ -25,6 +29,7 @@ export const getImageUrl = (imagePath: string | null) => {
       .from('site-images')
       .getPublicUrl(imagePath);
     
+    console.log('Generated Supabase URL:', data.publicUrl, 'for path:', imagePath);
     return data.publicUrl;
   } catch (error) {
     console.error('Error getting image URL from Supabase storage:', error);
@@ -43,6 +48,8 @@ export const getContentTypeLabel = (item: ContentItem) => {
         return 'News';
       case 'community':
         return 'Community Update';
+      case 'maintenance':
+        return 'Maintenance Notice';
       default:
         return 'Blog Post';
     }

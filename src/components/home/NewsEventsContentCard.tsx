@@ -21,8 +21,12 @@ const NewsEventsContentCard = ({ item }: NewsEventsContentCardProps) => {
   const ContentIcon = item.type === 'event' ? Calendar : FileText;
   
   const handleImageError = () => {
-    console.log('Image failed to load:', imageUrl);
+    console.log('Image failed to load, falling back to icon:', imageUrl);
     setImageError(true);
+  };
+  
+  const handleImageLoad = () => {
+    console.log('Image loaded successfully:', imageUrl);
   };
   
   return (
@@ -34,7 +38,7 @@ const NewsEventsContentCard = ({ item }: NewsEventsContentCardProps) => {
             alt={item.title || 'Content image'}
             className="w-full h-full object-cover"
             onError={handleImageError}
-            onLoad={() => console.log('Image loaded successfully:', imageUrl)}
+            onLoad={handleImageLoad}
           />
         ) : (
           <div className="w-full h-full bg-gray-200 flex items-center justify-center">
