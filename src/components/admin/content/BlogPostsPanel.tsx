@@ -6,6 +6,7 @@ import BlogPostEditor from './BlogPostEditor';
 import BlogForm from './BlogForm';
 import ContentFilters from './ContentFilters';
 import BlogPostsTable from './BlogPostsTable';
+import AdminPanel from './AdminPanel';
 import { useBlogPosts } from '@/hooks/useBlogPosts';
 
 const BlogPostsPanel: React.FC = () => {
@@ -58,9 +59,7 @@ const BlogPostsPanel: React.FC = () => {
     <div className="space-y-8">
       <BlogForm onSave={handleAddContent} />
       
-      <div className="border rounded-md p-6">
-        <h2 className="text-xl font-semibold mb-4">Manage Blog Posts</h2>
-        
+      <AdminPanel title="Manage Blog Posts">
         <div className="space-y-4">
           <ContentFilters
             filterText={filterText}
@@ -86,7 +85,7 @@ const BlogPostsPanel: React.FC = () => {
             />
           )}
         </div>
-      </div>
+      </AdminPanel>
 
       {editingPost && (
         <BlogPostEditor
