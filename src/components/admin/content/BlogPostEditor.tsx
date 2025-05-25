@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { SiteContent } from '@/types/content';
 import { useAuth } from '@/context/AuthContext';
-import ImageUpload from '../events/ImageUpload';
+import UnifiedImageUpload from '../images/UnifiedImageUpload';
 import RichTextEditor from './RichTextEditor';
 import { toast } from 'sonner';
 
@@ -25,7 +25,7 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, isOpen, onClose, 
   const [content, setContent] = useState(post.content || '');
   const [category, setCategory] = useState(post.category || 'general');
   const [active, setActive] = useState(post.active !== false);
-  const [imagePath, setImagePath] = useState<string | null>(post.featured_image || null);
+  const [featuredImage, setFeaturedImage] = useState<string | null>(post.featured_image || null);
   const [saving, setSaving] = useState(false);
 
   const categoryOptions = [
@@ -59,7 +59,7 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, isOpen, onClose, 
         category,
         active,
         last_updated_by: user?.id,
-        featured_image: imagePath
+        featured_image: featuredImage
       });
       
       toast.success('Blog post updated successfully');
@@ -79,7 +79,7 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, isOpen, onClose, 
     setContent(post.content || '');
     setCategory(post.category || 'general');
     setActive(post.active !== false);
-    setImagePath(post.featured_image || null);
+    setFeaturedImage(post.featured_image || null);
     onClose();
   };
 
@@ -140,9 +140,10 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, isOpen, onClose, 
           
           <div className="grid gap-2">
             <Label>Featured Image (Optional)</Label>
-            <ImageUpload
-              onImageUploaded={(url) => setImagePath(url)}
-              existingImageUrl={imagePath}
+            <UnifiedImageUpload
+              onImageUploaded={(url) => setFeaturedImage(url || null)}
+              existingImageUrl={featuredImage}
+              location={`blog-${post.section}`}
             />
           </div>
           

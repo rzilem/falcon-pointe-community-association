@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { SiteContent } from '@/types/content';
 import { useAuth } from '@/context/AuthContext';
-import ImageUpload from '../events/ImageUpload';
+import UnifiedImageUpload from '../images/UnifiedImageUpload';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import RichTextEditor from './RichTextEditor';
 import { Calendar, FileText } from 'lucide-react';
@@ -25,7 +25,7 @@ const ContentForm: React.FC<ContentFormProps> = ({ initialContent, onSave, conte
   const [content, setContent] = useState(initialContent?.content || '');
   const [category, setCategory] = useState(initialContent?.category || 'general');
   const [active, setActive] = useState(initialContent?.active !== false);
-  const [imagePath, setImagePath] = useState<string | null>(initialContent?.featured_image || null);
+  const [featuredImage, setFeaturedImage] = useState<string | null>(initialContent?.featured_image || null);
   const [saving, setSaving] = useState(false);
   const [publishDate, setPublishDate] = useState<string>(new Date().toISOString().split('T')[0]);
   const [useSchedulePublish, setUseSchedulePublish] = useState(false);
@@ -97,7 +97,7 @@ const ContentForm: React.FC<ContentFormProps> = ({ initialContent, onSave, conte
         active: useSchedulePublish ? false : active, // If scheduled, set to draft
         section_type: contentType,
         last_updated_by: user?.id,
-        featured_image: imagePath || null
+        featured_image: featuredImage
         // We could add scheduled_publish_at for future enhancement
       });
       
@@ -108,7 +108,7 @@ const ContentForm: React.FC<ContentFormProps> = ({ initialContent, onSave, conte
         setContent('');
         setCategory('general');
         setActive(true);
-        setImagePath(null);
+        setFeaturedImage(null);
         setUseSchedulePublish(false);
         setHasLoadedTemplate(false);
       }
@@ -222,9 +222,10 @@ const ContentForm: React.FC<ContentFormProps> = ({ initialContent, onSave, conte
             <>
               <div className="grid gap-2">
                 <Label>Featured Image (Optional)</Label>
-                <ImageUpload
-                  onImageUploaded={(url) => setImagePath(url)}
-                  existingImageUrl={imagePath}
+                <UnifiedImageUpload
+                  onImageUploaded={(url) => setFeaturedImage(url || null)}
+                  existingImageUrl={featuredImage}
+                  location={section ? `blog-${section}` : 'blog-draft'}
                 />
               </div>
               

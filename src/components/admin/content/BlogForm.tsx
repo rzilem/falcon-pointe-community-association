@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { SiteContent } from '@/types/content';
 import { useAuth } from '@/context/AuthContext';
-import ImageUpload from '../events/ImageUpload';
+import UnifiedImageUpload from '../images/UnifiedImageUpload';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import RichTextEditor from './RichTextEditor';
 import { Calendar, FileText } from 'lucide-react';
@@ -24,7 +24,7 @@ const BlogForm: React.FC<BlogFormProps> = ({ initialContent, onSave }) => {
   const [content, setContent] = useState(initialContent?.content || '');
   const [category, setCategory] = useState(initialContent?.category || 'general');
   const [active, setActive] = useState(initialContent?.active !== false);
-  const [imagePath, setImagePath] = useState<string | null>(initialContent?.featured_image || null);
+  const [featuredImage, setFeaturedImage] = useState<string | null>(initialContent?.featured_image || null);
   const [saving, setSaving] = useState(false);
   const [publishDate, setPublishDate] = useState<string>(new Date().toISOString().split('T')[0]);
   const [useSchedulePublish, setUseSchedulePublish] = useState(false);
@@ -80,7 +80,7 @@ const BlogForm: React.FC<BlogFormProps> = ({ initialContent, onSave }) => {
         active: useSchedulePublish ? false : active,
         section_type: 'blog',
         last_updated_by: user?.id,
-        featured_image: imagePath || null
+        featured_image: featuredImage
       });
       
       if (!initialContent) {
@@ -89,7 +89,7 @@ const BlogForm: React.FC<BlogFormProps> = ({ initialContent, onSave }) => {
         setContent('');
         setCategory('general');
         setActive(true);
-        setImagePath(null);
+        setFeaturedImage(null);
         setUseSchedulePublish(false);
         setHasLoadedTemplate(false);
       }
@@ -159,9 +159,10 @@ const BlogForm: React.FC<BlogFormProps> = ({ initialContent, onSave }) => {
           
           <div className="grid gap-2">
             <Label>Featured Image (Optional)</Label>
-            <ImageUpload
-              onImageUploaded={(url) => setImagePath(url)}
-              existingImageUrl={imagePath}
+            <UnifiedImageUpload
+              onImageUploaded={(url) => setFeaturedImage(url || null)}
+              existingImageUrl={featuredImage}
+              location={section ? `blog-${section}` : 'blog-draft'}
             />
           </div>
           
