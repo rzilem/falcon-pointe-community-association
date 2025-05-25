@@ -32,7 +32,7 @@ export const getImageUrl = (imagePath: string | null) => {
     return correctedPath;
   }
   
-  // For other paths, try Supabase storage as fallback
+  // For Supabase storage paths, get the public URL
   try {
     const { data } = supabase.storage
       .from('site-images')

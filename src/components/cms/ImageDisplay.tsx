@@ -43,7 +43,6 @@ const ImageDisplay: React.FC<ImageDisplayProps> = ({
   const imageAlt = image?.alt_text || alt;
 
   const handleImageError = () => {
-    console.log('Image failed to load from Supabase, trying fallback:', imageSrc);
     setImgError(true);
   };
 
@@ -67,7 +66,6 @@ const ImageDisplay: React.FC<ImageDisplayProps> = ({
         className={className} 
         style={style}
         onError={handleImageError}
-        onLoad={() => console.log('Image loaded successfully:', imageSrc)}
       />
       
       {showHoverControls && isAdmin && showControls && (
