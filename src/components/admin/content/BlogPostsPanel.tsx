@@ -11,6 +11,7 @@ import { Edit, Trash } from 'lucide-react';
 import { SiteContent, ContentSortOptions } from '@/types/content';
 import ContentPreview from './ContentPreview';
 import ContentForm from './ContentForm';
+import BlogPostEditor from './BlogPostEditor';
 
 const BlogPostsPanel: React.FC = () => {
   const { openConfirmation } = useConfirmation();
@@ -22,6 +23,7 @@ const BlogPostsPanel: React.FC = () => {
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
   const [filterText, setFilterText] = useState('');
   const [showPublishedOnly, setShowPublishedOnly] = useState(false);
+  const [editingPost, setEditingPost] = useState<SiteContent | null>(null);
   
   const { fetchContent } = useContentManagement();
 
@@ -64,6 +66,15 @@ const BlogPostsPanel: React.FC = () => {
     }
   };
 
+  const handleUpdateContent = async (id: string, updates: Partial<SiteContent>) => {
+    try {
+      await updateContent(id, updates);
+      fetchBlogPosts();
+    } catch (error) {
+      console.error('Error updating content:', error);
+    }
+  };
+
   const handleDeleteContent = async (id: string) => {
     openConfirmation({
       itemId: id,
@@ -81,6 +92,14 @@ const BlogPostsPanel: React.FC = () => {
         }
       }
     });
+  };
+
+  const handleEditPost = (post: SiteContent) => {
+    setEditingPost(post);
+  };
+
+  const handleCloseEditor = () => {
+    setEditingPost(null);
   };
 
   const handleSortChange = (field: string) => {
@@ -191,10 +210,7 @@ const BlogPostsPanel: React.FC = () => {
                         <Button 
                           variant="outline" 
                           size="sm"
-                          onClick={() => {
-                            // Show content form with this post data
-                            alert("Blog post editor will be implemented soon");
-                          }}
+                          onClick={() => handleEditPost(post)}
                         >
                           <Edit className="h-4 w-4" />
                         </Button>
@@ -214,6 +230,15 @@ const BlogPostsPanel: React.FC = () => {
           )}
         </div>
       </div>
+
+      {editingPost && (
+        <BlogPostEditor
+          post={editingPost}
+          isOpen={!!editingPost}
+          onClose={handleCloseEditor}
+          onSave={handleUpdateContent}
+        />
+      )}
     </div>
   );
 };
