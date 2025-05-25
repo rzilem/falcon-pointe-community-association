@@ -17,14 +17,15 @@ export const getImageUrl = (imagePath: string | null) => {
     return null;
   }
   
-  // If it's already a full URL (like the fallback images), return as-is
+  // If it's already a full URL or local upload path, return as-is
   if (imagePath.startsWith('http') || imagePath.startsWith('/lovable-uploads/')) {
     console.log('Using direct image path:', imagePath);
     return imagePath;
   }
   
-  // For Supabase storage paths, get the public URL with error handling
+  // For Supabase storage paths, check if storage bucket exists and get public URL
   try {
+    // First check if we have a storage bucket configured
     const { data } = supabase.storage
       .from('site-images')
       .getPublicUrl(imagePath);
@@ -59,11 +60,11 @@ export const getContentTypeLabel = (item: ContentItem) => {
 export const getFallbackContent = (): ContentItem[] => [
   {
     id: "fallback-1",
-    title: "Summer Pool Party",
+    title: "Community Pool Party",
     date: "2025-06-15",
     time: "2:00 PM - 6:00 PM",
     location: "Main Community Pool",
-    description: "Join us for our annual summer pool party with food, games, and fun for the whole family!",
+    description: "Join us for our annual summer pool party with food, games, and fun for the whole family! Bring your swimwear and appetite.",
     image_path: "/lovable-uploads/ebafe490-e728-4ed8-a428-ff945cb1df98.png",
     type: 'event',
     display_date: "2025-06-15"
@@ -89,5 +90,16 @@ export const getFallbackContent = (): ContentItem[] => [
     image_path: "/lovable-uploads/1e3c41bc-f71c-4013-957d-4fa60e414905.png",
     type: 'event',
     display_date: "2025-07-24"
+  },
+  {
+    id: "fallback-4",
+    title: "Pool Maintenance Schedule",
+    date: "2025-06-01",
+    time: "All Day",
+    location: "Community Pool",
+    description: "The pool will be closed for routine maintenance and cleaning. Expected to reopen the following day.",
+    image_path: "/lovable-uploads/229f09a0-dd6e-4287-a457-2523b2859beb.png",
+    type: 'event',
+    display_date: "2025-06-01"
   }
 ];

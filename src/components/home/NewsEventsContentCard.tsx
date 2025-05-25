@@ -21,17 +21,18 @@ const NewsEventsContentCard = ({ item }: NewsEventsContentCardProps) => {
   const ContentIcon = item.type === 'event' ? Calendar : FileText;
   
   const handleImageError = () => {
-    console.log('Image failed to load, falling back to icon:', imageUrl);
+    console.log('Image failed to load, showing fallback icon:', imageUrl);
     setImageError(true);
   };
   
   const handleImageLoad = () => {
     console.log('Image loaded successfully:', imageUrl);
+    setImageError(false);
   };
   
   return (
     <Card className="overflow-hidden">
-      <div className="h-48 overflow-hidden">
+      <div className="h-48 overflow-hidden bg-gray-100">
         {imageUrl && !imageError ? (
           <img 
             src={imageUrl} 
@@ -42,7 +43,7 @@ const NewsEventsContentCard = ({ item }: NewsEventsContentCardProps) => {
           />
         ) : (
           <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-            <ContentIcon className="h-12 w-12 text-gray-400" />
+            <ContentIcon className="h-16 w-16 text-gray-400" />
           </div>
         )}
       </div>

@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
 import { Calendar, FileText } from "lucide-react";
-import { getImageUrl, getContentTypeLabel } from "@/utils/newsEventsUtils";
+import { getImageUrl, getContentTypeLabel, getFallbackContent } from "@/utils/newsEventsUtils";
 
 interface Event {
   id: string;
@@ -174,7 +174,7 @@ const NewsEvents = () => {
     } catch (error) {
       console.error('Error fetching content:', error);
       // Show fallback events if database fetch fails
-      setContent(fallbackEvents);
+      setContent(getFallbackContent());
     } finally {
       setLoading(false);
     }
@@ -193,49 +193,9 @@ const NewsEvents = () => {
     return item.type === 'event' ? Calendar : FileText;
   };
 
-  // Updated fallback events with relevant categories
-  const fallbackEvents: Event[] = [
-    {
-      id: "fallback-1",
-      title: "Summer Pool Party",
-      date: "2025-07-04",
-      time: "2:00 PM - 6:00 PM",
-      location: "Main Pool",
-      description: "Join us for our annual summer celebration with food, games, and pool activities.",
-      image_path: "/lovable-uploads/ebafe490-e728-4ed8-a428-ff945cb1df98.png",
-      category: "social",
-      type: 'event',
-      display_date: "2025-07-04"
-    },
-    {
-      id: "fallback-2",
-      title: "HOA Board Meeting",
-      date: "2025-08-15",
-      time: "7:00 PM - 9:00 PM",
-      location: "Community Center",
-      description: "Monthly HOA board meeting. All residents welcome to attend.",
-      image_path: "/lovable-uploads/4c2a90e2-ed6a-4fd9-9929-d876a2684ba8.png",
-      category: "meeting",
-      type: 'event',
-      display_date: "2025-08-15"
-    },
-    {
-      id: "fallback-3",
-      title: "Fall Festival",
-      date: "2025-10-23",
-      time: "3:00 PM - 8:00 PM",
-      location: "Community Park",
-      description: "Annual fall celebration with hayrides, pumpkin decorating, and food trucks.",
-      image_path: "/lovable-uploads/1e3c41bc-f71c-4013-957d-4fa60e414905.png",
-      category: "community",
-      type: 'event',
-      display_date: "2025-10-23"
-    }
-  ];
-
-  const displayContent = content.length > 0 ? content : fallbackEvents;
+  const displayContent = content.length > 0 ? content : getFallbackContent();
   
-  // Updated categories - removed sports and other irrelevant categories
+  // Streamlined categories relevant to HOA community
   const categories = [
     { id: "all", name: "All Content" },
     { id: "community", name: "Community" },
@@ -244,8 +204,7 @@ const NewsEvents = () => {
     { id: "holiday", name: "Holiday" },
     { id: "announcements", name: "Announcements" },
     { id: "news", name: "News" },
-    { id: "maintenance", name: "Maintenance" },
-    { id: "blog", name: "Blog Posts" }
+    { id: "maintenance", name: "Maintenance" }
   ];
 
   return (
@@ -322,7 +281,7 @@ const NewsEvents = () => {
                 
                 return (
                   <Card key={item.id} className="overflow-hidden">
-                    <div className="h-48 overflow-hidden">
+                    <div className="h-48 overflow-hidden bg-gray-100">
                       {imageUrl ? (
                         <img 
                           src={imageUrl} 
@@ -330,13 +289,13 @@ const NewsEvents = () => {
                           className="w-full h-full object-cover"
                           onError={(e) => {
                             const target = e.target as HTMLImageElement;
-                            console.log('Image failed to load, replacing with placeholder');
+                            console.log('Image failed to load, replacing with placeholder:', imageUrl);
                             target.style.display = 'none';
                             const parent = target.parentElement;
                             if (parent) {
                               parent.innerHTML = `
                                 <div class="w-full h-full bg-gray-200 flex items-center justify-center">
-                                  <div class="h-12 w-12 text-gray-400">
+                                  <div class="h-16 w-16 text-gray-400 flex items-center justify-center">
                                     ${item.type === 'event' ? '📅' : '📄'}
                                   </div>
                                 </div>
@@ -347,7 +306,7 @@ const NewsEvents = () => {
                         />
                       ) : (
                         <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                          <ContentIcon className="h-12 w-12 text-gray-400" />
+                          <ContentIcon className="h-16 w-16 text-gray-400" />
                         </div>
                       )}
                     </div>
