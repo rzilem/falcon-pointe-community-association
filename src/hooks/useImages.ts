@@ -37,9 +37,12 @@ export const useImage = (location: string) => {
         
         if (data) {
           try {
+            // Clean the path - remove any leading slashes for storage API
+            const cleanPath = data.path.startsWith('/') ? data.path.substring(1) : data.path;
+            
             const { data: urlData } = supabase.storage
               .from('site-images')
-              .getPublicUrl(data.path);
+              .getPublicUrl(cleanPath);
             
             setImage({ ...data, url: urlData.publicUrl });
           } catch (storageError) {
@@ -91,9 +94,12 @@ export const useImages = (location: string) => {
         if (data && data.length > 0) {
           const imagesWithUrls = data.map(img => {
             try {
+              // Clean the path - remove any leading slashes for storage API
+              const cleanPath = img.path.startsWith('/') ? img.path.substring(1) : img.path;
+              
               const { data: urlData } = supabase.storage
                 .from('site-images')
-                .getPublicUrl(img.path);
+                .getPublicUrl(cleanPath);
               
               return { ...img, url: urlData.publicUrl };
             } catch (storageError) {

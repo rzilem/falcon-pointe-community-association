@@ -32,11 +32,14 @@ export const getImageUrl = (imagePath: string | null) => {
     return correctedPath;
   }
   
-  // For Supabase storage paths, get the public URL
+  // For Supabase storage paths, get the public URL from the site-images bucket
   try {
+    // Clean the path - remove any leading slashes
+    const cleanPath = imagePath.startsWith('/') ? imagePath.substring(1) : imagePath;
+    
     const { data } = supabase.storage
       .from('site-images')
-      .getPublicUrl(imagePath);
+      .getPublicUrl(cleanPath);
     
     return data.publicUrl;
   } catch (error) {
