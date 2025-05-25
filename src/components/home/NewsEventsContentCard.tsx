@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Calendar, FileText } from "lucide-react";
@@ -12,24 +12,29 @@ interface NewsEventsContentCardProps {
 }
 
 const NewsEventsContentCard = ({ item }: NewsEventsContentCardProps) => {
+  const [imageError, setImageError] = useState(false);
+  
   const imageUrl = getImageUrl(
     item.type === 'event' ? item.image_path : item.featured_image
   );
+  
   const ContentIcon = item.type === 'event' ? Calendar : FileText;
+  
+  const handleImageError = () => {
+    console.log('Image failed to load:', imageUrl);
+    setImageError(true);
+  };
   
   return (
     <Card className="overflow-hidden">
       <div className="h-48 overflow-hidden">
-        {imageUrl ? (
+        {imageUrl && !imageError ? (
           <img 
             src={imageUrl} 
             alt={item.title || 'Content image'}
             className="w-full h-full object-cover"
-            onError={(e) => {
-              const target = e.target as HTMLImageElement;
-              target.onerror = null;
-              target.src = "/placeholder.svg";
-            }}
+            onError={handleImageError}
+            onLoad={() => console.log('Image loaded successfully:', imageUrl)}
           />
         ) : (
           <div className="w-full h-full bg-gray-200 flex items-center justify-center">

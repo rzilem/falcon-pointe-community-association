@@ -19,12 +19,17 @@ export const getImageUrl = (imagePath: string | null) => {
     return imagePath;
   }
   
-  // If it's a Supabase storage path, get the public URL
-  const { data } = supabase.storage
-    .from('site-images')
-    .getPublicUrl(imagePath);
-  
-  return data.publicUrl;
+  // For Supabase storage paths, get the public URL with error handling
+  try {
+    const { data } = supabase.storage
+      .from('site-images')
+      .getPublicUrl(imagePath);
+    
+    return data.publicUrl;
+  } catch (error) {
+    console.error('Error getting image URL from Supabase storage:', error);
+    return null;
+  }
 };
 
 export const getContentTypeLabel = (item: ContentItem) => {

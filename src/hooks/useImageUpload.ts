@@ -33,14 +33,22 @@ export const useImageUpload = ({ onSuccess }: UseImageUploadProps = {}) => {
       const fileName = `${Math.random().toString(36).substring(2, 15)}.${fileExt}`;
       const filePath = `${fileName}`;
       
+      console.log('Uploading file to site-images bucket:', filePath);
+      
       const { error: uploadError } = await supabase.storage
         .from('site-images')
         .upload(filePath, file);
       
-      if (uploadError) throw uploadError;
+      if (uploadError) {
+        console.error('Upload error:', uploadError);
+        throw uploadError;
+      }
+
+      console.log('File uploaded successfully:', filePath);
 
       // If we're replacing an existing image, delete it
       if (options.existingImagePath) {
+        console.log('Deleting existing image:', options.existingImagePath);
         await supabase.storage
           .from('site-images')
           .remove([options.existingImagePath]);
@@ -58,7 +66,10 @@ export const useImageUpload = ({ onSuccess }: UseImageUploadProps = {}) => {
           })
           .eq('id', options.imageId);
         
-        if (updateError) throw updateError;
+        if (updateError) {
+          console.error('Database update error:', updateError);
+          throw updateError;
+        }
       } else {
         // Create new record
         const { error: insertError } = await supabase
@@ -71,8 +82,13 @@ export const useImageUpload = ({ onSuccess }: UseImageUploadProps = {}) => {
             created_by: options.userId
           });
         
-        if (insertError) throw insertError;
+        if (insertError) {
+          console.error('Database insert error:', insertError);
+          throw insertError;
+        }
       }
+      
+      console.log('Image metadata saved to database');
       
       if (onSuccess) {
         onSuccess();

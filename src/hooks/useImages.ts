@@ -31,21 +31,29 @@ export const useImage = (location: string) => {
           .maybeSingle();
         
         if (fetchError) {
+          console.error(`Error fetching image for location ${location}:`, fetchError);
           throw fetchError;
         }
         
         if (data) {
-          const url = supabase.storage
-            .from('site-images')
-            .getPublicUrl(data.path).data.publicUrl;
-          
-          setImage({ ...data, url });
+          try {
+            const { data: urlData } = supabase.storage
+              .from('site-images')
+              .getPublicUrl(data.path);
+            
+            setImage({ ...data, url: urlData.publicUrl });
+          } catch (storageError) {
+            console.error('Error getting public URL for image:', storageError);
+            // Still set the image data without URL so admin controls can work
+            setImage(data);
+          }
         } else {
           setImage(null);
         }
       } catch (err) {
         console.error(`Error fetching image for location ${location}:`, err);
         setError('Failed to load image');
+        setImage(null);
       } finally {
         setIsLoading(false);
       }
@@ -76,16 +84,22 @@ export const useImages = (location: string) => {
           .order('created_at', { ascending: false });
         
         if (fetchError) {
+          console.error(`Error fetching images for location ${location}:`, fetchError);
           throw fetchError;
         }
         
         if (data && data.length > 0) {
           const imagesWithUrls = data.map(img => {
-            const url = supabase.storage
-              .from('site-images')
-              .getPublicUrl(img.path).data.publicUrl;
-            
-            return { ...img, url };
+            try {
+              const { data: urlData } = supabase.storage
+                .from('site-images')
+                .getPublicUrl(img.path);
+              
+              return { ...img, url: urlData.publicUrl };
+            } catch (storageError) {
+              console.error('Error getting public URL for image:', storageError);
+              return img; // Return image data without URL
+            }
           });
           
           setImages(imagesWithUrls);
@@ -95,6 +109,7 @@ export const useImages = (location: string) => {
       } catch (err) {
         console.error(`Error fetching images for location ${location}:`, err);
         setError('Failed to load images');
+        setImages([]);
       } finally {
         setIsLoading(false);
       }

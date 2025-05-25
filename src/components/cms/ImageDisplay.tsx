@@ -24,7 +24,7 @@ const ImageDisplay: React.FC<ImageDisplayProps> = ({
   style,
   showHoverControls = true
 }) => {
-  const { image, isLoading } = useImage(location);
+  const { image, isLoading, error } = useImage(location);
   const { isAdmin } = useAuth();
   const [showControls, setShowControls] = useState(false);
   const [imgError, setImgError] = useState(false);
@@ -42,8 +42,17 @@ const ImageDisplay: React.FC<ImageDisplayProps> = ({
   const imageSrc = !imgError && image?.url ? image.url : fallbackSrc;
   const imageAlt = image?.alt_text || alt;
 
+  const handleImageError = () => {
+    console.log('Image failed to load from Supabase, trying fallback:', imageSrc);
+    setImgError(true);
+  };
+
   if (!imageSrc) {
-    return null;
+    return (
+      <div className={`bg-gray-200 flex items-center justify-center ${className}`} style={style}>
+        <span className="text-gray-500 text-sm">No image available</span>
+      </div>
+    );
   }
 
   return (
@@ -57,11 +66,8 @@ const ImageDisplay: React.FC<ImageDisplayProps> = ({
         alt={imageAlt} 
         className={className} 
         style={style}
-        onError={() => {
-          if (!imgError && fallbackSrc) {
-            setImgError(true);
-          }
-        }}
+        onError={handleImageError}
+        onLoad={() => console.log('Image loaded successfully:', imageSrc)}
       />
       
       {showHoverControls && isAdmin && showControls && (
