@@ -1,10 +1,9 @@
-
 import React, { useState, useEffect } from "react";
 import Layout from "@/components/layout/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
-import ImageDisplay from "@/components/cms/ImageDisplay";
 import { format } from "date-fns";
+import { Calendar } from "lucide-react";
 
 interface Event {
   id: string;
@@ -24,6 +23,27 @@ const Events = () => {
   
   useEffect(() => {
     fetchEvents();
+    
+    // Set up real-time subscription for events
+    const channel = supabase
+      .channel('events-page-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'events'
+        },
+        () => {
+          console.log('Events updated on Events page, refetching...');
+          fetchEvents();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [filter]);
   
   const fetchEvents = async () => {
@@ -37,7 +57,12 @@ const Events = () => {
       
       const { data, error } = await query;
       
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching events:', error);
+        throw error;
+      }
+      
+      console.log('Fetched all events:', data);
       
       // Only show future events or recent past events (within last 7 days)
       const sevenDaysAgo = new Date();
@@ -51,6 +76,8 @@ const Events = () => {
       setEvents(filteredEvents);
     } catch (error) {
       console.error('Error fetching events:', error);
+      // Show fallback events if database fetch fails
+      setEvents(fallbackEvents);
     } finally {
       setLoading(false);
     }
@@ -65,10 +92,26 @@ const Events = () => {
     }
   };
 
+  const getImageUrl = (imagePath: string | null) => {
+    if (!imagePath) return null;
+    
+    // If it's already a full URL (like the fallback images), return as-is
+    if (imagePath.startsWith('http') || imagePath.startsWith('/lovable-uploads/')) {
+      return imagePath;
+    }
+    
+    // If it's a Supabase storage path, get the public URL
+    const { data } = supabase.storage
+      .from('site-images')
+      .getPublicUrl(imagePath);
+    
+    return data.publicUrl;
+  };
+
   // Fallback events in case none are found in the database
   const fallbackEvents = [
     {
-      id: "1",
+      id: "fallback-1",
       title: "Summer Pool Party",
       date: "2025-07-04",
       time: "2:00 PM - 6:00 PM",
@@ -78,7 +121,7 @@ const Events = () => {
       category: "social"
     },
     {
-      id: "2",
+      id: "fallback-2",
       title: "Tennis Tournament",
       date: "2025-08-15",
       time: "9:00 AM - 5:00 PM",
@@ -88,7 +131,7 @@ const Events = () => {
       category: "sport"
     },
     {
-      id: "3",
+      id: "fallback-3",
       title: "Fall Festival",
       date: "2025-10-23",
       time: "3:00 PM - 8:00 PM",
@@ -125,7 +168,9 @@ const Events = () => {
       <div className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center mb-8">
-            <h2 className="text-3xl font-bold">Upcoming Events</h2>
+            <h2 className="text-3xl font-bold">
+              {events.length > 0 ? 'Upcoming Events' : 'Sample Events'}
+            </h2>
             <div className="flex flex-wrap gap-2">
               {categories.map(category => (
                 <button
@@ -142,6 +187,15 @@ const Events = () => {
               ))}
             </div>
           </div>
+
+          {events.length === 0 && (
+            <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <p className="text-blue-800">
+                <strong>Note:</strong> No events found in the database. The events below are sample data. 
+                <a href="/admin/events" className="underline ml-1">Create real events in the admin panel</a> to see them here.
+              </p>
+            </div>
+          )}
           
           {loading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -165,46 +219,50 @@ const Events = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {displayEvents.map((event) => (
-                <Card key={event.id} className="overflow-hidden">
-                  <div className="h-48 overflow-hidden">
-                    {event.image_path ? (
-                      <img 
-                        src={event.image_path} 
-                        alt={event.title}
-                        className="w-full h-full object-cover"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.onerror = null;
-                          target.src = "/placeholder.svg";
-                        }}
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                        <p className="text-gray-500">No image available</p>
-                      </div>
-                    )}
-                  </div>
-                  <CardHeader>
-                    <CardTitle>{event.title}</CardTitle>
-                    <div className="text-sm text-gray-600">
-                      <p className="font-medium">{formatDate(event.date)}</p>
-                      <p>{event.time}</p>
-                      <p>{event.location}</p>
+              {displayEvents.map((event) => {
+                const imageUrl = getImageUrl(event.image_path);
+                
+                return (
+                  <Card key={event.id} className="overflow-hidden">
+                    <div className="h-48 overflow-hidden">
+                      {imageUrl ? (
+                        <img 
+                          src={imageUrl} 
+                          alt={event.title}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.onerror = null;
+                            target.src = "/placeholder.svg";
+                          }}
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                          <Calendar className="h-12 w-12 text-gray-400" />
+                        </div>
+                      )}
                     </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600">{event.description}</p>
-                    {event.category && (
-                      <div className="mt-4">
-                        <span className="inline-block bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded-full">
-                          {event.category}
-                        </span>
+                    <CardHeader>
+                      <CardTitle>{event.title}</CardTitle>
+                      <div className="text-sm text-gray-600">
+                        <p className="font-medium">{formatDate(event.date)}</p>
+                        <p>{event.time}</p>
+                        <p>{event.location}</p>
                       </div>
-                    )}
-                  </CardContent>
-                </Card>
-              ))}
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-gray-600">{event.description}</p>
+                      {event.category && (
+                        <div className="mt-4">
+                          <span className="inline-block bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded-full">
+                            {event.category}
+                          </span>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                );
+              })}
             </div>
           )}
         </div>

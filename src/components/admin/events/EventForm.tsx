@@ -9,7 +9,7 @@ import { Switch } from '@/components/ui/switch';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/context/AuthContext';
-import ImageUpload from './ImageUpload';
+import UnifiedImageUpload from '../images/UnifiedImageUpload';
 
 interface Event {
   id: string;
@@ -121,8 +121,37 @@ const EventForm: React.FC<EventFormProps> = ({ event, onSuccess }) => {
   };
 
   const handleImageUploaded = (url: string) => {
-    setImagePath(url);
-    toast.success('Image uploaded successfully');
+    if (url) {
+      // Extract the file path from the full URL if it's a Supabase URL
+      if (url.includes('/storage/v1/object/public/site-images/')) {
+        const pathMatch = url.match(/\/storage\/v1\/object\/public\/site-images\/(.+)$/);
+        if (pathMatch) {
+          setImagePath(pathMatch[1]);
+        } else {
+          setImagePath(url);
+        }
+      } else {
+        setImagePath(url);
+      }
+    } else {
+      setImagePath(null);
+    }
+  };
+
+  const getImageDisplayUrl = () => {
+    if (!imagePath) return null;
+    
+    // If it's already a full URL, return as-is
+    if (imagePath.startsWith('http') || imagePath.startsWith('/')) {
+      return imagePath;
+    }
+    
+    // If it's a Supabase storage path, get the public URL
+    const { data } = supabase.storage
+      .from('site-images')
+      .getPublicUrl(imagePath);
+    
+    return data.publicUrl;
   };
 
   const categories = [
@@ -221,19 +250,13 @@ const EventForm: React.FC<EventFormProps> = ({ event, onSuccess }) => {
 
           <div className="grid gap-2">
             <Label>Event Image</Label>
-            <ImageUpload
+            <UnifiedImageUpload
               onImageUploaded={handleImageUploaded}
-              existingImageUrl={imagePath}
+              existingImageUrl={getImageDisplayUrl()}
+              location={`event-${title.toLowerCase().replace(/\s+/g, '-')}`}
+              altText={title}
+              description={`Image for ${title} event`}
             />
-            {imagePath && (
-              <div className="mt-2">
-                <img 
-                  src={imagePath} 
-                  alt="Event preview" 
-                  className="max-w-full h-auto max-h-[200px] rounded-md" 
-                />
-              </div>
-            )}
           </div>
 
           <div className="flex items-center space-x-2">
@@ -242,7 +265,7 @@ const EventForm: React.FC<EventFormProps> = ({ event, onSuccess }) => {
               checked={isFeatured}
               onCheckedChange={setIsFeatured}
             />
-            <Label htmlFor="featured">Featured Event</Label>
+            <Label htmlFor="featured">Featured Event (appears on homepage)</Label>
           </div>
 
           <div className="flex justify-end space-x-2">
