@@ -1,5 +1,4 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -9,8 +8,9 @@ import { useAuth } from '@/context/AuthContext';
 import UnifiedImageUpload from '../images/UnifiedImageUpload';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import RichTextEditor from './RichTextEditor';
-import { Calendar, FileText } from 'lucide-react';
+import { Calendar, FileText, RefreshCw, Lock, Unlock } from 'lucide-react';
 import { toast } from 'sonner';
+import { generateSlug, isValidSlug, debounce } from '@/utils/slugUtils';
 
 interface BlogFormProps {
   initialContent?: SiteContent;
@@ -29,6 +29,8 @@ const BlogForm: React.FC<BlogFormProps> = ({ initialContent, onSave }) => {
   const [publishDate, setPublishDate] = useState<string>(new Date().toISOString().split('T')[0]);
   const [useSchedulePublish, setUseSchedulePublish] = useState(false);
   const [hasLoadedTemplate, setHasLoadedTemplate] = useState(false);
+  const [isSlugLocked, setIsSlugLocked] = useState(false);
+  const [isSlugValid, setIsSlugValid] = useState(true);
 
   const categoryOptions = [
     { value: 'general', label: 'General' },
@@ -37,6 +39,30 @@ const BlogForm: React.FC<BlogFormProps> = ({ initialContent, onSave }) => {
     { value: 'events', label: 'Events' },
     { value: 'community', label: 'Community' }
   ];
+
+  // Debounced slug generation function
+  const debouncedGenerateSlug = useCallback(
+    debounce((title: string) => {
+      if (!isSlugLocked && title.trim()) {
+        const newSlug = generateSlug(title);
+        setSection(newSlug);
+        setIsSlugValid(isValidSlug(newSlug));
+      }
+    }, 300),
+    [isSlugLocked]
+  );
+
+  // Generate slug when title changes
+  useEffect(() => {
+    if (title && !initialContent) {
+      debouncedGenerateSlug(title);
+    }
+  }, [title, debouncedGenerateSlug, initialContent]);
+
+  // Validate slug when it changes
+  useEffect(() => {
+    setIsSlugValid(isValidSlug(section));
+  }, [section]);
 
   useEffect(() => {
     const savedTemplate = localStorage.getItem('content_template');
@@ -66,8 +92,40 @@ const BlogForm: React.FC<BlogFormProps> = ({ initialContent, onSave }) => {
     }
   }, [initialContent, hasLoadedTemplate]);
 
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
+  };
+
+  const handleSectionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSection(e.target.value);
+    // Lock the slug when manually edited
+    if (!isSlugLocked) {
+      setIsSlugLocked(true);
+    }
+  };
+
+  const handleRegenerateSlug = () => {
+    if (title.trim()) {
+      const newSlug = generateSlug(title);
+      setSection(newSlug);
+      setIsSlugValid(isValidSlug(newSlug));
+      setIsSlugLocked(false);
+      toast.success('Slug regenerated from title');
+    }
+  };
+
+  const toggleSlugLock = () => {
+    setIsSlugLocked(!isSlugLocked);
+    toast.info(isSlugLocked ? 'Slug unlocked for auto-generation' : 'Slug locked from auto-generation');
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!isSlugValid) {
+      toast.error('Please enter a valid slug (lowercase letters, numbers, and hyphens only)');
+      return;
+    }
     
     try {
       setSaving(true);
@@ -92,6 +150,7 @@ const BlogForm: React.FC<BlogFormProps> = ({ initialContent, onSave }) => {
         setFeaturedImage(null);
         setUseSchedulePublish(false);
         setHasLoadedTemplate(false);
+        setIsSlugLocked(false);
       }
     } catch (error) {
       console.error('Error saving content:', error);
@@ -114,21 +173,55 @@ const BlogForm: React.FC<BlogFormProps> = ({ initialContent, onSave }) => {
             <Input
               id="title"
               value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              onChange={handleTitleChange}
               placeholder="Post title"
               required
             />
           </div>
           
           <div className="grid gap-2">
-            <Label htmlFor="section">Slug/URL</Label>
+            <div className="flex items-center justify-between">
+              <Label htmlFor="section">Slug/URL</Label>
+              <div className="flex items-center gap-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={toggleSlugLock}
+                  title={isSlugLocked ? 'Unlock auto-generation' : 'Lock from auto-generation'}
+                >
+                  {isSlugLocked ? <Lock className="h-4 w-4" /> : <Unlock className="h-4 w-4" />}
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={handleRegenerateSlug}
+                  disabled={!title.trim()}
+                  title="Regenerate slug from title"
+                >
+                  <RefreshCw className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
             <Input
               id="section"
               value={section}
-              onChange={(e) => setSection(e.target.value)}
+              onChange={handleSectionChange}
               placeholder="post-slug"
+              className={!isSlugValid ? 'border-red-500' : ''}
               required
             />
+            {!isSlugValid && (
+              <p className="text-sm text-red-600">
+                Slug must contain only lowercase letters, numbers, and hyphens
+              </p>
+            )}
+            {section && isSlugValid && (
+              <p className="text-sm text-gray-500">
+                URL: /blog/{section}
+              </p>
+            )}
           </div>
           
           <div className="grid gap-2">

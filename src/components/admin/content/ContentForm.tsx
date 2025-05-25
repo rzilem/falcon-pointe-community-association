@@ -1,5 +1,4 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -9,8 +8,9 @@ import { useAuth } from '@/context/AuthContext';
 import UnifiedImageUpload from '../images/UnifiedImageUpload';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import RichTextEditor from './RichTextEditor';
-import { Calendar, FileText } from 'lucide-react';
+import { Calendar, FileText, RefreshCw, Lock, Unlock } from 'lucide-react';
 import { toast } from 'sonner';
+import { generateSlug, isValidSlug, debounce } from '@/utils/slugUtils';
 
 interface ContentFormProps {
   initialContent?: SiteContent;
@@ -30,6 +30,8 @@ const ContentForm: React.FC<ContentFormProps> = ({ initialContent, onSave, conte
   const [publishDate, setPublishDate] = useState<string>(new Date().toISOString().split('T')[0]);
   const [useSchedulePublish, setUseSchedulePublish] = useState(false);
   const [hasLoadedTemplate, setHasLoadedTemplate] = useState(false);
+  const [isSlugLocked, setIsSlugLocked] = useState(false);
+  const [isSlugValid, setIsSlugValid] = useState(true);
 
   const sectionOptions = contentType === 'static' ? [
     { value: 'home-hero', label: 'Home Page - Hero Section' },
@@ -48,6 +50,32 @@ const ContentForm: React.FC<ContentFormProps> = ({ initialContent, onSave, conte
     { value: 'events', label: 'Events' },
     { value: 'community', label: 'Community' }
   ];
+
+  // Debounced slug generation function (only for blog content)
+  const debouncedGenerateSlug = useCallback(
+    debounce((title: string) => {
+      if (contentType === 'blog' && !isSlugLocked && title.trim()) {
+        const newSlug = generateSlug(title);
+        setSection(newSlug);
+        setIsSlugValid(isValidSlug(newSlug));
+      }
+    }, 300),
+    [isSlugLocked, contentType]
+  );
+
+  // Generate slug when title changes (blog content only)
+  useEffect(() => {
+    if (contentType === 'blog' && title && !initialContent) {
+      debouncedGenerateSlug(title);
+    }
+  }, [title, debouncedGenerateSlug, initialContent, contentType]);
+
+  // Validate slug when it changes (blog content only)
+  useEffect(() => {
+    if (contentType === 'blog') {
+      setIsSlugValid(isValidSlug(section));
+    }
+  }, [section, contentType]);
 
   // Check for templates on initial load or when tab changes
   useEffect(() => {
@@ -83,8 +111,40 @@ const ContentForm: React.FC<ContentFormProps> = ({ initialContent, onSave, conte
     }
   }, [contentType, initialContent, hasLoadedTemplate]);
 
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
+  };
+
+  const handleSectionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSection(e.target.value);
+    // Lock the slug when manually edited (blog content only)
+    if (contentType === 'blog' && !isSlugLocked) {
+      setIsSlugLocked(true);
+    }
+  };
+
+  const handleRegenerateSlug = () => {
+    if (title.trim()) {
+      const newSlug = generateSlug(title);
+      setSection(newSlug);
+      setIsSlugValid(isValidSlug(newSlug));
+      setIsSlugLocked(false);
+      toast.success('Slug regenerated from title');
+    }
+  };
+
+  const toggleSlugLock = () => {
+    setIsSlugLocked(!isSlugLocked);
+    toast.info(isSlugLocked ? 'Slug unlocked for auto-generation' : 'Slug locked from auto-generation');
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (contentType === 'blog' && !isSlugValid) {
+      toast.error('Please enter a valid slug (lowercase letters, numbers, and hyphens only)');
+      return;
+    }
     
     try {
       setSaving(true);
@@ -94,15 +154,13 @@ const ContentForm: React.FC<ContentFormProps> = ({ initialContent, onSave, conte
         section,
         content: content || null,
         category: contentType === 'blog' ? category : null,
-        active: useSchedulePublish ? false : active, // If scheduled, set to draft
+        active: useSchedulePublish ? false : active,
         section_type: contentType,
         last_updated_by: user?.id,
         featured_image: featuredImage
-        // We could add scheduled_publish_at for future enhancement
       });
       
       if (!initialContent) {
-        // Reset form if this was a new content creation
         setTitle('');
         setSection('');
         setContent('');
@@ -111,6 +169,7 @@ const ContentForm: React.FC<ContentFormProps> = ({ initialContent, onSave, conte
         setFeaturedImage(null);
         setUseSchedulePublish(false);
         setHasLoadedTemplate(false);
+        setIsSlugLocked(false);
       }
     } catch (error) {
       console.error('Error saving content:', error);
@@ -141,7 +200,7 @@ const ContentForm: React.FC<ContentFormProps> = ({ initialContent, onSave, conte
               <Input
                 id="title"
                 value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                onChange={handleTitleChange}
                 placeholder="Post title"
                 required
               />
@@ -149,9 +208,34 @@ const ContentForm: React.FC<ContentFormProps> = ({ initialContent, onSave, conte
           )}
           
           <div className="grid gap-2">
-            <Label htmlFor="section">
-              {contentType === 'static' ? 'Section' : 'Slug/URL'}
-            </Label>
+            <div className="flex items-center justify-between">
+              <Label htmlFor="section">
+                {contentType === 'static' ? 'Section' : 'Slug/URL'}
+              </Label>
+              {contentType === 'blog' && (
+                <div className="flex items-center gap-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={toggleSlugLock}
+                    title={isSlugLocked ? 'Unlock auto-generation' : 'Lock from auto-generation'}
+                  >
+                    {isSlugLocked ? <Lock className="h-4 w-4" /> : <Unlock className="h-4 w-4" />}
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={handleRegenerateSlug}
+                    disabled={!title.trim()}
+                    title="Regenerate slug from title"
+                  >
+                    <RefreshCw className="h-4 w-4" />
+                  </Button>
+                </div>
+              )}
+            </div>
             {contentType === 'static' && sectionOptions.length > 0 ? (
               <select
                 id="section"
@@ -171,10 +255,21 @@ const ContentForm: React.FC<ContentFormProps> = ({ initialContent, onSave, conte
               <Input
                 id="section"
                 value={section}
-                onChange={(e) => setSection(e.target.value)}
+                onChange={handleSectionChange}
                 placeholder={contentType === 'static' ? 'custom-section-name' : 'post-slug'}
+                className={contentType === 'blog' && !isSlugValid ? 'border-red-500' : ''}
                 required
               />
+            )}
+            {contentType === 'blog' && !isSlugValid && (
+              <p className="text-sm text-red-600">
+                Slug must contain only lowercase letters, numbers, and hyphens
+              </p>
+            )}
+            {contentType === 'blog' && section && isSlugValid && (
+              <p className="text-sm text-gray-500">
+                URL: /blog/{section}
+              </p>
             )}
           </div>
           
@@ -221,7 +316,7 @@ const ContentForm: React.FC<ContentFormProps> = ({ initialContent, onSave, conte
           {contentType === 'blog' && (
             <>
               <div className="grid gap-2">
-                <Label>Featured Image (Optional)</Label>
+                <Label htmlFor="featured-image">Featured Image (Optional)</Label>
                 <UnifiedImageUpload
                   onImageUploaded={(url) => setFeaturedImage(url || null)}
                   existingImageUrl={featuredImage}

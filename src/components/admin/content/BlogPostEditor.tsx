@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,7 +8,9 @@ import { SiteContent } from '@/types/content';
 import { useAuth } from '@/context/AuthContext';
 import UnifiedImageUpload from '../images/UnifiedImageUpload';
 import RichTextEditor from './RichTextEditor';
+import { RefreshCw, Lock, Unlock } from 'lucide-react';
 import { toast } from 'sonner';
+import { generateSlug, isValidSlug, debounce } from '@/utils/slugUtils';
 
 interface BlogPostEditorProps {
   post: SiteContent;
@@ -27,6 +28,8 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, isOpen, onClose, 
   const [active, setActive] = useState(post.active !== false);
   const [featuredImage, setFeaturedImage] = useState<string | null>(post.featured_image || null);
   const [saving, setSaving] = useState(false);
+  const [isSlugLocked, setIsSlugLocked] = useState(true); // Default locked for existing posts
+  const [isSlugValid, setIsSlugValid] = useState(true);
 
   const categoryOptions = [
     { value: 'general', label: 'General' },
@@ -35,6 +38,68 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, isOpen, onClose, 
     { value: 'events', label: 'Events' },
     { value: 'community', label: 'Community' }
   ];
+
+  // Debounced slug generation function
+  const debouncedGenerateSlug = useCallback(
+    debounce((title: string) => {
+      if (!isSlugLocked && title.trim()) {
+        const newSlug = generateSlug(title);
+        setSection(newSlug);
+        setIsSlugValid(isValidSlug(newSlug));
+      }
+    }, 300),
+    [isSlugLocked]
+  );
+
+  // Generate slug when title changes (only if unlocked)
+  useEffect(() => {
+    if (title && !isSlugLocked) {
+      debouncedGenerateSlug(title);
+    }
+  }, [title, debouncedGenerateSlug, isSlugLocked]);
+
+  // Validate slug when it changes
+  useEffect(() => {
+    setIsSlugValid(isValidSlug(section));
+  }, [section]);
+
+  // Reset form when post changes
+  useEffect(() => {
+    setTitle(post.title || '');
+    setSection(post.section || '');
+    setContent(post.content || '');
+    setCategory(post.category || 'general');
+    setActive(post.active !== false);
+    setFeaturedImage(post.featured_image || null);
+    setIsSlugLocked(true); // Reset to locked for existing posts
+  }, [post]);
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
+  };
+
+  const handleSectionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSection(e.target.value);
+    // Lock the slug when manually edited
+    if (!isSlugLocked) {
+      setIsSlugLocked(true);
+    }
+  };
+
+  const handleRegenerateSlug = () => {
+    if (title.trim()) {
+      const newSlug = generateSlug(title);
+      setSection(newSlug);
+      setIsSlugValid(isValidSlug(newSlug));
+      setIsSlugLocked(false);
+      toast.success('Slug regenerated from title');
+    }
+  };
+
+  const toggleSlugLock = () => {
+    setIsSlugLocked(!isSlugLocked);
+    toast.info(isSlugLocked ? 'Slug unlocked for auto-generation' : 'Slug locked from auto-generation');
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,6 +111,11 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, isOpen, onClose, 
 
     if (!section.trim()) {
       toast.error('Blog post slug is required');
+      return;
+    }
+
+    if (!isSlugValid) {
+      toast.error('Please enter a valid slug (lowercase letters, numbers, and hyphens only)');
       return;
     }
 
@@ -80,6 +150,7 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, isOpen, onClose, 
     setCategory(post.category || 'general');
     setActive(post.active !== false);
     setFeaturedImage(post.featured_image || null);
+    setIsSlugLocked(true);
     onClose();
   };
 
@@ -96,21 +167,55 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, isOpen, onClose, 
             <Input
               id="edit-title"
               value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              onChange={handleTitleChange}
               placeholder="Post title"
               required
             />
           </div>
           
           <div className="grid gap-2">
-            <Label htmlFor="edit-section">Slug/URL</Label>
+            <div className="flex items-center justify-between">
+              <Label htmlFor="edit-section">Slug/URL</Label>
+              <div className="flex items-center gap-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={toggleSlugLock}
+                  title={isSlugLocked ? 'Unlock auto-generation' : 'Lock from auto-generation'}
+                >
+                  {isSlugLocked ? <Lock className="h-4 w-4" /> : <Unlock className="h-4 w-4" />}
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={handleRegenerateSlug}
+                  disabled={!title.trim()}
+                  title="Regenerate slug from title"
+                >
+                  <RefreshCw className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
             <Input
               id="edit-section"
               value={section}
-              onChange={(e) => setSection(e.target.value)}
+              onChange={handleSectionChange}
               placeholder="post-slug"
+              className={!isSlugValid ? 'border-red-500' : ''}
               required
             />
+            {!isSlugValid && (
+              <p className="text-sm text-red-600">
+                Slug must contain only lowercase letters, numbers, and hyphens
+              </p>
+            )}
+            {section && isSlugValid && (
+              <p className="text-sm text-gray-500">
+                URL: /blog/{section}
+              </p>
+            )}
           </div>
           
           <div className="grid gap-2">
