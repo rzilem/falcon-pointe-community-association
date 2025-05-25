@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { useContentManagement } from '@/hooks/useContentManagement';
-import ContentForm from './ContentForm';
+import StaticForm from './StaticForm';
 import ContentEditor from './ContentEditor';
 import { SiteContent } from '@/types/content';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
@@ -76,10 +76,7 @@ const StaticContentPanel: React.FC = () => {
 
   return (
     <div className="space-y-8">
-      <ContentForm 
-        contentType="static"
-        onSave={handleAddContent}
-      />
+      <StaticForm onSave={handleAddContent} />
       
       <div className="border rounded-md p-6">
         <h2 className="text-xl font-semibold mb-4">Manage Static Content</h2>
