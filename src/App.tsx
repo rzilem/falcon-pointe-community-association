@@ -3,14 +3,14 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/context/AuthContext";
 import Index from "./pages/Index";
 import About from "./pages/About";
 import Amenities from "./pages/Amenities";
 import Board from "./pages/Board";
 import Gallery from "./pages/Gallery";
-import Events from "./pages/Events";
+import NewsEvents from "./pages/NewsEvents";
 import Documents from "./pages/Documents";
 import AdminDocuments from "./pages/admin/Documents";
 import Contact from "./pages/Contact";
@@ -42,7 +42,8 @@ const App = () => (
             <Route path="/reservations" element={<Reservations />} />
             <Route path="/board" element={<Board />} />
             <Route path="/gallery" element={<Gallery />} />
-            <Route path="/events" element={<Events />} />
+            <Route path="/news-events" element={<NewsEvents />} />
+            <Route path="/events" element={<Navigate to="/news-events" replace />} />
             <Route path="/documents" element={<Documents />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPost />} />

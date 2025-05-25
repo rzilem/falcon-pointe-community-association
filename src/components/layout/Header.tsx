@@ -1,121 +1,67 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuList, NavigationMenuTrigger, NavigationMenuLink } from "@/components/ui/navigation-menu";
-import { Button } from "@/components/ui/button";
-import { useIsMobile } from "@/hooks/use-mobile";
-import { useAuth } from "@/context/AuthContext";
+import { Menu, X } from "lucide-react";
 import MobileNav from "./MobileNav";
 
 const Header = () => {
-  const isMobile = useIsMobile();
-  const { isAdmin, user, signOut } = useAuth();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
+  const navigationItems = [
+    { name: "Home", path: "/" },
+    { name: "About", path: "/about" },
+    { name: "Amenities", path: "/amenities" },
+    { name: "News & Events", path: "/news-events" },
+    { name: "Gallery", path: "/gallery" },
+    { name: "Documents", path: "/documents" },
+    { name: "Contact", path: "/contact" },
+  ];
 
   return (
-    <header className="bg-white shadow-sm border-b">
-      <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-        {/* Logo */}
-        <Link to="/" className="flex items-center">
-          <img 
-            src="/lovable-uploads/899b4f94-1a92-4f7d-a7c0-37faa59f7550.png" 
-            alt="Falcon Pointe Community" 
-            className="h-16 mr-2" 
-          />
-          <div className="hidden md:block">
-            <h1 className="text-2xl font-bold text-primary">Falcon Pointe</h1>
-            <p className="text-sm text-gray-600">Community Association</p>
-          </div>
-        </Link>
+    <header className="bg-white shadow-lg relative z-50">
+      <div className="container mx-auto px-4">
+        <div className="flex justify-between items-center py-4">
+          {/* Logo */}
+          <Link to="/" className="flex items-center space-x-2">
+            <img 
+              src="/lovable-uploads/080cd85e-7544-4e3a-98a9-178087f36beb.png" 
+              alt="Falcon Pointe Logo" 
+              className="h-12 w-auto"
+            />
+            <div>
+              <h1 className="text-xl font-bold text-gray-800">Falcon Pointe</h1>
+              <p className="text-sm text-gray-600">Community Association</p>
+            </div>
+          </Link>
 
-        {/* Navigation */}
-        {!isMobile ? (
-          <NavigationMenu>
-            <NavigationMenuList>
-              <NavigationMenuItem>
-                <Link to="/" className="px-3 py-2 text-sm font-medium">
-                  Home
-                </Link>
-              </NavigationMenuItem>
-              
-              <NavigationMenuItem>
-                <NavigationMenuTrigger>About</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <div className="grid w-[400px] gap-3 p-4">
-                    <Link to="/about" className="block p-2 hover:bg-muted rounded-md">
-                      Community Overview
-                    </Link>
-                    <Link to="/board" className="block p-2 hover:bg-muted rounded-md">
-                      Board of Directors
-                    </Link>
-                    <Link to="/faq" className="block p-2 hover:bg-muted rounded-md">
-                      FAQ
-                    </Link>
-                  </div>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-              
-              <NavigationMenuItem>
-                <NavigationMenuTrigger>Amenities</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <div className="grid w-[400px] gap-3 p-4">
-                    <Link to="/amenities" className="block p-2 hover:bg-muted rounded-md">
-                      All Amenities
-                    </Link>
-                    <Link to="/reservations" className="block p-2 hover:bg-muted rounded-md">
-                      Reservations
-                    </Link>
-                    <Link to="/gallery" className="block p-2 hover:bg-muted rounded-md">
-                      Photo Gallery
-                    </Link>
-                  </div>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-              
-              <NavigationMenuItem>
-                <NavigationMenuTrigger>Residents</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <div className="grid w-[400px] gap-3 p-4">
-                    <Link to="/events" className="block p-2 hover:bg-muted rounded-md">
-                      Events & Activities
-                    </Link>
-                    <Link to="/documents" className="block p-2 hover:bg-muted rounded-md">
-                      Association Documents
-                    </Link>
-                    <a href="https://owner.psprop.net" target="_blank" rel="noopener noreferrer" className="block p-2 hover:bg-muted rounded-md">
-                      Resident Portal
-                    </a>
-                  </div>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-              
-              <NavigationMenuItem>
-                <Link to="/contact" className="px-3 py-2 text-sm font-medium">
-                  Contact
-                </Link>
-              </NavigationMenuItem>
-              
-              {isAdmin && (
-                <NavigationMenuItem>
-                  <Link to="/admin" className="px-3 py-2 text-sm font-medium">
-                    Admin
-                  </Link>
-                </NavigationMenuItem>
-              )}
-            </NavigationMenuList>
-          </NavigationMenu>
-        ) : (
-          <MobileNav />
-        )}
-        
-        {/* Owner Login Button - Now at top right */}
-        {!isMobile && (
-          <a href="https://owner.psprop.net" target="_blank" rel="noopener noreferrer">
-            <Button variant="default" size="sm">
-              Owner Login
-            </Button>
-          </a>
-        )}
+          {/* Desktop Navigation */}
+          <nav className="hidden lg:flex space-x-8">
+            {navigationItems.map((item) => (
+              <Link
+                key={item.name}
+                to={item.path}
+                className="text-gray-700 hover:text-primary transition-colors duration-200 font-medium"
+              >
+                {item.name}
+              </Link>
+            ))}
+          </nav>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={toggleMenu}
+            className="lg:hidden p-2 rounded-md text-gray-700 hover:text-primary hover:bg-gray-100 transition-colors duration-200"
+            aria-label="Toggle menu"
+          >
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
+
+      {/* Mobile Navigation */}
+      <MobileNav isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
     </header>
   );
 };

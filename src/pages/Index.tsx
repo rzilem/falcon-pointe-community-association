@@ -4,7 +4,7 @@ import Layout from "@/components/layout/Layout";
 import Hero from "@/components/home/Hero";
 import AmenitiesPreview from "@/components/home/AmenitiesPreview";
 import CommunityOverview from "@/components/home/CommunityOverview";
-import EventsPreview from "@/components/home/EventsPreview";
+import NewsAndEventsPreview from "@/components/home/NewsAndEventsPreview";
 import QuickLinks from "@/components/home/QuickLinks";
 
 const Index = () => {
@@ -13,7 +13,7 @@ const Index = () => {
       <Hero />
       <CommunityOverview />
       <AmenitiesPreview />
-      <EventsPreview />
+      <NewsAndEventsPreview />
       <QuickLinks />
     </Layout>
   );
