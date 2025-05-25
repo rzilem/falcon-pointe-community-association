@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -102,6 +103,11 @@ const MobileNav = () => {
                   All Amenities
                 </Button>
               </Link>
+              <Link to="/reservations" onClick={handleLinkClick}>
+                <Button variant="ghost" className="w-full justify-start text-sm">
+                  Facility Reservations
+                </Button>
+              </Link>
               <Link to="/gallery" onClick={handleLinkClick}>
                 <Button variant="ghost" className="w-full justify-start text-sm">
                   Photo Gallery
@@ -121,9 +127,9 @@ const MobileNav = () => {
               </Button>
             </CollapsibleTrigger>
             <CollapsibleContent className="pl-4 space-y-2">
-              <Link to="/events" onClick={handleLinkClick}>
+              <Link to="/news-events" onClick={handleLinkClick}>
                 <Button variant="ghost" className="w-full justify-start text-sm">
-                  Events & Activities
+                  News & Events
                 </Button>
               </Link>
               <Link to="/documents" onClick={handleLinkClick}>
