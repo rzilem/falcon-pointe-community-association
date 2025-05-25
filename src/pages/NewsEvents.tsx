@@ -5,7 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
 import { Calendar, FileText } from "lucide-react";
-import { SiteContent } from "@/types/content";
 
 interface Event {
   id: string;
@@ -20,10 +19,20 @@ interface Event {
   display_date: string;
 }
 
-interface BlogPost extends Omit<SiteContent, 'created_at'> {
+interface BlogPost {
+  id: string;
+  title: string | null;
+  content: string | null;
+  created_at: string;
+  section: string;
+  section_type: string | null;
+  category: string | null;
+  featured_image: string | null;
+  active: boolean | null;
+  updated_at: string;
+  last_updated_by: string | null;
   type: 'blog';
   display_date: string;
-  created_at: string;
 }
 
 type ContentItem = Event | BlogPost;

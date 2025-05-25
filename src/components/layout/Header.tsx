@@ -61,7 +61,7 @@ const Header = () => {
       </div>
 
       {/* Mobile Navigation */}
-      <MobileNav isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
+      {isMenuOpen && <MobileNav />}
     </header>
   );
 };
