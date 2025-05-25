@@ -21,12 +21,10 @@ const NewsEventsContentCard = ({ item }: NewsEventsContentCardProps) => {
   const ContentIcon = item.type === 'event' ? Calendar : FileText;
   
   const handleImageError = () => {
-    console.log('Image failed to load, showing fallback icon:', imageUrl);
     setImageError(true);
   };
   
   const handleImageLoad = () => {
-    console.log('Image loaded successfully:', imageUrl);
     setImageError(false);
   };
   

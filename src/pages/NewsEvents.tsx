@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react";
 import Layout from "@/components/layout/Layout";
 import { supabase } from "@/integrations/supabase/client";
-import { getFallbackContent } from "@/utils/newsEventsUtils";
 import { ContentItem } from "@/types/newsEvents";
 import NewsEventsHero from "@/components/news-events/NewsEventsHero";
 import NewsEventsFilters from "@/components/news-events/NewsEventsFilters";
@@ -28,7 +27,6 @@ const NewsEvents = () => {
           table: 'events'
         },
         () => {
-          console.log('Events updated on News & Events page, refetching...');
           fetchContent();
         }
       )
@@ -44,7 +42,6 @@ const NewsEvents = () => {
           table: 'site_content'
         },
         () => {
-          console.log('Blog content updated on News & Events page, refetching...');
           fetchContent();
         }
       )
@@ -90,9 +87,6 @@ const NewsEvents = () => {
       
       if (eventsResult.error) throw eventsResult.error;
       if (blogResult.error) throw blogResult.error;
-      
-      console.log('Fetched events:', eventsResult.data);
-      console.log('Fetched blog posts:', blogResult.data);
       
       // Filter events to show recent past events (within last 7 days) and future events
       const sevenDaysAgo = new Date();
@@ -145,14 +139,11 @@ const NewsEvents = () => {
       setContent(combined);
     } catch (error) {
       console.error('Error fetching content:', error);
-      // Show fallback events if database fetch fails
-      setContent(getFallbackContent());
+      setContent([]);
     } finally {
       setLoading(false);
     }
   };
-
-  const displayContent = content.length > 0 ? content : getFallbackContent();
 
   return (
     <Layout>
@@ -161,26 +152,14 @@ const NewsEvents = () => {
       <div className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center mb-8">
-            <h2 className="text-3xl font-bold">
-              {content.length > 0 ? 'Latest News & Upcoming Events' : 'Sample Content'}
-            </h2>
+            <h2 className="text-3xl font-bold">Latest News & Upcoming Events</h2>
             <NewsEventsFilters filter={filter} onFilterChange={setFilter} />
           </div>
-
-          {content.length === 0 && (
-            <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-              <p className="text-blue-800">
-                <strong>Note:</strong> No content found in the database. The items below are sample data. 
-                <a href="/admin/events" className="underline ml-1">Create events</a> or 
-                <a href="/admin/content" className="underline ml-1"> blog posts</a> to see them here.
-              </p>
-            </div>
-          )}
           
           <NewsEventsGrid 
             content={content} 
             loading={loading} 
-            displayContent={displayContent} 
+            displayContent={content} 
           />
         </div>
       </div>

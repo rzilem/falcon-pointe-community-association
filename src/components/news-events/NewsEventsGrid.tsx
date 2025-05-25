@@ -47,9 +47,14 @@ const NewsEventsGrid = ({ content, loading, displayContent }: NewsEventsGridProp
 
   if (displayContent.length === 0) {
     return (
-      <div className="text-center py-12">
-        <p className="text-2xl font-medium text-gray-600">No content found</p>
-        <p className="mt-2 text-gray-500">Check back later for new updates</p>
+      <div className="text-center py-16">
+        <div className="max-w-md mx-auto">
+          <Calendar className="h-16 w-16 text-gray-300 mx-auto mb-4" />
+          <h3 className="text-xl font-medium text-gray-600 mb-2">No Content Available</h3>
+          <p className="text-gray-500">
+            There are currently no news articles or events to display. Check back soon for updates!
+          </p>
+        </div>
       </div>
     );
   }
@@ -72,7 +77,6 @@ const NewsEventsGrid = ({ content, loading, displayContent }: NewsEventsGridProp
                   className="w-full h-full object-cover"
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
-                    console.log('Image failed to load, replacing with placeholder:', imageUrl);
                     target.style.display = 'none';
                     const parent = target.parentElement;
                     if (parent) {
@@ -85,7 +89,6 @@ const NewsEventsGrid = ({ content, loading, displayContent }: NewsEventsGridProp
                       `;
                     }
                   }}
-                  onLoad={() => console.log('Image loaded successfully:', imageUrl)}
                 />
               ) : (
                 <div className="w-full h-full bg-gray-200 flex items-center justify-center">

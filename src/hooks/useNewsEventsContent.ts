@@ -1,7 +1,7 @@
+
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { ContentItem, Event, BlogPost } from "@/types/newsEvents";
-import { getFallbackContent } from "@/utils/newsEventsUtils";
 
 export const useNewsEventsContent = () => {
   const [content, setContent] = useState<ContentItem[]>([]);
@@ -77,8 +77,7 @@ export const useNewsEventsContent = () => {
       setContent(combined.slice(0, 3)); // Show top 3 items
     } catch (error) {
       console.error('Error fetching content:', error);
-      // Keep fallback content if database fetch fails
-      setContent(getFallbackContent());
+      setContent([]);
     } finally {
       setLoading(false);
     }
@@ -98,7 +97,6 @@ export const useNewsEventsContent = () => {
           table: 'events'
         },
         () => {
-          console.log('Events updated on home page, refetching...');
           fetchContent();
         }
       )
@@ -114,7 +112,6 @@ export const useNewsEventsContent = () => {
           table: 'site_content'
         },
         () => {
-          console.log('Blog content updated on home page, refetching...');
           fetchContent();
         }
       )
@@ -126,5 +123,5 @@ export const useNewsEventsContent = () => {
     };
   }, []);
 
-  return { content, loading, fallbackContent: getFallbackContent() };
+  return { content, loading };
 };
