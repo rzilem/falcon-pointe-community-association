@@ -1,12 +1,13 @@
 
 import React, { useState, useEffect } from "react";
 import Layout from "@/components/layout/Layout";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
-import { format } from "date-fns";
-import { Calendar, FileText } from "lucide-react";
-import { getImageUrl, getContentTypeLabel, getFallbackContent } from "@/utils/newsEventsUtils";
+import { getFallbackContent } from "@/utils/newsEventsUtils";
 import { ContentItem } from "@/types/newsEvents";
+import NewsEventsHero from "@/components/news-events/NewsEventsHero";
+import NewsEventsFilters from "@/components/news-events/NewsEventsFilters";
+import NewsEventsGrid from "@/components/news-events/NewsEventsGrid";
+import NewsEventsGuidelines from "@/components/news-events/NewsEventsGuidelines";
 
 const NewsEvents = () => {
   const [content, setContent] = useState<ContentItem[]>([]);
@@ -150,44 +151,12 @@ const NewsEvents = () => {
       setLoading(false);
     }
   };
-  
-  const formatDate = (dateString: string) => {
-    try {
-      const date = new Date(dateString);
-      return format(date, "MMMM do, yyyy");
-    } catch (error) {
-      return dateString;
-    }
-  };
-
-  const getContentIcon = (item: ContentItem) => {
-    return item.type === 'event' ? Calendar : FileText;
-  };
 
   const displayContent = content.length > 0 ? content : getFallbackContent();
-  
-  // Streamlined categories relevant to HOA community
-  const categories = [
-    { id: "all", name: "All Content" },
-    { id: "community", name: "Community" },
-    { id: "social", name: "Social" },
-    { id: "meeting", name: "Meetings" },
-    { id: "holiday", name: "Holiday" },
-    { id: "announcements", name: "Announcements" },
-    { id: "news", name: "News" },
-    { id: "maintenance", name: "Maintenance" }
-  ];
 
   return (
     <Layout>
-      <div className="bg-gray-800 text-white py-16">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl font-bold mb-4">News & Events</h1>
-          <p className="text-xl max-w-3xl mx-auto">
-            Stay connected with community events, announcements, and the latest news
-          </p>
-        </div>
-      </div>
+      <NewsEventsHero />
 
       <div className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
@@ -195,21 +164,7 @@ const NewsEvents = () => {
             <h2 className="text-3xl font-bold">
               {content.length > 0 ? 'Latest News & Upcoming Events' : 'Sample Content'}
             </h2>
-            <div className="flex flex-wrap gap-2">
-              {categories.map(category => (
-                <button
-                  key={category.id}
-                  onClick={() => setFilter(category.id)}
-                  className={`px-3 py-1 rounded-full text-sm ${
-                    filter === category.id 
-                    ? 'bg-primary text-white'
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                  }`}
-                >
-                  {category.name}
-                </button>
-              ))}
-            </div>
+            <NewsEventsFilters filter={filter} onFilterChange={setFilter} />
           </div>
 
           {content.length === 0 && (
@@ -222,138 +177,15 @@ const NewsEvents = () => {
             </div>
           )}
           
-          {loading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[1, 2, 3].map(i => (
-                <Card key={i} className="animate-pulse">
-                  <div className="h-48 bg-gray-200"></div>
-                  <CardHeader className="h-24 space-y-2">
-                    <div className="h-6 bg-gray-200 rounded"></div>
-                    <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="h-24 bg-gray-200 rounded"></div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          ) : displayContent.length === 0 ? (
-            <div className="text-center py-12">
-              <p className="text-2xl font-medium text-gray-600">No content found</p>
-              <p className="mt-2 text-gray-500">Check back later for new updates</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {displayContent.map((item) => {
-                const imageUrl = getImageUrl(
-                  item.type === 'event' ? item.image_path : item.featured_image
-                );
-                const ContentIcon = getContentIcon(item);
-                
-                return (
-                  <Card key={item.id} className="overflow-hidden">
-                    <div className="h-48 overflow-hidden bg-gray-100">
-                      {imageUrl ? (
-                        <img 
-                          src={imageUrl} 
-                          alt={item.title || 'Content image'}
-                          className="w-full h-full object-cover"
-                          onError={(e) => {
-                            const target = e.target as HTMLImageElement;
-                            console.log('Image failed to load, replacing with placeholder:', imageUrl);
-                            target.style.display = 'none';
-                            const parent = target.parentElement;
-                            if (parent) {
-                              parent.innerHTML = `
-                                <div class="w-full h-full bg-gray-200 flex items-center justify-center">
-                                  <div class="h-16 w-16 text-gray-400 flex items-center justify-center">
-                                    ${item.type === 'event' ? '📅' : '📄'}
-                                  </div>
-                                </div>
-                              `;
-                            }
-                          }}
-                          onLoad={() => console.log('Image loaded successfully:', imageUrl)}
-                        />
-                      ) : (
-                        <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                          <ContentIcon className="h-16 w-16 text-gray-400" />
-                        </div>
-                      )}
-                    </div>
-                    <CardHeader>
-                      <div className="flex items-center justify-between">
-                        <CardTitle className="line-clamp-2">{item.title}</CardTitle>
-                        <span className={`text-xs px-2 py-1 rounded-full ${
-                          item.type === 'event' 
-                            ? 'bg-blue-100 text-blue-800' 
-                            : 'bg-green-100 text-green-800'
-                        }`}>
-                          {getContentTypeLabel(item)}
-                        </span>
-                      </div>
-                      <div className="text-sm text-gray-600">
-                        <p className="font-medium">{formatDate(item.display_date)}</p>
-                        {item.type === 'event' && (
-                          <>
-                            <p>{item.time}</p>
-                            <p>{item.location}</p>
-                          </>
-                        )}
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-gray-600 line-clamp-3">
-                        {item.type === 'event' ? item.description : item.content?.replace(/<[^>]*>/g, '') || ''}
-                      </p>
-                      {item.category && (
-                        <div className="mt-4">
-                          <span className="inline-block bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded-full">
-                            {item.category}
-                          </span>
-                        </div>
-                      )}
-                    </CardContent>
-                  </Card>
-                );
-              })}
-            </div>
-          )}
+          <NewsEventsGrid 
+            content={content} 
+            loading={loading} 
+            displayContent={displayContent} 
+          />
         </div>
       </div>
 
-      <div className="py-12">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-3xl font-bold mb-6 text-center">Community Guidelines</h2>
-            <div className="space-y-6">
-              <div className="bg-white p-6 rounded-lg shadow-md">
-                <h3 className="text-xl font-bold mb-3">Event Registration</h3>
-                <p className="text-gray-600">
-                  Most events require advance registration through the resident portal. 
-                  Sign up early as space may be limited for certain activities.
-                </p>
-              </div>
-              
-              <div className="bg-white p-6 rounded-lg shadow-md">
-                <h3 className="text-xl font-bold mb-3">Guest Policy</h3>
-                <p className="text-gray-600">
-                  Residents are welcome to bring guests to most community events. 
-                  Please check individual event details for guest policies and fees.
-                </p>
-              </div>
-              
-              <div className="bg-white p-6 rounded-lg shadow-md">
-                <h3 className="text-xl font-bold mb-3">Weather & Updates</h3>
-                <p className="text-gray-600">
-                  Outdoor events may be rescheduled due to inclement weather. 
-                  Check this page regularly for the latest announcements and updates.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <NewsEventsGuidelines />
     </Layout>
   );
 };
