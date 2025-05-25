@@ -17,15 +17,27 @@ export const getImageUrl = (imagePath: string | null) => {
     return null;
   }
   
-  // If it's already a full URL or local upload path, return as-is
-  if (imagePath.startsWith('http') || imagePath.startsWith('/lovable-uploads/')) {
-    console.log('Using direct image path:', imagePath);
+  // If it's already a full URL, return as-is
+  if (imagePath.startsWith('http')) {
+    console.log('Using direct HTTP URL:', imagePath);
     return imagePath;
   }
   
-  // For Supabase storage paths, check if storage bucket exists and get public URL
+  // Handle local uploads (priority path)
+  if (imagePath.startsWith('/lovable-uploads/')) {
+    console.log('Using local upload path:', imagePath);
+    return imagePath;
+  }
+  
+  // Handle paths that should be local uploads but missing the prefix
+  if (imagePath.includes('lovable-uploads/') && !imagePath.startsWith('/')) {
+    const correctedPath = '/' + imagePath;
+    console.log('Correcting path to:', correctedPath);
+    return correctedPath;
+  }
+  
+  // For other paths, try Supabase storage as fallback
   try {
-    // First check if we have a storage bucket configured
     const { data } = supabase.storage
       .from('site-images')
       .getPublicUrl(imagePath);
@@ -66,6 +78,7 @@ export const getFallbackContent = (): ContentItem[] => [
     location: "Main Community Pool",
     description: "Join us for our annual summer pool party with food, games, and fun for the whole family! Bring your swimwear and appetite.",
     image_path: "/lovable-uploads/ebafe490-e728-4ed8-a428-ff945cb1df98.png",
+    category: "social",
     type: 'event',
     display_date: "2025-06-15"
   },
@@ -77,6 +90,7 @@ export const getFallbackContent = (): ContentItem[] => [
     location: "Throughout Falcon Pointe",
     description: "Our semi-annual community-wide garage sale. Register your address by July 5th to be included on the map.",
     image_path: "/lovable-uploads/4c2a90e2-ed6a-4fd9-9929-d876a2684ba8.png",
+    category: "community",
     type: 'event',
     display_date: "2025-07-10"
   },
@@ -88,6 +102,7 @@ export const getFallbackContent = (): ContentItem[] => [
     location: "Central Park",
     description: "Bring blankets and chairs for an evening of family fun watching a popular animated movie under the stars.",
     image_path: "/lovable-uploads/1e3c41bc-f71c-4013-957d-4fa60e414905.png",
+    category: "holiday",
     type: 'event',
     display_date: "2025-07-24"
   },
@@ -99,6 +114,7 @@ export const getFallbackContent = (): ContentItem[] => [
     location: "Community Pool",
     description: "The pool will be closed for routine maintenance and cleaning. Expected to reopen the following day.",
     image_path: "/lovable-uploads/229f09a0-dd6e-4287-a457-2523b2859beb.png",
+    category: "maintenance",
     type: 'event',
     display_date: "2025-06-01"
   }

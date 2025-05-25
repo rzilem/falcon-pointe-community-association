@@ -7,6 +7,7 @@ export interface Event {
   location: string;
   description: string;
   image_path: string | null;
+  category: string | null;
   type: 'event';
   display_date: string;
 }

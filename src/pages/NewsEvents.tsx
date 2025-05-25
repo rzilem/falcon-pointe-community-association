@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import Layout from "@/components/layout/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -5,37 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
 import { Calendar, FileText } from "lucide-react";
 import { getImageUrl, getContentTypeLabel, getFallbackContent } from "@/utils/newsEventsUtils";
-
-interface Event {
-  id: string;
-  title: string;
-  date: string;
-  time: string;
-  location: string;
-  description: string;
-  image_path: string | null;
-  category: string | null;
-  type: 'event';
-  display_date: string;
-}
-
-interface BlogPost {
-  id: string;
-  title: string | null;
-  content: string | null;
-  created_at: string;
-  section: string;
-  section_type: string | null;
-  category: string | null;
-  featured_image: string | null;
-  active: boolean | null;
-  updated_at: string;
-  last_updated_by: string | null;
-  type: 'blog';
-  display_date: string;
-}
-
-type ContentItem = Event | BlogPost;
+import { ContentItem } from "@/types/newsEvents";
 
 const NewsEvents = () => {
   const [content, setContent] = useState<ContentItem[]>([]);
@@ -132,14 +103,14 @@ const NewsEvents = () => {
       });
       
       // Transform events to include type and display_date
-      const transformedEvents: Event[] = filteredEvents.map(event => ({
+      const transformedEvents: ContentItem[] = filteredEvents.map(event => ({
         ...event,
         type: 'event' as const,
         display_date: event.date
       }));
       
       // Transform blog posts to include type and display_date
-      const transformedBlogPosts: BlogPost[] = (blogResult.data || []).map(post => ({
+      const transformedBlogPosts: ContentItem[] = (blogResult.data || []).map(post => ({
         ...post,
         type: 'blog' as const,
         display_date: post.created_at.split('T')[0] // Convert to date format
