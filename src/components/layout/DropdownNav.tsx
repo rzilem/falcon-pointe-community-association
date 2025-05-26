@@ -44,7 +44,7 @@ const DropdownNav: React.FC<DropdownNavProps> = ({ title, items, className }) =>
                     target="_blank"
                     rel="noopener noreferrer"
                     className={cn(
-                      "block select-none space-y-1 rounded-md px-3 py-2 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                      "block select-none space-y-1 rounded-md pl-0 pr-3 py-2 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
                     )}
                   >
                     <div className="text-lg font-medium leading-none">{item.title}</div>
@@ -58,7 +58,7 @@ const DropdownNav: React.FC<DropdownNavProps> = ({ title, items, className }) =>
                   <Link
                     to={item.href}
                     className={cn(
-                      "block select-none space-y-1 rounded-md px-3 py-2 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                      "block select-none space-y-1 rounded-md pl-0 pr-3 py-2 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
                     )}
                   >
                     <div className="text-lg font-medium leading-none">{item.title}</div>

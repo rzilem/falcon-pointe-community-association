@@ -64,9 +64,9 @@
   transform-origin: top center;
 }
 
-/* Submenu alignment with main menu text */
+/* Submenu alignment with main menu text - increased negative margin */
 [data-radix-navigation-menu-content] {
-  margin-left: -12px;
+  margin-left: -18px;
 }
 
 /* Improved typography for better readability */
