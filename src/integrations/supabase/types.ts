@@ -164,6 +164,7 @@ export type Database = {
           last_updated_by: string | null
           section: string
           section_type: string | null
+          slug: string | null
           title: string | null
           updated_at: string
         }
@@ -177,6 +178,7 @@ export type Database = {
           last_updated_by?: string | null
           section: string
           section_type?: string | null
+          slug?: string | null
           title?: string | null
           updated_at?: string
         }
@@ -190,6 +192,7 @@ export type Database = {
           last_updated_by?: string | null
           section?: string
           section_type?: string | null
+          slug?: string | null
           title?: string | null
           updated_at?: string
         }
@@ -257,6 +260,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      generate_slug: {
+        Args: { title: string }
+        Returns: string
+      }
       is_current_user_admin: {
         Args: Record<PropertyKey, never>
         Returns: boolean

@@ -1,8 +1,10 @@
 
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import { Calendar, FileText } from "lucide-react";
+import { Link } from "react-router-dom";
 import { getImageUrl, getContentTypeLabel } from "@/utils/newsEventsUtils";
 import { ContentItem } from "@/types/newsEvents";
 
@@ -24,6 +26,21 @@ const NewsEventsGrid = ({ content, loading, displayContent }: NewsEventsGridProp
 
   const getContentIcon = (item: ContentItem) => {
     return item.type === 'event' ? Calendar : FileText;
+  };
+
+  // Generate the correct URL based on content type
+  const getDetailUrl = (item: ContentItem) => {
+    if (item.type === 'event') {
+      return `/events/${item.id}`;
+    } else {
+      // For blog posts, use the slug if available, otherwise fall back to section
+      const slug = (item as any).slug || item.section;
+      return `/blog/${slug}`;
+    }
+  };
+
+  const getButtonText = (item: ContentItem) => {
+    return item.type === 'event' ? 'Event Details' : 'Read More';
   };
 
   if (loading) {
@@ -98,7 +115,7 @@ const NewsEventsGrid = ({ content, loading, displayContent }: NewsEventsGridProp
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle className="line-clamp-2">{item.title}</CardTitle>
-                <span className={`text-xs px-2 py-1 rounded-full ${
+                <span className={`text-xs px-2 py-1 rounded-full whitespace-nowrap ${
                   item.type === 'event' 
                     ? 'bg-blue-100 text-blue-800' 
                     : 'bg-green-100 text-green-800'
@@ -117,16 +134,21 @@ const NewsEventsGrid = ({ content, loading, displayContent }: NewsEventsGridProp
               </div>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-600 line-clamp-3">
+              <p className="text-gray-600 line-clamp-3 mb-4">
                 {item.type === 'event' ? item.description : item.content?.replace(/<[^>]*>/g, '') || ''}
               </p>
               {item.category && (
-                <div className="mt-4">
+                <div className="mb-4">
                   <span className="inline-block bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded-full">
                     {item.category}
                   </span>
                 </div>
               )}
+              <Button variant="outline" size="sm" asChild className="w-full">
+                <Link to={getDetailUrl(item)}>
+                  {getButtonText(item)}
+                </Link>
+              </Button>
             </CardContent>
           </Card>
         );

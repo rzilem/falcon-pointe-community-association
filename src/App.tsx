@@ -11,6 +11,7 @@ import Amenities from "./pages/Amenities";
 import Board from "./pages/Board";
 import Gallery from "./pages/Gallery";
 import NewsEvents from "./pages/NewsEvents";
+import EventDetail from "./pages/EventDetail";
 import Documents from "./pages/Documents";
 import AdminDocuments from "./pages/admin/Documents";
 import Contact from "./pages/Contact";
@@ -44,6 +45,7 @@ const App = () => (
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/news-events" element={<NewsEvents />} />
             <Route path="/events" element={<Navigate to="/news-events" replace />} />
+            <Route path="/events/:id" element={<EventDetail />} />
             <Route path="/documents" element={<Documents />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPost />} />

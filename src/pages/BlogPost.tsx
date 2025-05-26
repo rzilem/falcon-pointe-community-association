@@ -26,15 +26,32 @@ const BlogPost = () => {
       setLoading(true);
       setError(null);
       
-      const { data, error } = await supabase
+      // First try to find by slug
+      let { data, error } = await supabase
         .from('site_content')
         .select('*')
         .eq('section_type', 'blog')
         .eq('active', true)
-        .eq('section', slug)
-        .single();
+        .eq('slug', slug)
+        .maybeSingle();
+      
+      // If not found by slug, try by section (for backward compatibility)
+      if (!data && !error) {
+        ({ data, error } = await supabase
+          .from('site_content')
+          .select('*')
+          .eq('section_type', 'blog')
+          .eq('active', true)
+          .eq('section', slug)
+          .maybeSingle());
+      }
       
       if (error) throw error;
+      
+      if (!data) {
+        setError('Blog post not found');
+        return;
+      }
       
       setPost(data as SiteContent);
     } catch (error) {

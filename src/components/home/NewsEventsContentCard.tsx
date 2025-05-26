@@ -27,6 +27,21 @@ const NewsEventsContentCard = ({ item }: NewsEventsContentCardProps) => {
   const handleImageLoad = () => {
     setImageError(false);
   };
+
+  // Generate the correct URL based on content type
+  const getDetailUrl = () => {
+    if (item.type === 'event') {
+      return `/events/${item.id}`;
+    } else {
+      // For blog posts, use the slug if available, otherwise fall back to section
+      const slug = (item as any).slug || item.section;
+      return `/blog/${slug}`;
+    }
+  };
+
+  const getButtonText = () => {
+    return item.type === 'event' ? 'Event Details' : 'Read More';
+  };
   
   return (
     <Card className="overflow-hidden">
@@ -78,8 +93,8 @@ const NewsEventsContentCard = ({ item }: NewsEventsContentCardProps) => {
       </CardContent>
       <CardFooter>
         <Button variant="outline" size="sm" asChild className="w-full">
-          <Link to="/news-events">
-            {item.type === 'event' ? 'Event Details' : 'Read More'}
+          <Link to={getDetailUrl()}>
+            {getButtonText()}
           </Link>
         </Button>
       </CardFooter>
