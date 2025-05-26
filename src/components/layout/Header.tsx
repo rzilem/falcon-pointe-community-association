@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
@@ -48,10 +49,10 @@ const Header = () => {
             </Link>
           </div>
 
-          {/* Desktop Navigation - positioned at 285px from left */}
-          <div className="hidden lg:block absolute left-72">
-            <NavigationMenu>
-              <NavigationMenuList className="flex items-center space-x-25">
+          {/* Desktop Navigation - positioned at 285px from left with even distribution */}
+          <div className="hidden lg:block absolute left-72 right-4">
+            <NavigationMenu className="w-full">
+              <NavigationMenuList className="flex items-center justify-between w-full">
                 <DropdownNav title="About" items={aboutItems} />
                 <DropdownNav title="Amenities" items={amenitiesItems} />
                 <DropdownNav title="Residents" items={residentsItems} />
