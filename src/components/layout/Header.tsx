@@ -50,8 +50,8 @@ const Header = () => {
           </div>
 
           {/* Desktop Navigation - positioned with separate NavigationMenus */}
-          <div className="hidden lg:block absolute left-72 right-8">
-            <div className="flex items-center space-x-32">
+          <div className="hidden lg:block absolute left-64 right-8">
+            <div className="flex items-center space-x-24">
               <NavigationMenu>
                 <NavigationMenuList>
                   <DropdownNav title="About" items={aboutItems} />

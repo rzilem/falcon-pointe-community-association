@@ -23,7 +23,7 @@
   position: relative;
   transition: all 0.2s ease-in-out;
   min-width: fit-content;
-  padding: 12px 16px;
+  padding: 12px 12px;
 }
 
 .navigation-trigger:hover {
@@ -62,6 +62,11 @@
 /* Improved dropdown positioning and alignment */
 [data-radix-navigation-menu-viewport] {
   transform-origin: top center;
+}
+
+/* Submenu alignment with main menu text */
+[data-radix-navigation-menu-content] {
+  margin-left: -12px;
 }
 
 /* Improved typography for better readability */
