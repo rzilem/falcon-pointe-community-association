@@ -47,9 +47,9 @@ const DropdownNav: React.FC<DropdownNavProps> = ({ title, items, className }) =>
                       "block select-none space-y-1 rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
                     )}
                   >
-                    <div className="text-base font-medium leading-none">{item.title}</div>
+                    <div className="text-lg font-medium leading-none">{item.title}</div>
                     {item.description && (
-                      <p className="line-clamp-2 text-[11px] leading-snug text-muted-foreground">
+                      <p className="line-clamp-2 text-xs leading-snug text-gray-600">
                         {item.description}
                       </p>
                     )}
@@ -61,9 +61,9 @@ const DropdownNav: React.FC<DropdownNavProps> = ({ title, items, className }) =>
                       "block select-none space-y-1 rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
                     )}
                   >
-                    <div className="text-base font-medium leading-none">{item.title}</div>
+                    <div className="text-lg font-medium leading-none">{item.title}</div>
                     {item.description && (
-                      <p className="line-clamp-2 text-[11px] leading-snug text-muted-foreground">
+                      <p className="line-clamp-2 text-xs leading-snug text-gray-600">
                         {item.description}
                       </p>
                     )}
