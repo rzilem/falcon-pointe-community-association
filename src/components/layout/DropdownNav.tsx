@@ -34,7 +34,7 @@ const DropdownNav: React.FC<DropdownNavProps> = ({ title, items, className }) =>
         {title}
       </NavigationMenuTrigger>
       <NavigationMenuContent>
-        <ul className="grid w-[220px] gap-1.5 py-2 px-1 navigation-dropdown">
+        <ul className="grid w-[230px] gap-1.5 py-2 navigation-dropdown">
           {items.map((item) => (
             <li key={item.title} className="navigation-item">
               <NavigationMenuLink asChild>
