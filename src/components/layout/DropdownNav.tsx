@@ -34,7 +34,7 @@ const DropdownNav: React.FC<DropdownNavProps> = ({ title, items, className }) =>
         {title}
       </NavigationMenuTrigger>
       <NavigationMenuContent>
-        <ul className="grid w-[350px] gap-3 p-4 navigation-dropdown">
+        <ul className="grid w-[280px] gap-2 p-3 navigation-dropdown">
           {items.map((item) => (
             <li key={item.title} className="navigation-item">
               <NavigationMenuLink asChild>
@@ -44,12 +44,12 @@ const DropdownNav: React.FC<DropdownNavProps> = ({ title, items, className }) =>
                     target="_blank"
                     rel="noopener noreferrer"
                     className={cn(
-                      "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                      "block select-none space-y-1 rounded-md p-2.5 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
                     )}
                   >
                     <div className="text-sm font-medium leading-none">{item.title}</div>
                     {item.description && (
-                      <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                      <p className="line-clamp-2 text-xs leading-snug text-muted-foreground">
                         {item.description}
                       </p>
                     )}
@@ -58,12 +58,12 @@ const DropdownNav: React.FC<DropdownNavProps> = ({ title, items, className }) =>
                   <Link
                     to={item.href}
                     className={cn(
-                      "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                      "block select-none space-y-1 rounded-md p-2.5 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
                     )}
                   >
                     <div className="text-sm font-medium leading-none">{item.title}</div>
                     {item.description && (
-                      <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                      <p className="line-clamp-2 text-xs leading-snug text-muted-foreground">
                         {item.description}
                       </p>
                     )}

@@ -49,10 +49,10 @@ const Header = () => {
             </Link>
           </div>
 
-          {/* Desktop Navigation - positioned at 285px from left with increased spacing */}
-          <div className="hidden lg:block absolute left-72 right-16">
+          {/* Desktop Navigation - positioned with much increased spacing */}
+          <div className="hidden lg:block absolute left-72 right-8">
             <NavigationMenu>
-              <NavigationMenuList className="flex items-center space-x-20">
+              <NavigationMenuList className="flex items-center space-x-32">
                 <DropdownNav title="About" items={aboutItems} />
                 <DropdownNav title="Amenities" items={amenitiesItems} />
                 <DropdownNav title="Residents" items={residentsItems} />
