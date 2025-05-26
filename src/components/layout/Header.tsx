@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
@@ -11,23 +10,23 @@ const Header = () => {
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
-  // Consolidated navigation structure
+  // Consolidated navigation structure with simplified descriptions
   const aboutItems = [
-    { title: "Community Overview", href: "/about", description: "Learn about our community's history and values" },
-    { title: "Board of Directors", href: "/board", description: "Meet our elected community leaders" },
-    { title: "FAQ", href: "/faq", description: "Frequently asked questions and answers" }
+    { title: "Community Overview", href: "/about", description: "Our community's story" },
+    { title: "Board of Directors", href: "/board", description: "Meet our leaders" },
+    { title: "FAQ", href: "/faq", description: "Common questions" }
   ];
 
   const amenitiesItems = [
-    { title: "All Amenities", href: "/amenities", description: "Explore all community facilities and features" },
-    { title: "Facility Reservations", href: "/reservations", description: "Reserve community spaces for events" },
-    { title: "Photo Gallery", href: "/gallery", description: "View photos of our beautiful community" }
+    { title: "All Amenities", href: "/amenities", description: "Community facilities" },
+    { title: "Facility Reservations", href: "/reservations", description: "Book community spaces" },
+    { title: "Photo Gallery", href: "/gallery", description: "Community photos" }
   ];
 
   const residentsItems = [
-    { title: "News & Events", href: "/news-events", description: "Stay updated with community happenings" },
-    { title: "Association Documents", href: "/documents", description: "Access important community documents" },
-    { title: "Resident Portal", href: "https://owner.psprop.net", description: "External portal for residents", external: true }
+    { title: "News & Events", href: "/news-events", description: "Latest updates" },
+    { title: "Association Documents", href: "/documents", description: "Important documents" },
+    { title: "Resident Portal", href: "https://owner.psprop.net", description: "Online resident access", external: true }
   ];
 
   return (
