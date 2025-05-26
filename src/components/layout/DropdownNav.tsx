@@ -28,13 +28,13 @@ const DropdownNav: React.FC<DropdownNavProps> = ({ title, items, className }) =>
   return (
     <NavigationMenuItem>
       <NavigationMenuTrigger className={cn(
-        "text-gray-700 hover:text-primary transition-colors duration-200 font-medium navigation-trigger",
+        "text-gray-700 hover:text-primary transition-colors duration-200 font-medium navigation-trigger text-lg",
         className
       )}>
         {title}
       </NavigationMenuTrigger>
       <NavigationMenuContent>
-        <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] navigation-dropdown">
+        <ul className="grid w-[350px] gap-3 p-4 navigation-dropdown">
           {items.map((item) => (
             <li key={item.title} className="navigation-item">
               <NavigationMenuLink asChild>

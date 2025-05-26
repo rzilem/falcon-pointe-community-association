@@ -52,16 +52,7 @@ const Header = () => {
           {/* Desktop Navigation - takes up 8 columns for better spacing */}
           <div className="col-span-8 hidden lg:flex justify-center">
             <NavigationMenu>
-              <NavigationMenuList className="flex items-center space-x-8">
-                <li>
-                  <Link
-                    to="/"
-                    className="text-gray-700 hover:text-primary transition-colors duration-200 font-medium px-4 py-2 rounded-md hover:bg-gray-100"
-                  >
-                    Home
-                  </Link>
-                </li>
-                
+              <NavigationMenuList className="flex items-center justify-evenly space-x-12 w-full max-w-4xl">
                 <DropdownNav title="About" items={aboutItems} />
                 <DropdownNav title="Amenities" items={amenitiesItems} />
                 <DropdownNav title="Residents" items={residentsItems} />
@@ -69,7 +60,7 @@ const Header = () => {
                 <li>
                   <Link
                     to="/contact"
-                    className="text-gray-700 hover:text-primary transition-colors duration-200 font-medium px-4 py-2 rounded-md hover:bg-gray-100"
+                    className="text-gray-700 hover:text-primary transition-colors duration-200 font-medium px-4 py-2 rounded-md hover:bg-gray-100 text-lg"
                   >
                     Contact
                   </Link>

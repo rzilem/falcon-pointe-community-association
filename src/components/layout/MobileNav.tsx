@@ -52,12 +52,6 @@ const MobileNav = () => {
           </SheetTitle>
         </SheetHeader>
         <div className="mt-6 flex flex-col space-y-3">
-          <Link to="/" onClick={handleLinkClick}>
-            <Button variant="ghost" className="w-full justify-start">
-              Home
-            </Button>
-          </Link>
-
           <Collapsible 
             open={openSections.includes('about')}
             onOpenChange={() => handleToggleSection('about')}
