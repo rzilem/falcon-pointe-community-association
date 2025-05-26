@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
@@ -52,7 +51,7 @@ const Header = () => {
           {/* Desktop Navigation - positioned at 285px from left */}
           <div className="hidden lg:block absolute left-72">
             <NavigationMenu>
-              <NavigationMenuList className="flex items-center space-x-12">
+              <NavigationMenuList className="flex items-center space-x-25">
                 <DropdownNav title="About" items={aboutItems} />
                 <DropdownNav title="Amenities" items={amenitiesItems} />
                 <DropdownNav title="Residents" items={residentsItems} />
