@@ -1,0 +1,59 @@
+
+import React from 'react';
+import { Link } from 'react-router-dom';
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from '@/components/ui/navigation-menu';
+import { cn } from '@/lib/utils';
+
+interface NavItem {
+  title: string;
+  href: string;
+  description?: string;
+}
+
+interface DropdownNavProps {
+  title: string;
+  items: NavItem[];
+  className?: string;
+}
+
+const DropdownNav: React.FC<DropdownNavProps> = ({ title, items, className }) => {
+  return (
+    <NavigationMenuItem>
+      <NavigationMenuTrigger className={cn("text-gray-700 hover:text-primary transition-colors duration-200 font-medium", className)}>
+        {title}
+      </NavigationMenuTrigger>
+      <NavigationMenuContent>
+        <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+          {items.map((item) => (
+            <li key={item.title}>
+              <NavigationMenuLink asChild>
+                <Link
+                  to={item.href}
+                  className={cn(
+                    "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                  )}
+                >
+                  <div className="text-sm font-medium leading-none">{item.title}</div>
+                  {item.description && (
+                    <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                      {item.description}
+                    </p>
+                  )}
+                </Link>
+              </NavigationMenuLink>
+            </li>
+          ))}
+        </ul>
+      </NavigationMenuContent>
+    </NavigationMenuItem>
+  );
+};
+
+export default DropdownNav;

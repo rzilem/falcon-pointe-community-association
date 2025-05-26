@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
+import { NavigationMenu, NavigationMenuList } from '@/components/ui/navigation-menu';
+import DropdownNav from './DropdownNav';
 import MobileNav from "./MobileNav";
 
 const Header = () => {
@@ -9,17 +11,23 @@ const Header = () => {
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
-  const navigationItems = [
-    { name: "Home", path: "/" },
-    { name: "About", path: "/about" },
-    { name: "Amenities", path: "/amenities" },
-    { name: "Reservations", path: "/reservations" },
-    { name: "News & Events", path: "/news-events" },
-    { name: "Gallery", path: "/gallery" },
-    { name: "Documents", path: "/documents" },
-    { name: "Board", path: "/board" },
-    { name: "FAQ", path: "/faq" },
-    { name: "Contact", path: "/contact" },
+  // Consolidated navigation structure
+  const aboutItems = [
+    { title: "Community Overview", href: "/about", description: "Learn about our community's history and values" },
+    { title: "Board of Directors", href: "/board", description: "Meet our elected community leaders" },
+    { title: "FAQ", href: "/faq", description: "Frequently asked questions and answers" }
+  ];
+
+  const amenitiesItems = [
+    { title: "All Amenities", href: "/amenities", description: "Explore all community facilities and features" },
+    { title: "Facility Reservations", href: "/reservations", description: "Reserve community spaces for events" },
+    { title: "Photo Gallery", href: "/gallery", description: "View photos of our beautiful community" }
+  ];
+
+  const residentsItems = [
+    { title: "News & Events", href: "/news-events", description: "Stay updated with community happenings" },
+    { title: "Association Documents", href: "/documents", description: "Access important community documents" },
+    { title: "Resident Portal", href: "https://owner.psprop.net", description: "External portal for residents", external: true }
   ];
 
   return (
@@ -40,17 +48,31 @@ const Header = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex space-x-8">
-            {navigationItems.map((item) => (
-              <Link
-                key={item.name}
-                to={item.path}
-                className="text-gray-700 hover:text-primary transition-colors duration-200 font-medium"
-              >
-                {item.name}
-              </Link>
-            ))}
-          </nav>
+          <NavigationMenu className="hidden lg:flex">
+            <NavigationMenuList className="space-x-2">
+              <li>
+                <Link
+                  to="/"
+                  className="text-gray-700 hover:text-primary transition-colors duration-200 font-medium px-4 py-2 rounded-md hover:bg-gray-100"
+                >
+                  Home
+                </Link>
+              </li>
+              
+              <DropdownNav title="About" items={aboutItems} />
+              <DropdownNav title="Amenities" items={amenitiesItems} />
+              <DropdownNav title="Residents" items={residentsItems} />
+              
+              <li>
+                <Link
+                  to="/contact"
+                  className="text-gray-700 hover:text-primary transition-colors duration-200 font-medium px-4 py-2 rounded-md hover:bg-gray-100"
+                >
+                  Contact
+                </Link>
+              </li>
+            </NavigationMenuList>
+          </NavigationMenu>
 
           {/* Mobile Menu Button */}
           <button
