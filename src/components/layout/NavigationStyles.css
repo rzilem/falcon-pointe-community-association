@@ -71,8 +71,8 @@
 }
 
 /* Improved typography for compact descriptions */
-.navigation-dropdown .text-sm {
-  font-size: 14px;
+.navigation-dropdown .text-base {
+  font-size: 16px;
   font-weight: 500;
   line-height: 1.3;
 }
