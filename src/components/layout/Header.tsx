@@ -33,7 +33,7 @@ const Header = () => {
   return (
     <header className="bg-white shadow-lg relative z-50">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between py-4">
+        <div className="flex items-center py-4 relative">
           {/* Logo - fixed position on left */}
           <div className="flex-shrink-0">
             <Link to="/" className="flex items-center space-x-2">
@@ -49,8 +49,8 @@ const Header = () => {
             </Link>
           </div>
 
-          {/* Desktop Navigation - positioned 250px from left */}
-          <div className="hidden lg:block" style={{ marginLeft: '250px' }}>
+          {/* Desktop Navigation - positioned closer to logo */}
+          <div className="hidden lg:block absolute left-36">
             <NavigationMenu>
               <NavigationMenuList className="flex items-center space-x-12">
                 <DropdownNav title="About" items={aboutItems} />
@@ -70,7 +70,7 @@ const Header = () => {
           </div>
 
           {/* Mobile Menu Button - positioned on right */}
-          <div className="lg:hidden">
+          <div className="lg:hidden ml-auto">
             <button
               onClick={toggleMenu}
               className="p-2 rounded-md text-gray-700 hover:text-primary hover:bg-gray-100 transition-colors duration-200"
