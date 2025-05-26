@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
@@ -48,24 +49,34 @@ const Header = () => {
             </Link>
           </div>
 
-          {/* Desktop Navigation - positioned with much increased spacing */}
+          {/* Desktop Navigation - positioned with separate NavigationMenus */}
           <div className="hidden lg:block absolute left-72 right-8">
-            <NavigationMenu>
-              <NavigationMenuList className="flex items-center space-x-32">
-                <DropdownNav title="About" items={aboutItems} />
-                <DropdownNav title="Amenities" items={amenitiesItems} />
-                <DropdownNav title="Residents" items={residentsItems} />
-                
-                <li>
-                  <Link
-                    to="/contact"
-                    className="text-gray-700 hover:text-primary transition-colors duration-200 font-medium px-4 py-2 rounded-md hover:bg-gray-100 text-lg"
-                  >
-                    Contact
-                  </Link>
-                </li>
-              </NavigationMenuList>
-            </NavigationMenu>
+            <div className="flex items-center space-x-32">
+              <NavigationMenu>
+                <NavigationMenuList>
+                  <DropdownNav title="About" items={aboutItems} />
+                </NavigationMenuList>
+              </NavigationMenu>
+              
+              <NavigationMenu>
+                <NavigationMenuList>
+                  <DropdownNav title="Amenities" items={amenitiesItems} />
+                </NavigationMenuList>
+              </NavigationMenu>
+              
+              <NavigationMenu>
+                <NavigationMenuList>
+                  <DropdownNav title="Residents" items={residentsItems} />
+                </NavigationMenuList>
+              </NavigationMenu>
+              
+              <Link
+                to="/contact"
+                className="text-gray-700 hover:text-primary transition-colors duration-200 font-medium px-4 py-2 rounded-md hover:bg-gray-100 text-lg"
+              >
+                Contact
+              </Link>
+            </div>
           </div>
 
           {/* Mobile Menu Button - positioned on right */}
