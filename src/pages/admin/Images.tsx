@@ -1,8 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import AdminNav from '@/components/admin/AdminNav';
-import { useAuth } from '@/context/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import ImageUploadForm from '@/components/admin/images/ImageUploadForm';
@@ -37,18 +35,12 @@ const locationOptions = [
 ];
 
 const Images = () => {
-  const { isAdmin } = useAuth();
-  const navigate = useNavigate();
   const [images, setImages] = useState<SiteImage[]>([]);
   const [loading, setLoading] = useState(true);
   
   useEffect(() => {
-    if (!isAdmin) {
-      navigate('/auth', { replace: true });
-    } else {
-      fetchImages();
-    }
-  }, [isAdmin, navigate]);
+    fetchImages();
+  }, []);
 
   const fetchImages = async () => {
     try {

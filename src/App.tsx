@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/context/AuthContext";
+import AdminRouteGuard from "@/components/admin/AdminRouteGuard";
 import Index from "./pages/Index";
 import About from "./pages/About";
 import Amenities from "./pages/Amenities";
@@ -49,15 +50,38 @@ const App = () => (
             <Route path="/documents" element={<Documents />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
-            <Route path="/admin/documents" element={<AdminDocuments />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/faq" element={<FAQ />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/auth/reset-password" element={<PasswordReset />} />
-            <Route path="/admin" element={<Dashboard />} />
-            <Route path="/admin/images" element={<Images />} />
-            <Route path="/admin/content" element={<Content />} />
-            <Route path="/admin/events" element={<AdminEvents />} />
+            
+            {/* Protected Admin Routes */}
+            <Route path="/admin" element={
+              <AdminRouteGuard>
+                <Dashboard />
+              </AdminRouteGuard>
+            } />
+            <Route path="/admin/images" element={
+              <AdminRouteGuard>
+                <Images />
+              </AdminRouteGuard>
+            } />
+            <Route path="/admin/content" element={
+              <AdminRouteGuard>
+                <Content />
+              </AdminRouteGuard>
+            } />
+            <Route path="/admin/events" element={
+              <AdminRouteGuard>
+                <AdminEvents />
+              </AdminRouteGuard>
+            } />
+            <Route path="/admin/documents" element={
+              <AdminRouteGuard>
+                <AdminDocuments />
+              </AdminRouteGuard>
+            } />
+            
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>

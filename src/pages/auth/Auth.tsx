@@ -21,17 +21,27 @@ const Auth = () => {
   const [resetSent, setResetSent] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
 
-  // Redirect if already logged in
+  // Redirect if already logged in - but wait for auth to finish loading
   useEffect(() => {
-    if (user) {
+    if (!authLoading && user) {
       navigate('/admin');
     }
-  }, [user, navigate]);
+  }, [user, authLoading, navigate]);
+
+  // Handle password reset if coming from a reset link
+  useEffect(() => {
+    const hash = location.hash;
+    if (hash && hash.includes('type=recovery')) {
+      navigate('/auth/reset-password' + hash);
+    }
+  }, [location, navigate]);
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (loading) return; // Prevent double submissions
+    
     setLoading(true);
 
     try {
@@ -61,7 +71,7 @@ const Auth = () => {
         if (error) throw error;
         
         console.log('Sign in successful:', data);
-        navigate('/admin');
+        // Don't navigate here - let useEffect handle it after auth context updates
       } else if (mode === 'forgotPassword') {
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
           redirectTo: `${window.location.origin}/auth/reset-password`,
@@ -79,6 +89,18 @@ const Auth = () => {
       setLoading(false);
     }
   };
+
+  // Show loading during auth context initialization
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="flex flex-col items-center space-y-4">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+          <p className="text-sm text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   const renderForm = () => {
     if (mode === 'forgotPassword') {
@@ -117,6 +139,7 @@ const Auth = () => {
               onChange={(e) => setEmail(e.target.value)}
               required
               placeholder="your@email.com"
+              disabled={loading}
             />
           </div>
           <Button type="submit" className="w-full" disabled={loading}>
@@ -127,6 +150,7 @@ const Auth = () => {
             variant="link"
             className="w-full"
             onClick={() => setMode('signIn')}
+            disabled={loading}
           >
             Back to Sign In
           </Button>
@@ -145,6 +169,7 @@ const Auth = () => {
             onChange={(e) => setEmail(e.target.value)}
             required
             placeholder="your@email.com"
+            disabled={loading}
           />
         </div>
         <div className="space-y-2">
@@ -156,6 +181,7 @@ const Auth = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
             placeholder="••••••••"
+            disabled={loading}
           />
         </div>
         <Button type="submit" className="w-full" disabled={loading}>
@@ -166,6 +192,7 @@ const Auth = () => {
             type="button"
             variant="link"
             onClick={() => setMode(mode === 'signUp' ? 'signIn' : 'signUp')}
+            disabled={loading}
           >
             {mode === 'signUp' ? 'Already have an account? Sign In' : "Don't have an account? Sign Up"}
           </Button>
@@ -174,6 +201,7 @@ const Auth = () => {
               type="button"
               variant="link"
               onClick={() => setMode('forgotPassword')}
+              disabled={loading}
             >
               Forgot password?
             </Button>
@@ -182,14 +210,6 @@ const Auth = () => {
       </form>
     );
   };
-
-  // Handle password reset if coming from a reset link
-  useEffect(() => {
-    const hash = location.hash;
-    if (hash && hash.includes('type=recovery')) {
-      navigate('/auth/reset-password' + hash);
-    }
-  }, [location, navigate]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
