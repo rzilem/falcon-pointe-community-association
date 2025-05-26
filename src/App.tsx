@@ -27,6 +27,7 @@ import AdminEvents from "./pages/admin/Events";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import Reservations from "./pages/Reservations";
+import ReservationsIframe from "./components/reservations/ReservationsIframe";
 
 const queryClient = new QueryClient();
 
@@ -42,6 +43,7 @@ const App = () => (
             <Route path="/about" element={<About />} />
             <Route path="/amenities" element={<Amenities />} />
             <Route path="/reservations" element={<Reservations />} />
+            <Route path="/reservations-iframe" element={<ReservationsIframe />} />
             <Route path="/board" element={<Board />} />
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/news-events" element={<NewsEvents />} />
