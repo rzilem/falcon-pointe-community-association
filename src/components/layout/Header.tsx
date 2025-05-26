@@ -49,8 +49,8 @@ const Header = () => {
             </Link>
           </div>
 
-          {/* Desktop Navigation - positioned closer to logo */}
-          <div className="hidden lg:block absolute left-36">
+          {/* Desktop Navigation - positioned at 285px from left */}
+          <div className="hidden lg:block absolute left-72">
             <NavigationMenu>
               <NavigationMenuList className="flex items-center space-x-12">
                 <DropdownNav title="About" items={aboutItems} />
