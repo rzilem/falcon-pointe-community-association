@@ -33,55 +33,61 @@ const Header = () => {
   return (
     <header className="bg-white shadow-lg relative z-50">
       <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center py-4">
-          {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <img 
-              src="/lovable-uploads/080cd85e-7544-4e3a-98a9-178087f36beb.png" 
-              alt="Falcon Pointe Logo" 
-              className="h-12 w-auto"
-            />
-            <div>
-              <h1 className="text-xl font-bold text-gray-800">Falcon Pointe</h1>
-              <p className="text-sm text-gray-600">Community Association</p>
-            </div>
-          </Link>
+        <div className="grid grid-cols-12 items-center py-4 gap-4">
+          {/* Logo - takes up 3 columns */}
+          <div className="col-span-3">
+            <Link to="/" className="flex items-center space-x-2">
+              <img 
+                src="/lovable-uploads/080cd85e-7544-4e3a-98a9-178087f36beb.png" 
+                alt="Falcon Pointe Logo" 
+                className="h-12 w-auto"
+              />
+              <div>
+                <h1 className="text-xl font-bold text-gray-800">Falcon Pointe</h1>
+                <p className="text-sm text-gray-600">Community Association</p>
+              </div>
+            </Link>
+          </div>
 
-          {/* Desktop Navigation */}
-          <NavigationMenu className="hidden lg:flex">
-            <NavigationMenuList className="space-x-2">
-              <li>
-                <Link
-                  to="/"
-                  className="text-gray-700 hover:text-primary transition-colors duration-200 font-medium px-4 py-2 rounded-md hover:bg-gray-100"
-                >
-                  Home
-                </Link>
-              </li>
-              
-              <DropdownNav title="About" items={aboutItems} />
-              <DropdownNav title="Amenities" items={amenitiesItems} />
-              <DropdownNav title="Residents" items={residentsItems} />
-              
-              <li>
-                <Link
-                  to="/contact"
-                  className="text-gray-700 hover:text-primary transition-colors duration-200 font-medium px-4 py-2 rounded-md hover:bg-gray-100"
-                >
-                  Contact
-                </Link>
-              </li>
-            </NavigationMenuList>
-          </NavigationMenu>
+          {/* Desktop Navigation - takes up 8 columns for better spacing */}
+          <div className="col-span-8 hidden lg:flex justify-center">
+            <NavigationMenu>
+              <NavigationMenuList className="flex items-center space-x-8">
+                <li>
+                  <Link
+                    to="/"
+                    className="text-gray-700 hover:text-primary transition-colors duration-200 font-medium px-4 py-2 rounded-md hover:bg-gray-100"
+                  >
+                    Home
+                  </Link>
+                </li>
+                
+                <DropdownNav title="About" items={aboutItems} />
+                <DropdownNav title="Amenities" items={amenitiesItems} />
+                <DropdownNav title="Residents" items={residentsItems} />
+                
+                <li>
+                  <Link
+                    to="/contact"
+                    className="text-gray-700 hover:text-primary transition-colors duration-200 font-medium px-4 py-2 rounded-md hover:bg-gray-100"
+                  >
+                    Contact
+                  </Link>
+                </li>
+              </NavigationMenuList>
+            </NavigationMenu>
+          </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            onClick={toggleMenu}
-            className="lg:hidden p-2 rounded-md text-gray-700 hover:text-primary hover:bg-gray-100 transition-colors duration-200"
-            aria-label="Toggle menu"
-          >
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          {/* Mobile Menu Button - takes up 1 column */}
+          <div className="col-span-1 lg:hidden flex justify-end">
+            <button
+              onClick={toggleMenu}
+              className="p-2 rounded-md text-gray-700 hover:text-primary hover:bg-gray-100 transition-colors duration-200"
+              aria-label="Toggle menu"
+            >
+              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
       </div>
 

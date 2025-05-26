@@ -15,6 +15,7 @@ interface NavItem {
   title: string;
   href: string;
   description?: string;
+  external?: boolean;
 }
 
 interface DropdownNavProps {
@@ -26,27 +27,48 @@ interface DropdownNavProps {
 const DropdownNav: React.FC<DropdownNavProps> = ({ title, items, className }) => {
   return (
     <NavigationMenuItem>
-      <NavigationMenuTrigger className={cn("text-gray-700 hover:text-primary transition-colors duration-200 font-medium", className)}>
+      <NavigationMenuTrigger className={cn(
+        "text-gray-700 hover:text-primary transition-colors duration-200 font-medium navigation-trigger",
+        className
+      )}>
         {title}
       </NavigationMenuTrigger>
       <NavigationMenuContent>
-        <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+        <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] navigation-dropdown">
           {items.map((item) => (
-            <li key={item.title}>
+            <li key={item.title} className="navigation-item">
               <NavigationMenuLink asChild>
-                <Link
-                  to={item.href}
-                  className={cn(
-                    "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                  )}
-                >
-                  <div className="text-sm font-medium leading-none">{item.title}</div>
-                  {item.description && (
-                    <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                      {item.description}
-                    </p>
-                  )}
-                </Link>
+                {item.external ? (
+                  <a
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={cn(
+                      "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                    )}
+                  >
+                    <div className="text-sm font-medium leading-none">{item.title}</div>
+                    {item.description && (
+                      <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                        {item.description}
+                      </p>
+                    )}
+                  </a>
+                ) : (
+                  <Link
+                    to={item.href}
+                    className={cn(
+                      "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                    )}
+                  >
+                    <div className="text-sm font-medium leading-none">{item.title}</div>
+                    {item.description && (
+                      <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                        {item.description}
+                      </p>
+                    )}
+                  </Link>
+                )}
               </NavigationMenuLink>
             </li>
           ))}
