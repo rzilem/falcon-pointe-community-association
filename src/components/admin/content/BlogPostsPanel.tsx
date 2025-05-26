@@ -16,6 +16,7 @@ const BlogPostsPanel: React.FC = () => {
   const {
     blogPosts,
     loading,
+    deleting,
     sortField,
     sortDirection,
     filterText,
@@ -30,14 +31,20 @@ const BlogPostsPanel: React.FC = () => {
   } = useBlogPosts();
 
   const handleDeleteWithConfirmation = async (id: string) => {
+    const postToDelete = blogPosts.find(p => p.id === id);
+    const postTitle = postToDelete?.title || 'this blog post';
+    
     openConfirmation({
       itemId: id,
       title: "Delete Blog Post",
-      description: "Are you sure you want to delete this blog post? This action cannot be undone.",
+      description: `Are you sure you want to delete "${postTitle}"? This action cannot be undone.`,
       variant: "delete",
       confirmLabel: "Delete",
       cancelLabel: "Cancel",
-      onConfirm: handleDeleteContent
+      onConfirm: async (confirmedId: string) => {
+        console.log('Delete confirmation received for:', confirmedId);
+        await handleDeleteContent(confirmedId);
+      }
     });
   };
 
@@ -79,6 +86,7 @@ const BlogPostsPanel: React.FC = () => {
               posts={blogPosts}
               sortField={sortField}
               sortDirection={sortDirection}
+              deleting={deleting}
               onSortChange={handleSortChange}
               onEdit={handleEditPost}
               onDelete={handleDeleteWithConfirmation}

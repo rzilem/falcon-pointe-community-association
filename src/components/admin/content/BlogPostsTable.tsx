@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Edit, Trash } from 'lucide-react';
+import { Edit, Trash, Loader2 } from 'lucide-react';
 import { SiteContent } from '@/types/content';
 import ContentPreview from './ContentPreview';
 import { formatDate } from '@/utils/contentFormatting';
@@ -11,6 +11,7 @@ interface BlogPostsTableProps {
   posts: SiteContent[];
   sortField: string;
   sortDirection: 'asc' | 'desc';
+  deleting?: string | null;
   onSortChange: (field: string) => void;
   onEdit: (post: SiteContent) => void;
   onDelete: (id: string) => void;
@@ -20,6 +21,7 @@ const BlogPostsTable: React.FC<BlogPostsTableProps> = ({
   posts,
   sortField,
   sortDirection,
+  deleting,
   onSortChange,
   onEdit,
   onDelete
@@ -59,7 +61,7 @@ const BlogPostsTable: React.FC<BlogPostsTableProps> = ({
       </TableHeader>
       <TableBody>
         {posts.map((post) => (
-          <TableRow key={post.id}>
+          <TableRow key={post.id} className={deleting === post.id ? 'opacity-50' : ''}>
             <TableCell className="font-medium">{post.title || 'Untitled'}</TableCell>
             <TableCell>{post.category || 'Uncategorized'}</TableCell>
             <TableCell>{formatDate(post.updated_at)}</TableCell>
@@ -75,6 +77,7 @@ const BlogPostsTable: React.FC<BlogPostsTableProps> = ({
                   variant="outline" 
                   size="sm"
                   onClick={() => onEdit(post)}
+                  disabled={deleting === post.id}
                 >
                   <Edit className="h-4 w-4" />
                 </Button>
@@ -82,8 +85,13 @@ const BlogPostsTable: React.FC<BlogPostsTableProps> = ({
                   variant="destructive" 
                   size="sm"
                   onClick={() => onDelete(post.id)}
+                  disabled={deleting === post.id}
                 >
-                  <Trash className="h-4 w-4" />
+                  {deleting === post.id ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Trash className="h-4 w-4" />
+                  )}
                 </Button>
               </div>
             </TableCell>

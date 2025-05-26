@@ -44,7 +44,10 @@ export const useContentManagement = () => {
       
       const { data, error: fetchError } = await query;
       
-      if (fetchError) throw fetchError;
+      if (fetchError) {
+        console.error('Supabase fetch error:', fetchError);
+        throw fetchError;
+      }
       
       // Apply search filter if provided (client-side filtering)
       let filteredData = data || [];
@@ -63,12 +66,14 @@ export const useContentManagement = () => {
         section_type: (item.section_type || 'static') as 'static' | 'blog' | 'system'
       }));
       
+      console.log(`Fetched ${typedData.length} content items`);
       setContent(typedData);
       return typedData;
     } catch (err) {
       console.error('Error fetching content:', err);
-      setError('Failed to load content');
-      toast.error('Failed to load content');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to load content';
+      setError(errorMessage);
+      toast.error(errorMessage);
       return [] as SiteContent[];
     } finally {
       setLoading(false);
@@ -77,25 +82,34 @@ export const useContentManagement = () => {
 
   const addContent = async (newContent: Omit<SiteContent, 'id' | 'created_at' | 'updated_at'>) => {
     try {
+      console.log('Adding content:', newContent);
+      
       const { data, error } = await supabase
         .from('site_content')
         .insert(newContent)
         .select()
         .single();
       
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase insert error:', error);
+        throw error;
+      }
       
+      console.log('Content added successfully:', data);
       toast.success('Content added successfully');
       return data as SiteContent;
     } catch (err) {
       console.error('Error adding content:', err);
-      toast.error('Failed to add content');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to add content';
+      toast.error(errorMessage);
       throw err;
     }
   };
 
   const updateContent = async (id: string, updates: Partial<SiteContent>) => {
     try {
+      console.log('Updating content:', id, updates);
+      
       const { data, error } = await supabase
         .from('site_content')
         .update({
@@ -106,31 +120,69 @@ export const useContentManagement = () => {
         .select()
         .single();
       
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase update error:', error);
+        throw error;
+      }
       
+      console.log('Content updated successfully:', data);
       toast.success('Content updated successfully');
       return data as SiteContent;
     } catch (err) {
       console.error('Error updating content:', err);
-      toast.error('Failed to update content');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to update content';
+      toast.error(errorMessage);
       throw err;
     }
   };
 
   const deleteContent = async (id: string) => {
     try {
+      console.log('Attempting to delete content with ID:', id);
       setIsDeleting(true);
-      const { error } = await supabase
+      
+      // First verify the content exists and user has permission to see it
+      const { data: existingContent, error: fetchError } = await supabase
+        .from('site_content')
+        .select('id, title')
+        .eq('id', id)
+        .single();
+      
+      if (fetchError) {
+        console.error('Error fetching content before delete:', fetchError);
+        if (fetchError.code === 'PGRST116') {
+          throw new Error('Content not found or you do not have permission to delete it');
+        }
+        throw fetchError;
+      }
+      
+      console.log('Content found, proceeding with delete:', existingContent);
+      
+      // Proceed with deletion
+      const { error: deleteError } = await supabase
         .from('site_content')
         .delete()
         .eq('id', id);
       
-      if (error) throw error;
+      if (deleteError) {
+        console.error('Supabase delete error:', deleteError);
+        
+        // Provide specific error messages based on error codes
+        if (deleteError.code === '42501') {
+          throw new Error('Permission denied: You must be an admin to delete content');
+        } else if (deleteError.code === '23503') {
+          throw new Error('Cannot delete: This content is referenced by other items');
+        } else {
+          throw deleteError;
+        }
+      }
       
+      console.log('Content deleted successfully:', id);
       toast.success('Content deleted successfully');
     } catch (err) {
       console.error('Error deleting content:', err);
-      toast.error('Failed to delete content');
+      
+      // Re-throw the error so the calling component can handle it
       throw err;
     } finally {
       setIsDeleting(false);

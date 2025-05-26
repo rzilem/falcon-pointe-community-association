@@ -8,6 +8,7 @@ export const useBlogPosts = () => {
   const { fetchContent, addContent, updateContent, deleteContent } = useContentManagement();
   const [blogPosts, setBlogPosts] = useState<SiteContent[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deleting, setDeleting] = useState<string | null>(null);
   const [sortField, setSortField] = useState('updated_at');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
   const [filterText, setFilterText] = useState('');
@@ -62,12 +63,36 @@ export const useBlogPosts = () => {
 
   const handleDeleteContent = async (id: string) => {
     try {
+      console.log('Starting delete for blog post:', id);
+      setDeleting(id);
+      
       await deleteContent(id);
-      fetchBlogPosts();
+      
+      // Remove the deleted post from local state immediately
+      setBlogPosts(prev => prev.filter(post => post.id !== id));
+      
+      console.log('Blog post deleted successfully:', id);
       toast.success('Blog post deleted successfully');
     } catch (error) {
-      console.error('Error deleting content:', error);
-      toast.error('Failed to delete blog post');
+      console.error('Error deleting blog post:', error);
+      
+      // Show specific error message based on the error type
+      if (error instanceof Error) {
+        if (error.message.includes('row-level security')) {
+          toast.error('Permission denied: You must be an admin to delete blog posts');
+        } else if (error.message.includes('violates foreign key')) {
+          toast.error('Cannot delete: This blog post is referenced by other content');
+        } else {
+          toast.error(`Failed to delete blog post: ${error.message}`);
+        }
+      } else {
+        toast.error('Failed to delete blog post. Please try again.');
+      }
+      
+      // Refresh the list to ensure consistency
+      fetchBlogPosts();
+    } finally {
+      setDeleting(null);
     }
   };
 
@@ -87,6 +112,7 @@ export const useBlogPosts = () => {
   return {
     blogPosts,
     loading,
+    deleting,
     sortField,
     sortDirection,
     filterText,
