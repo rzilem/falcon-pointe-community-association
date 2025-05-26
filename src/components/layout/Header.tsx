@@ -72,7 +72,7 @@ const Header = () => {
               
               <Link
                 to="/contact"
-                className="text-gray-700 hover:text-primary transition-colors duration-200 font-medium px-3 py-3 rounded-md hover:bg-gray-100 text-lg"
+                className="text-gray-700 hover:text-primary transition-colors duration-200 font-medium px-3 py-3 rounded-md hover:bg-gray-100 text-lg ml-12"
               >
                 Contact
               </Link>
