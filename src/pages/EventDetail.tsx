@@ -5,7 +5,6 @@ import { useParams, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
-import { format } from 'date-fns';
 import { ArrowLeft, Calendar, MapPin, Clock } from 'lucide-react';
 import { getImageUrl } from '@/utils/newsEventsUtils';
 
@@ -58,7 +57,19 @@ const EventDetail = () => {
   
   const formatDate = (dateString: string) => {
     try {
-      return format(new Date(dateString), 'EEEE, MMMM d, yyyy');
+      // For date strings like "2025-05-29", avoid timezone conversion
+      const dateParts = dateString.split('T')[0].split('-');
+      const year = parseInt(dateParts[0]);
+      const month = parseInt(dateParts[1]) - 1; // Month is 0-indexed
+      const day = parseInt(dateParts[2]);
+      
+      const date = new Date(year, month, day);
+      return date.toLocaleDateString('en-US', { 
+        weekday: 'long', 
+        month: 'long', 
+        day: 'numeric', 
+        year: 'numeric' 
+      });
     } catch (error) {
       return dateString;
     }

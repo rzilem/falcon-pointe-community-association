@@ -1,11 +1,9 @@
-
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { format } from "date-fns";
 import { Calendar, FileText } from "lucide-react";
 import { Link } from "react-router-dom";
-import { getImageUrl, getContentTypeLabel } from "@/utils/newsEventsUtils";
+import { getImageUrl, getContentTypeLabel, formatDate } from "@/utils/newsEventsUtils";
 import { ContentItem } from "@/types/newsEvents";
 
 interface NewsEventsGridProps {
@@ -15,15 +13,6 @@ interface NewsEventsGridProps {
 }
 
 const NewsEventsGrid = ({ content, loading, displayContent }: NewsEventsGridProps) => {
-  const formatDate = (dateString: string) => {
-    try {
-      const date = new Date(dateString);
-      return format(date, "MMMM do, yyyy");
-    } catch (error) {
-      return dateString;
-    }
-  };
-
   const getContentIcon = (item: ContentItem) => {
     return item.type === 'event' ? Calendar : FileText;
   };
@@ -123,15 +112,13 @@ const NewsEventsGrid = ({ content, loading, displayContent }: NewsEventsGridProp
                   {getContentTypeLabel(item)}
                 </span>
               </div>
-              <div className="text-sm text-gray-600">
-                <p className="font-medium">{formatDate(item.display_date)}</p>
-                {item.type === 'event' && (
-                  <>
-                    <p>{item.time}</p>
-                    <p>{item.location}</p>
-                  </>
-                )}
-              </div>
+              {item.type === 'event' && (
+                <div className="text-sm text-gray-600">
+                  <p className="font-medium">{formatDate(item.display_date)}</p>
+                  <p>{item.time}</p>
+                  <p>{item.location}</p>
+                </div>
+              )}
             </CardHeader>
             <CardContent>
               <p className="text-gray-600 line-clamp-3 mb-4">

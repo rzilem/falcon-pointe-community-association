@@ -4,7 +4,14 @@ import { ContentItem } from "@/types/newsEvents";
 
 export const formatDate = (dateString: string) => {
   try {
-    const date = new Date(dateString);
+    // For date strings like "2025-05-29", we want to avoid timezone conversion
+    // Parse as local date to preserve the intended date
+    const dateParts = dateString.split('T')[0].split('-');
+    const year = parseInt(dateParts[0]);
+    const month = parseInt(dateParts[1]) - 1; // Month is 0-indexed
+    const day = parseInt(dateParts[2]);
+    
+    const date = new Date(year, month, day);
     return date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
   } catch (error) {
     return dateString;

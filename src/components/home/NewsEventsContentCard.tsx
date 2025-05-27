@@ -71,9 +71,11 @@ const NewsEventsContentCard = ({ item }: NewsEventsContentCardProps) => {
             {getContentTypeLabel(item)}
           </span>
         </div>
-        <CardDescription className="font-medium text-primary">
-          {formatDate(item.display_date)}
-        </CardDescription>
+        {item.type === 'event' && (
+          <CardDescription className="font-medium text-primary">
+            {formatDate(item.display_date)}
+          </CardDescription>
+        )}
       </CardHeader>
       <CardContent>
         <div className="space-y-2">
