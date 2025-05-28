@@ -15,7 +15,7 @@ const PoolPavilionTab = () => {
   const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
-    // Load Gravity Forms script
+    // Load Gravity Forms script with HTTPS
     const script = document.createElement('script');
     script.src = 'https://psprop.net/wp-content/plugins/gravity-forms-iframe-master/assets/scripts/gfembed.min.js';
     script.type = 'text/javascript';
@@ -33,13 +33,13 @@ const PoolPavilionTab = () => {
   const handleIframeLoad = () => {
     setIsLoading(false);
     setHasError(false);
-    console.log('Pool Pavilion iframe loaded (Form 35)');
+    console.log('Pool Pavilion iframe loaded (Form 36)');
   };
 
   const handleIframeError = () => {
     setIsLoading(false);
     setHasError(true);
-    console.error('Pool Pavilion iframe error (Form 35)');
+    console.error('Pool Pavilion iframe error (Form 36)');
   };
 
   return (
@@ -129,7 +129,7 @@ const PoolPavilionTab = () => {
             </div>
           </div>
           
-          {/* Enhanced Reservation Form Section with HTTPS URL */}
+          {/* Enhanced Reservation Form Section with Correct Form ID and HTTPS URL */}
           <Card className="gravity-form-card border-0 rounded-none">
             <CardContent className="p-6 md:p-8">
               <div className="w-full gravity-form-container">
@@ -149,7 +149,7 @@ const PoolPavilionTab = () => {
                 )}
                 
                 <iframe 
-                  src="https://psprop.net/gfembed/?f=35" 
+                  src="https://psprop.net/gfembed/?f=36" 
                   width="100%" 
                   height="500" 
                   frameBorder="0" 

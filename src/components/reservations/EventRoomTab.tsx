@@ -15,7 +15,7 @@ const EventRoomTab = () => {
   const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
-    // Load Gravity Forms script
+    // Load Gravity Forms script with HTTPS
     const script = document.createElement('script');
     script.src = 'https://psprop.net/wp-content/plugins/gravity-forms-iframe-master/assets/scripts/gfembed.min.js';
     script.type = 'text/javascript';
@@ -33,13 +33,13 @@ const EventRoomTab = () => {
   const handleIframeLoad = () => {
     setIsLoading(false);
     setHasError(false);
-    console.log('Event Room iframe loaded (Form 36)');
+    console.log('Event Room iframe loaded (Form 38)');
   };
 
   const handleIframeError = () => {
     setIsLoading(false);
     setHasError(true);
-    console.error('Event Room iframe error (Form 36)');
+    console.error('Event Room iframe error (Form 38)');
   };
 
   return (
@@ -122,7 +122,7 @@ const EventRoomTab = () => {
             </div>
           </div>
           
-          {/* Enhanced Reservation Form Section with HTTPS URL */}
+          {/* Enhanced Reservation Form Section with Correct Form ID and HTTPS URL */}
           <Card className="gravity-form-card border-0 rounded-none">
             <CardContent className="p-6 md:p-8">
               <div className="w-full gravity-form-container">
@@ -142,7 +142,7 @@ const EventRoomTab = () => {
                 )}
                 
                 <iframe 
-                  src="https://psprop.net/gfembed/?f=36" 
+                  src="https://psprop.net/gfembed/?f=38" 
                   width="100%" 
                   height="500" 
                   frameBorder="0" 
