@@ -1,5 +1,5 @@
 
-import React, { useEffect } from "react";
+import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Separator } from "@/components/ui/separator";
@@ -8,47 +8,6 @@ import { CheckCircle, Info, Users } from "lucide-react";
 import "@/components/contact/GravityFormStyles.css";
 
 const PoolPavilionTab = () => {
-  useEffect(() => {
-    // Check if script is already loaded to prevent duplicates
-    const existingScript = document.querySelector('script[src*="gfembed.min.js"]');
-    if (existingScript) {
-      console.log("Gravity Forms script already loaded");
-      return;
-    }
-
-    console.log("Loading Gravity Forms script for Pool Pavilion form...");
-    
-    // Create script element for Gravity Form functionality
-    const script = document.createElement("script");
-    script.src = "/wp-content/plugins/gravity-forms-iframe-master/assets/scripts/gfembed.min.js";
-    script.type = "text/javascript";
-    script.async = true;
-    
-    // Add error handling
-    script.onload = () => {
-      console.log("Gravity Forms script loaded successfully");
-      // Force a slight delay to ensure form initialization
-      setTimeout(() => {
-        console.log("Gravity Forms script initialization complete");
-      }, 500);
-    };
-    
-    script.onerror = () => {
-      console.error("Failed to load Gravity Forms script");
-    };
-    
-    // Append script to document body
-    document.body.appendChild(script);
-    
-    // Simplified cleanup - same as Contact form
-    return () => {
-      if (document.body.contains(script)) {
-        document.body.removeChild(script);
-        console.log("Gravity Forms script cleanup completed");
-      }
-    };
-  }, []);
-
   return (
     <Card className="overflow-hidden border-0 shadow-lg hover:shadow-xl transition-shadow duration-300">
       <CardContent className="p-0">
@@ -136,23 +95,24 @@ const PoolPavilionTab = () => {
             </div>
           </div>
           
-          {/* Reservation Form Section - Match Contact form structure */}
+          {/* Reservation Form Section - Removed script loading, increased height */}
           <Card className="gravity-form-card border-0 rounded-none">
             <CardContent className="p-6 md:p-8">
               <div className="w-full gravity-form-container">
                 <iframe 
                   src="//psprop.net/gfembed/?f=36" 
                   width="100%" 
-                  height="600" 
+                  height="800" 
                   frameBorder="0" 
                   className="gfiframe"
                   title="Pool Pavilion Reservation Form"
+                  sandbox="allow-scripts allow-forms allow-same-origin allow-popups"
                   style={{
                     width: "100%",
-                    height: "100%",
+                    height: "800px",
                     border: "none",
                     display: "block",
-                    minHeight: "600px"
+                    minHeight: "800px"
                   }}
                 />
               </div>

@@ -82,24 +82,36 @@
   font-size: 16px !important;
 }
 
-/* Fix for iframe height */
+/* Enhanced iframe styling for better calendar display */
 .gfiframe {
-  min-height: 600px;
-}
-
-/* Calendar-specific styling to help with display issues */
-.gform_wrapper .ginput_container_date,
-.gform_wrapper .ginput_container_time,
-.gform_wrapper .gfiframe {
-  min-height: 50px !important;
+  min-height: 800px !important;
   overflow: visible !important;
 }
 
-/* Ensure calendar widgets have proper space */
+/* Calendar-specific styling - more aggressive approach */
+.gform_wrapper .ginput_container_date,
+.gform_wrapper .ginput_container_time {
+  min-height: 100px !important;
+  overflow: visible !important;
+  position: relative !important;
+}
+
+/* Ensure calendar widgets have proper space and visibility */
 .gform_wrapper .gfield_calendar,
-.gform_wrapper .ui-datepicker {
+.gform_wrapper .ui-datepicker,
+.gform_wrapper .hasDatepicker {
   z-index: 9999 !important;
   position: relative !important;
+  overflow: visible !important;
+  min-height: 300px !important;
+}
+
+/* Additional calendar widget support */
+.gform_wrapper .gfield_calendar_dropdown,
+.gform_wrapper .gfield_time_hour,
+.gform_wrapper .gfield_time_minute {
+  display: block !important;
+  visibility: visible !important;
 }
 
 /* Additional form spacing */
@@ -136,7 +148,7 @@
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .gfiframe {
-    min-height: 650px;
+    min-height: 850px !important;
   }
   
   .gform_wrapper .gfield_label {
