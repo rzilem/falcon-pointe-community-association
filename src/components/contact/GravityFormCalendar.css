@@ -1,0 +1,54 @@
+
+/* Calendar widget visibility fixes */
+.gform_wrapper .ginput_container_date,
+.gform_wrapper .ginput_container_time,
+.gform_wrapper .gfield_calendar,
+.gform_wrapper .ui-datepicker,
+.gform_wrapper .hasDatepicker,
+.gform_wrapper .gfield_time_hour,
+.gform_wrapper .gfield_time_minute,
+.gform_wrapper .gfield_calendar_dropdown {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative !important;
+  z-index: 99999 !important;
+  min-height: 200px !important;
+  overflow: visible !important;
+  background: white !important;
+  border: 1px solid #ddd !important;
+  padding: 10px !important;
+  margin: 10px 0 !important;
+  width: 100% !important;
+  max-width: none !important;
+}
+
+/* Force hidden calendar elements to show */
+.gform_wrapper .gfield[style*="display: none"],
+.gform_wrapper .ginput_container[style*="display: none"],
+.gform_wrapper [style*="display: none"] {
+  display: block !important;
+}
+
+/* Override WordPress/jQuery UI hiding */
+.gform_wrapper .ui-helper-hidden-accessible {
+  position: static !important;
+  clip: auto !important;
+  width: auto !important;
+  height: auto !important;
+  overflow: visible !important;
+}
+
+/* Force all date/time elements to be visible */
+.gform_wrapper *[class*="date"],
+.gform_wrapper *[class*="time"],
+.gform_wrapper *[class*="calendar"],
+.gform_wrapper *[id*="date"],
+.gform_wrapper *[id*="time"],
+.gform_wrapper *[id*="calendar"] {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative !important;
+  z-index: 9999 !important;
+}

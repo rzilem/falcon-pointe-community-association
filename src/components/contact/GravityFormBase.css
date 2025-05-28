@@ -1,0 +1,57 @@
+
+/* Container and card styling */
+.gravity-form-container {
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.gravity-form-card {
+  border: 1px solid rgba(var(--accent), 0.3);
+  box-shadow: 0 8px 30px -8px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(8px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 16px;
+}
+
+.gravity-form-card:hover {
+  box-shadow: 0 12px 36px -12px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Base form styling */
+.gform_wrapper form {
+  padding: 16px !important;
+}
+
+/* Form spacing */
+.gform_wrapper .gfield {
+  margin-bottom: 25px !important;
+  min-height: 60px !important;
+}
+
+/* Iframe styling */
+.gfiframe {
+  min-height: 500px !important;
+  overflow: visible !important;
+}
+
+.calendar-iframe {
+  min-height: 500px !important;
+  height: 500px !important;
+}
+
+iframe[src*="gfembed"] {
+  min-height: 600px;
+  width: 100%;
+  border: none;
+  background: white;
+}
+
+.amenity-form-container {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}

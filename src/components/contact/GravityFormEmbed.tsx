@@ -1,7 +1,10 @@
 
 import React, { useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import "./GravityFormStyles.css";
+import "./GravityFormBase.css";
+import "./GravityFormFields.css";
+import "./GravityFormCalendar.css";
+import "./GravityFormResponsive.css";
 
 const GravityFormEmbed = () => {
   useEffect(() => {

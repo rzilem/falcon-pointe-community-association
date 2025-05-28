@@ -5,7 +5,10 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Separator } from "@/components/ui/separator";
 import ImageDisplay from "@/components/cms/ImageDisplay";
 import { CheckCircle, Info, Users } from "lucide-react";
-import "@/components/contact/GravityFormStyles.css";
+import "@/components/contact/GravityFormBase.css";
+import "@/components/contact/GravityFormFields.css";
+import "@/components/contact/GravityFormCalendar.css";
+import "@/components/contact/GravityFormResponsive.css";
 
 const PoolPavilionTab = () => {
   return (
