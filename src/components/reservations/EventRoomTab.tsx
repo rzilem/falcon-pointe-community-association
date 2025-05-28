@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+
+import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Separator } from "@/components/ui/separator";
 import ImageDisplay from "@/components/cms/ImageDisplay";
-import { CheckCircle, Users, ExternalLink } from "lucide-react";
+import { CheckCircle, Users } from "lucide-react";
 
 const EventRoomTab = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -20,21 +21,6 @@ const EventRoomTab = () => {
     setHasError(true);
     console.error('Event Room full page error');
   };
-
-  // Set a timeout to show error if iframe doesn't load within 10 seconds
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (isLoading) {
-        setIsLoading(false);
-        setHasError(true);
-        console.warn('Event Room iframe timed out');
-      }
-    }, 10000);
-
-    return () => clearTimeout(timer);
-  }, [isLoading]);
-
-  const reservationUrl = "https://psprop.net/falcon-pointe-indoor-event-room-reservation/";
 
   return (
     <Card className="overflow-hidden border-0 shadow-lg hover:shadow-xl transition-shadow duration-300">
@@ -116,7 +102,7 @@ const EventRoomTab = () => {
             </div>
           </div>
           
-          {/* Reservation Section with Better Error Handling */}
+          {/* Full Page Reservation Section */}
           <Card className="border-0 rounded-none">
             <CardContent className="p-0">
               <div className="w-full">
@@ -125,36 +111,18 @@ const EventRoomTab = () => {
                     <div className="text-center">
                       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
                       <p className="mt-2 text-gray-600">Loading reservation page...</p>
-                      <p className="mt-1 text-xs text-gray-500">This may take a moment to load</p>
                     </div>
                   </div>
                 )}
                 
                 {hasError && (
-                  <div className="bg-gradient-to-r from-green-50 to-green-100 border border-green-200 rounded-lg p-6 m-4">
-                    <div className="text-center">
-                      <h3 className="text-xl font-bold text-green-800 mb-3">Indoor Event Room Reservation</h3>
-                      <p className="text-green-700 mb-4">
-                        Click the button below to access the reservation form:
-                      </p>
-                      <a 
-                        href={reservationUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
-                      >
-                        <ExternalLink className="h-5 w-5" />
-                        Make Reservation
-                      </a>
-                      <p className="mt-3 text-sm text-green-600">
-                        The form will open in a new window
-                      </p>
-                    </div>
+                  <div className="bg-red-50 border border-red-200 rounded p-4 m-4">
+                    <p className="text-red-800">Unable to load reservation page. Please refresh or contact the office.</p>
                   </div>
                 )}
                 
                 <iframe 
-                  src={reservationUrl}
+                  src="https://psprop.net/falcon-pointe-indoor-event-room-reservation/" 
                   width="100%" 
                   height="800" 
                   frameBorder="0" 
@@ -162,10 +130,6 @@ const EventRoomTab = () => {
                   title="Indoor Event Room Reservation Page"
                   onLoad={handleIframeLoad}
                   onError={handleIframeError}
-                  sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-top-navigation-by-user-activation allow-downloads"
-                  allow="payment; geolocation; camera; microphone; autoplay"
-                  loading="lazy"
-                  referrerPolicy="strict-origin-when-cross-origin"
                   style={{
                     width: "100%",
                     height: "800px",
