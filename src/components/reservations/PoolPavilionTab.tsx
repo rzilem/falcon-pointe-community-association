@@ -1,4 +1,3 @@
-
 import React, { useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -115,16 +114,11 @@ const PoolPavilionTab = () => {
           {/* Reservation Form Section */}
           <div className="bg-white" style={{ height: '500px', minHeight: '500px' }}>
             <iframe 
-              src="https://psprop.net/gfembed/?f=36" 
+              src="//psprop.net/gfembed/?f=36" 
               width="100%" 
               height="500"
               frameBorder="0"
-              scrolling="auto"
-              allowFullScreen
-              sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
               className="gfiframe"
-              loading="lazy"
-              title="Falcon Pointe Pool Pavilion Reservation Form"
               style={{
                 width: "100%",
                 height: "100%",
