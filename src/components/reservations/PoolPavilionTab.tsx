@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Separator } from "@/components/ui/separator";
@@ -20,6 +20,19 @@ const PoolPavilionTab = () => {
     setHasError(true);
     console.error('Pool Pavilion full page error');
   };
+
+  // Set a timeout to show error if iframe doesn't load within 10 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (isLoading) {
+        setIsLoading(false);
+        setHasError(true);
+        console.warn('Pool Pavilion iframe timed out');
+      }
+    }, 10000);
+
+    return () => clearTimeout(timer);
+  }, [isLoading]);
 
   const reservationUrl = "https://psprop.net/falcon-pointe-pool-pavilion-reservation/";
 
@@ -110,7 +123,7 @@ const PoolPavilionTab = () => {
             </div>
           </div>
           
-          {/* Reservation Section with Fallback */}
+          {/* Reservation Section with Better Error Handling */}
           <Card className="border-0 rounded-none">
             <CardContent className="p-0">
               <div className="w-full">
@@ -119,26 +132,30 @@ const PoolPavilionTab = () => {
                     <div className="text-center">
                       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
                       <p className="mt-2 text-gray-600">Loading reservation page...</p>
+                      <p className="mt-1 text-xs text-gray-500">This may take a moment to load</p>
                     </div>
                   </div>
                 )}
                 
                 {hasError && (
-                  <div className="bg-yellow-50 border border-yellow-200 rounded p-6 m-4">
+                  <div className="bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200 rounded-lg p-6 m-4">
                     <div className="text-center">
-                      <h3 className="text-lg font-semibold text-yellow-800 mb-2">Reservation Form</h3>
-                      <p className="text-yellow-700 mb-4">
-                        If the form doesn't load below, you can access it directly:
+                      <h3 className="text-xl font-bold text-blue-800 mb-3">Pool Pavilion Reservation</h3>
+                      <p className="text-blue-700 mb-4">
+                        Click the button below to access the reservation form:
                       </p>
                       <a 
                         href={reservationUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+                        className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
                       >
-                        <ExternalLink className="h-4 w-4" />
-                        Open Reservation Form
+                        <ExternalLink className="h-5 w-5" />
+                        Make Reservation
                       </a>
+                      <p className="mt-3 text-sm text-blue-600">
+                        The form will open in a new window
+                      </p>
                     </div>
                   </div>
                 )}
@@ -152,9 +169,10 @@ const PoolPavilionTab = () => {
                   title="Pool Pavilion Reservation Page"
                   onLoad={handleIframeLoad}
                   onError={handleIframeError}
-                  sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-top-navigation-by-user-activation"
-                  allow="payment; geolocation"
+                  sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-top-navigation-by-user-activation allow-downloads"
+                  allow="payment; geolocation; camera; microphone; autoplay"
                   loading="lazy"
+                  referrerPolicy="strict-origin-when-cross-origin"
                   style={{
                     width: "100%",
                     height: "800px",
