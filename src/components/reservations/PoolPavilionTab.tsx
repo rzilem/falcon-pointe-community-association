@@ -1,10 +1,9 @@
-
 import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Separator } from "@/components/ui/separator";
 import ImageDisplay from "@/components/cms/ImageDisplay";
-import { CheckCircle, Info, Users } from "lucide-react";
+import { CheckCircle, Info, Users, ExternalLink } from "lucide-react";
 
 const PoolPavilionTab = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -21,6 +20,8 @@ const PoolPavilionTab = () => {
     setHasError(true);
     console.error('Pool Pavilion full page error');
   };
+
+  const reservationUrl = "https://psprop.net/falcon-pointe-pool-pavilion-reservation/";
 
   return (
     <Card className="overflow-hidden border-0 shadow-lg hover:shadow-xl transition-shadow duration-300">
@@ -109,7 +110,7 @@ const PoolPavilionTab = () => {
             </div>
           </div>
           
-          {/* Full Page Reservation Section */}
+          {/* Reservation Section with Fallback */}
           <Card className="border-0 rounded-none">
             <CardContent className="p-0">
               <div className="w-full">
@@ -123,13 +124,27 @@ const PoolPavilionTab = () => {
                 )}
                 
                 {hasError && (
-                  <div className="bg-red-50 border border-red-200 rounded p-4 m-4">
-                    <p className="text-red-800">Unable to load reservation page. Please refresh or contact the office.</p>
+                  <div className="bg-yellow-50 border border-yellow-200 rounded p-6 m-4">
+                    <div className="text-center">
+                      <h3 className="text-lg font-semibold text-yellow-800 mb-2">Reservation Form</h3>
+                      <p className="text-yellow-700 mb-4">
+                        If the form doesn't load below, you can access it directly:
+                      </p>
+                      <a 
+                        href={reservationUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+                      >
+                        <ExternalLink className="h-4 w-4" />
+                        Open Reservation Form
+                      </a>
+                    </div>
                   </div>
                 )}
                 
                 <iframe 
-                  src="https://psprop.net/falcon-pointe-pool-pavilion-reservation/" 
+                  src={reservationUrl}
                   width="100%" 
                   height="800" 
                   frameBorder="0" 
@@ -137,6 +152,9 @@ const PoolPavilionTab = () => {
                   title="Pool Pavilion Reservation Page"
                   onLoad={handleIframeLoad}
                   onError={handleIframeError}
+                  sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-top-navigation-by-user-activation"
+                  allow="payment; geolocation"
+                  loading="lazy"
                   style={{
                     width: "100%",
                     height: "800px",
