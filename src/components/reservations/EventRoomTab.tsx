@@ -88,24 +88,26 @@ const EventRoomTab = () => {
             </div>
           </div>
           
-          {/* Reservation Form Section - Removed script loading, increased height */}
+          {/* Reservation Form Section - Enhanced iframe settings */}
           <Card className="gravity-form-card border-0 rounded-none">
             <CardContent className="p-6 md:p-8">
               <div className="w-full gravity-form-container">
                 <iframe 
                   src="//psprop.net/gfembed/?f=38" 
                   width="100%" 
-                  height="800" 
+                  height="900" 
                   frameBorder="0" 
-                  className="gfiframe"
+                  className="gfiframe calendar-iframe"
                   title="Indoor Event Room Reservation Form"
-                  sandbox="allow-scripts allow-forms allow-same-origin allow-popups"
+                  sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-modals allow-top-navigation-by-user-activation"
+                  allow="fullscreen"
+                  loading="lazy"
                   style={{
                     width: "100%",
-                    height: "800px",
+                    height: "900px",
                     border: "none",
                     display: "block",
-                    minHeight: "800px"
+                    minHeight: "900px"
                   }}
                 />
               </div>
