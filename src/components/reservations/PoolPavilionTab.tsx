@@ -95,7 +95,7 @@ const PoolPavilionTab = () => {
             </div>
           </div>
           
-          {/* Reservation Form Section - Enhanced iframe settings */}
+          {/* Enhanced Reservation Form Section with debugging */}
           <Card className="gravity-form-card border-0 rounded-none">
             <CardContent className="p-6 md:p-8">
               <div className="w-full gravity-form-container">
@@ -106,9 +106,15 @@ const PoolPavilionTab = () => {
                   frameBorder="0" 
                   className="gfiframe calendar-iframe"
                   title="Pool Pavilion Reservation Form"
-                  sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-modals allow-top-navigation-by-user-activation"
-                  allow="fullscreen"
+                  sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-modals allow-top-navigation-by-user-activation allow-downloads"
+                  allow="fullscreen; geolocation; camera; microphone"
                   loading="lazy"
+                  onLoad={(e) => {
+                    console.log('Pool Pavilion iframe loaded:', e.target);
+                  }}
+                  onError={(e) => {
+                    console.error('Pool Pavilion iframe error:', e);
+                  }}
                   style={{
                     width: "100%",
                     height: "900px",

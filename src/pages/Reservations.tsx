@@ -3,7 +3,8 @@ import React, { useState, useEffect } from "react";
 import Layout from "@/components/layout/Layout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ContentDisplay from "@/components/cms/ContentDisplay";
-import CalendlyScript from "@/components/reservations/CalendlyScript";
+import GravityFormsMonitor from "@/components/reservations/GravityFormsMonitor";
+import DebugPanel from "@/components/reservations/DebugPanel";
 import { Building2, Waves } from "lucide-react";
 import ReservationHero from "@/components/reservations/ReservationHero";
 import PoolPavilionTab from "@/components/reservations/PoolPavilionTab";
@@ -11,13 +12,13 @@ import EventRoomTab from "@/components/reservations/EventRoomTab";
 import ReservationStyles from "@/components/reservations/ReservationStyles";
 
 const Reservations = () => {
-  // Track active tab to help with Calendly reinitialization
+  // Track active tab for monitoring
   const [activeTab, setActiveTab] = useState<string>("pool-pavilion");
 
   return (
     <Layout>
-      {/* Pass the active tab to CalendlyScript */}
-      <CalendlyScript activeTab={activeTab} />
+      {/* Replace CalendlyScript with GravityFormsMonitor */}
+      <GravityFormsMonitor activeTab={activeTab} />
       
       {/* Enhanced Hero Section */}
       <ReservationHero />
@@ -60,8 +61,11 @@ const Reservations = () => {
         </div>
       </div>
 
-      {/* Add custom styles to ensure Calendly displays correctly */}
+      {/* Add custom styles to ensure proper display */}
       <ReservationStyles />
+      
+      {/* Debug panel for development */}
+      <DebugPanel />
     </Layout>
   );
 };

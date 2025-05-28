@@ -88,7 +88,7 @@ const EventRoomTab = () => {
             </div>
           </div>
           
-          {/* Reservation Form Section - Enhanced iframe settings */}
+          {/* Enhanced Reservation Form Section with debugging */}
           <Card className="gravity-form-card border-0 rounded-none">
             <CardContent className="p-6 md:p-8">
               <div className="w-full gravity-form-container">
@@ -99,9 +99,15 @@ const EventRoomTab = () => {
                   frameBorder="0" 
                   className="gfiframe calendar-iframe"
                   title="Indoor Event Room Reservation Form"
-                  sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-modals allow-top-navigation-by-user-activation"
-                  allow="fullscreen"
+                  sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-modals allow-top-navigation-by-user-activation allow-downloads"
+                  allow="fullscreen; geolocation; camera; microphone"
                   loading="lazy"
+                  onLoad={(e) => {
+                    console.log('Event Room iframe loaded:', e.target);
+                  }}
+                  onError={(e) => {
+                    console.error('Event Room iframe error:', e);
+                  }}
                   style={{
                     width: "100%",
                     height: "900px",
