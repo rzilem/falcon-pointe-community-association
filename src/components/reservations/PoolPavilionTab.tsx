@@ -95,14 +95,14 @@ const PoolPavilionTab = () => {
             </div>
           </div>
           
-          {/* Enhanced Reservation Form Section with debugging */}
+          {/* Enhanced Reservation Form Section with correct height */}
           <Card className="gravity-form-card border-0 rounded-none">
             <CardContent className="p-6 md:p-8">
               <div className="w-full gravity-form-container">
                 <iframe 
                   src="//psprop.net/gfembed/?f=36" 
                   width="100%" 
-                  height="900" 
+                  height="500" 
                   frameBorder="0" 
                   className="gfiframe calendar-iframe"
                   title="Pool Pavilion Reservation Form"
@@ -117,10 +117,10 @@ const PoolPavilionTab = () => {
                   }}
                   style={{
                     width: "100%",
-                    height: "900px",
+                    height: "500px",
                     border: "none",
                     display: "block",
-                    minHeight: "900px"
+                    minHeight: "500px"
                   }}
                 />
               </div>

@@ -84,13 +84,13 @@
 
 /* Enhanced iframe styling for better calendar display */
 .gfiframe {
-  min-height: 900px !important;
+  min-height: 500px !important;
   overflow: visible !important;
 }
 
 .calendar-iframe {
-  min-height: 900px !important;
-  height: 900px !important;
+  min-height: 500px !important;
+  height: 500px !important;
 }
 
 /* FORCE CALENDAR WIDGET VISIBILITY - Most aggressive approach */
@@ -197,8 +197,8 @@
 @media (max-width: 768px) {
   .gfiframe,
   .calendar-iframe {
-    min-height: 950px !important;
-    height: 950px !important;
+    min-height: 550px !important;
+    height: 550px !important;
   }
   
   .gform_wrapper .gfield_label {
