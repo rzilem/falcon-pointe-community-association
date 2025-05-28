@@ -1,12 +1,50 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Separator } from "@/components/ui/separator";
 import ImageDisplay from "@/components/cms/ImageDisplay";
 import { CheckCircle, Users } from "lucide-react";
+import "@/components/contact/GravityFormStyles.css";
 
 const EventRoomTab = () => {
+  useEffect(() => {
+    // Check if script is already loaded to prevent duplicates
+    const existingScript = document.querySelector('script[src*="gfembed.min.js"]');
+    if (existingScript) {
+      console.log("Gravity Forms script already loaded");
+      return;
+    }
+
+    console.log("Loading Gravity Forms script for Event Room form...");
+    
+    // Create script element for Gravity Form functionality
+    const script = document.createElement("script");
+    script.src = "/wp-content/plugins/gravity-forms-iframe-master/assets/scripts/gfembed.min.js";
+    script.type = "text/javascript";
+    script.async = true;
+    
+    // Add error handling
+    script.onload = () => {
+      console.log("Gravity Forms script loaded successfully");
+    };
+    
+    script.onerror = () => {
+      console.error("Failed to load Gravity Forms script");
+    };
+    
+    // Append script to document body
+    document.body.appendChild(script);
+    
+    // Simplified cleanup - same as Contact form
+    return () => {
+      if (document.body.contains(script)) {
+        document.body.removeChild(script);
+        console.log("Gravity Forms script cleanup completed");
+      }
+    };
+  }, []);
+
   return (
     <Card className="overflow-hidden border-0 shadow-lg hover:shadow-xl transition-shadow duration-300">
       <CardContent className="p-0">
@@ -87,20 +125,27 @@ const EventRoomTab = () => {
             </div>
           </div>
           
-          {/* Calendar Section */}
-          <div className="bg-white calendly-container" style={{ height: 'calc(80vh + 650px)', minHeight: '1300px' }}>
-            <div className="calendly-inline-widget calendly-event-room" 
-              data-url="https://calendly.com/falconpointe/30min?hide_gdpr_banner=1" 
-              style={{
-                width: "100%",
-                height: "100%",
-                overflow: "hidden",
-                display: "block",
-                padding: "0px",
-                margin: "0px"
-              }}>
-            </div>
-          </div>
+          {/* Reservation Form Section - Match Contact form structure */}
+          <Card className="gravity-form-card border-0 rounded-none">
+            <CardContent className="p-6 md:p-8">
+              <div className="w-full gravity-form-container">
+                <iframe 
+                  src="//psprop.net/gfembed/?f=38" 
+                  width="100%" 
+                  height="500" 
+                  frameBorder="0" 
+                  className="gfiframe"
+                  title="Indoor Event Room Reservation Form"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    border: "none",
+                    display: "block"
+                  }}
+                />
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </CardContent>
     </Card>
