@@ -1,43 +1,83 @@
-
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Separator } from "@/components/ui/separator";
 import ImageDisplay from "@/components/cms/ImageDisplay";
-import { CheckCircle, Info, Users } from "lucide-react";
+import { CheckCircle, Info, Users, ExternalLink, RefreshCw } from "lucide-react";
 
 const PoolPavilionTab = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
-
-  // Load Gravity Forms script
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = '/wp-content/plugins/gravity-forms-iframe-master/assets/scripts/gfembed.min.js';
-    script.type = 'text/javascript';
-    script.async = true;
-    document.head.appendChild(script);
-
-    return () => {
-      // Clean up script on unmount
-      const existingScript = document.head.querySelector('script[src="/wp-content/plugins/gravity-forms-iframe-master/assets/scripts/gfembed.min.js"]');
-      if (existingScript) {
-        document.head.removeChild(existingScript);
-      }
-    };
-  }, []);
+  const [retryCount, setRetryCount] = useState(0);
+  const iframeRef = useRef(null);
 
   const handleIframeLoad = () => {
-    setIsLoading(false);
-    setHasError(false);
-    console.log('Pool Pavilion Gravity Form loaded');
+    console.log('SSA iframe loaded successfully');
+    
+    // Give SSA JavaScript time to initialize
+    setTimeout(() => {
+      setIsLoading(false);
+      setHasError(false);
+      
+      // Optional: Try to communicate with the iframe to check if SSA initialized
+      try {
+        const iframe = iframeRef.current;
+        if (iframe && iframe.contentWindow) {
+          // Check if SSA app initialized by looking for the booking app element
+          const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+          const spinner = iframeDoc.querySelector('.ssa_booking_initial_spinner-container');
+          if (spinner && spinner.style.display !== 'none') {
+            console.warn('SSA app still showing spinner, may need more time');
+            // Set another timeout to check again
+            setTimeout(() => {
+              const stillSpinning = iframeDoc.querySelector('.ssa_booking_initial_spinner-container');
+              if (stillSpinning && stillSpinning.style.display !== 'none') {
+                console.error('SSA app failed to initialize');
+                setHasError(true);
+              }
+            }, 5000);
+          }
+        }
+      } catch (e) {
+        // Cross-origin restrictions may prevent this check
+        console.log('Cannot check iframe content due to cross-origin restrictions');
+      }
+    }, 2000); // Give SSA 2 seconds to initialize
   };
 
   const handleIframeError = () => {
+    console.error('SSA iframe failed to load');
     setIsLoading(false);
     setHasError(true);
-    console.error('Pool Pavilion Gravity Form error');
   };
+
+  const handleRetry = () => {
+    setRetryCount(prev => prev + 1);
+    setIsLoading(true);
+    setHasError(false);
+    
+    // Force iframe reload by changing src slightly
+    if (iframeRef.current) {
+      const currentSrc = iframeRef.current.src;
+      const separator = currentSrc.includes('?') ? '&' : '?';
+      iframeRef.current.src = `${currentSrc}${separator}retry=${retryCount + 1}`;
+    }
+  };
+
+  // Auto-timeout for loading state
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (isLoading) {
+        console.warn('SSA iframe loading timed out');
+        setIsLoading(false);
+        setHasError(true);
+      }
+    }, 15000); // 15 second timeout
+
+    return () => clearTimeout(timer);
+  }, [isLoading, retryCount]);
+
+  const reservationUrl = "https://psprop.net/falcon-pointe-pool-pavilion-reservation/";
 
   return (
     <Card className="overflow-hidden border-0 shadow-lg hover:shadow-xl transition-shadow duration-300">
@@ -46,7 +86,7 @@ const PoolPavilionTab = () => {
           {/* Enhanced Info Section */}
           <div className="p-4 md:p-6 bg-white border-b border-gray-100">
             <div className="flex flex-col md:flex-row gap-6">
-              {/* Image Section - Larger and With Border */}
+              {/* Image Section */}
               <div className="w-full md:w-2/5">
                 <div className="rounded-lg overflow-hidden border border-gray-200 shadow-md">
                   <ImageDisplay 
@@ -65,7 +105,7 @@ const PoolPavilionTab = () => {
                 </div>
               </div>
               
-              {/* Content Section - More Structured */}
+              {/* Content Section */}
               <div className="w-full md:w-3/5">
                 <div className="flex items-center gap-2 mb-2">
                   <h2 className="text-2xl font-bold">Pool Pavilion</h2>
@@ -114,7 +154,7 @@ const PoolPavilionTab = () => {
                         <ul className="list-disc pl-5 space-y-1 text-gray-600">
                           <li>Reservations must be made at least 7 days in advance</li>
                           <li>Residents must be in good standing with HOA dues</li>
-                          <li>A refundable cleaning deposit may be required</li>
+                          <li>Pool Pavilion: $75.00 reservation fee</li>
                           <li>The resident making the reservation must be present throughout the event</li>
                           <li>All community rules apply during reserved events</li>
                         </ul>
@@ -126,40 +166,72 @@ const PoolPavilionTab = () => {
             </div>
           </div>
           
-          {/* Gravity Forms Reservation Section */}
+          {/* SSA Booking Section */}
           <Card className="border-0 rounded-none">
             <CardContent className="p-0">
-              <div className="w-full">
+              <div className="w-full relative">
                 {isLoading && (
-                  <div className="flex items-center justify-center h-96">
+                  <div className="flex items-center justify-center h-96 bg-gray-50">
                     <div className="text-center">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-                      <p className="mt-2 text-gray-600">Loading reservation form...</p>
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+                      <p className="mt-2 text-gray-600">Loading booking calendar...</p>
+                      {retryCount > 0 && (
+                        <p className="mt-1 text-xs text-gray-500">Attempt {retryCount + 1}</p>
+                      )}
                     </div>
                   </div>
                 )}
                 
                 {hasError && (
-                  <div className="bg-red-50 border border-red-200 rounded p-4 m-4">
-                    <p className="text-red-800">Unable to load reservation form. Please refresh or contact the office.</p>
+                  <div className="bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200 rounded-lg p-6 m-4">
+                    <div className="text-center">
+                      <h3 className="text-xl font-bold text-blue-800 mb-3">Pool Pavilion Reservation</h3>
+                      <p className="text-blue-700 mb-4">
+                        The booking calendar is having trouble loading. You can try refreshing or use the direct link:
+                      </p>
+                      <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
+                        <button 
+                          onClick={handleRetry}
+                          className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-200"
+                        >
+                          <RefreshCw className="h-4 w-4" />
+                          Try Again
+                        </button>
+                        <a 
+                          href={reservationUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-200"
+                        >
+                          <ExternalLink className="h-4 w-4" />
+                          Open in New Window
+                        </a>
+                      </div>
+                    </div>
                   </div>
                 )}
                 
                 <iframe 
-                  src="//psprop.net/gfembed/?f=36" 
+                  ref={iframeRef}
+                  src={reservationUrl}
                   width="100%" 
-                  height="500" 
+                  height="900" 
                   frameBorder="0" 
-                  className="gfiframe w-full"
-                  title="Pool Pavilion Reservation Form"
+                  className="w-full"
+                  title="Pool Pavilion Reservation Calendar"
                   onLoad={handleIframeLoad}
                   onError={handleIframeError}
+                  sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-top-navigation-by-user-activation allow-downloads allow-modals"
+                  allow="payment; geolocation; camera; microphone; autoplay; fullscreen"
+                  loading="lazy"
+                  referrerPolicy="strict-origin-when-cross-origin"
                   style={{
                     width: "100%",
-                    height: "500px",
+                    height: "900px",
                     border: "none",
                     display: isLoading || hasError ? 'none' : 'block',
-                    minHeight: "500px"
+                    minHeight: "900px",
+                    backgroundColor: "white"
                   }}
                 />
               </div>
