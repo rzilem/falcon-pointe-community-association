@@ -94,19 +94,25 @@ const PoolPavilionTab = () => {
             </div>
           </div>
           
-          {/* Calendar Section */}
-          <div className="bg-white calendly-container" style={{ height: 'calc(80vh + 650px)', minHeight: '1300px' }}>
-            <div className="calendly-inline-widget calendly-pool-pavilion" 
-              data-url="https://calendly.com/falconpointe/pool-pavilion?hide_gdpr_banner=1" 
+          {/* Reservation Form Section */}
+          <div className="bg-white" style={{ height: '800px', minHeight: '800px' }}>
+            <iframe 
+              src="https://psprop.net/falcon-pointe-pool-pavilion-reservation/" 
+              width="100%" 
+              height="800"
+              frameBorder="0"
+              scrolling="auto"
+              allowFullScreen
+              sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
+              loading="lazy"
+              title="Falcon Pointe Pool Pavilion Reservation"
               style={{
                 width: "100%",
                 height: "100%",
-                overflow: "hidden",
-                display: "block",
-                padding: "0px",
-                margin: "0px"
+                border: "none",
+                display: "block"
               }}>
-            </div>
+            </iframe>
           </div>
         </div>
       </CardContent>
