@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Separator } from "@/components/ui/separator";
@@ -11,6 +11,37 @@ import "@/components/contact/GravityFormCalendar.css";
 import "@/components/contact/GravityFormResponsive.css";
 
 const EventRoomTab = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
+
+  useEffect(() => {
+    // Load Gravity Forms script
+    const script = document.createElement('script');
+    script.src = 'https://psprop.net/wp-content/plugins/gravity-forms-iframe-master/assets/scripts/gfembed.min.js';
+    script.type = 'text/javascript';
+    script.async = true;
+    
+    script.onload = () => {
+      console.log('Gravity Forms script loaded for Event Room');
+    };
+    
+    if (!document.head.querySelector(`script[src="${script.src}"]`)) {
+      document.head.appendChild(script);
+    }
+  }, []);
+
+  const handleIframeLoad = () => {
+    setIsLoading(false);
+    setHasError(false);
+    console.log('Event Room iframe loaded (Form 36)');
+  };
+
+  const handleIframeError = () => {
+    setIsLoading(false);
+    setHasError(true);
+    console.error('Event Room iframe error (Form 36)');
+  };
+
   return (
     <Card className="overflow-hidden border-0 shadow-lg hover:shadow-xl transition-shadow duration-300">
       <CardContent className="p-0">
@@ -91,12 +122,27 @@ const EventRoomTab = () => {
             </div>
           </div>
           
-          {/* Enhanced Reservation Form Section with correct form ID */}
+          {/* Enhanced Reservation Form Section with HTTPS URL */}
           <Card className="gravity-form-card border-0 rounded-none">
             <CardContent className="p-6 md:p-8">
               <div className="w-full gravity-form-container">
+                {isLoading && (
+                  <div className="flex items-center justify-center h-96">
+                    <div className="text-center">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+                      <p className="mt-2 text-gray-600">Loading reservation form...</p>
+                    </div>
+                  </div>
+                )}
+                
+                {hasError && (
+                  <div className="bg-red-50 border border-red-200 rounded p-4">
+                    <p className="text-red-800">Unable to load reservation form. Please refresh the page or contact the office.</p>
+                  </div>
+                )}
+                
                 <iframe 
-                  src="//psprop.net/gfembed/?f=36" 
+                  src="https://psprop.net/gfembed/?f=36" 
                   width="100%" 
                   height="500" 
                   frameBorder="0" 
@@ -105,17 +151,13 @@ const EventRoomTab = () => {
                   sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-modals allow-top-navigation-by-user-activation allow-downloads"
                   allow="fullscreen; geolocation; camera; microphone"
                   loading="lazy"
-                  onLoad={(e) => {
-                    console.log('Event Room iframe loaded (Form 36):', e.target);
-                  }}
-                  onError={(e) => {
-                    console.error('Event Room iframe error (Form 36):', e);
-                  }}
+                  onLoad={handleIframeLoad}
+                  onError={handleIframeError}
                   style={{
                     width: "100%",
                     height: "500px",
                     border: "none",
-                    display: "block",
+                    display: isLoading || hasError ? 'none' : 'block',
                     minHeight: "500px"
                   }}
                 />
