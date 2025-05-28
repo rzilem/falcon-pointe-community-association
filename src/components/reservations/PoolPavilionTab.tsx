@@ -1,45 +1,25 @@
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Separator } from "@/components/ui/separator";
 import ImageDisplay from "@/components/cms/ImageDisplay";
 import { CheckCircle, Info, Users } from "lucide-react";
-import "@/components/contact/GravityFormBase.css";
-import "@/components/contact/GravityFormFields.css";
-import "@/components/contact/GravityFormCalendar.css";
-import "@/components/contact/GravityFormResponsive.css";
 
 const PoolPavilionTab = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
 
-  useEffect(() => {
-    // Load Gravity Forms script with HTTPS
-    const script = document.createElement('script');
-    script.src = 'https://psprop.net/wp-content/plugins/gravity-forms-iframe-master/assets/scripts/gfembed.min.js';
-    script.type = 'text/javascript';
-    script.async = true;
-    
-    script.onload = () => {
-      console.log('Gravity Forms script loaded for Pool Pavilion');
-    };
-    
-    if (!document.head.querySelector(`script[src="${script.src}"]`)) {
-      document.head.appendChild(script);
-    }
-  }, []);
-
   const handleIframeLoad = () => {
     setIsLoading(false);
     setHasError(false);
-    console.log('Pool Pavilion iframe loaded (Form 36)');
+    console.log('Pool Pavilion full page loaded');
   };
 
   const handleIframeError = () => {
     setIsLoading(false);
     setHasError(true);
-    console.error('Pool Pavilion iframe error (Form 36)');
+    console.error('Pool Pavilion full page error');
   };
 
   return (
@@ -129,43 +109,40 @@ const PoolPavilionTab = () => {
             </div>
           </div>
           
-          {/* Enhanced Reservation Form Section with Correct Form ID and HTTPS URL */}
-          <Card className="gravity-form-card border-0 rounded-none">
-            <CardContent className="p-6 md:p-8">
-              <div className="w-full gravity-form-container">
+          {/* Full Page Reservation Section */}
+          <Card className="border-0 rounded-none">
+            <CardContent className="p-0">
+              <div className="w-full">
                 {isLoading && (
                   <div className="flex items-center justify-center h-96">
                     <div className="text-center">
                       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-                      <p className="mt-2 text-gray-600">Loading reservation form...</p>
+                      <p className="mt-2 text-gray-600">Loading reservation page...</p>
                     </div>
                   </div>
                 )}
                 
                 {hasError && (
-                  <div className="bg-red-50 border border-red-200 rounded p-4">
-                    <p className="text-red-800">Unable to load reservation form. Please refresh the page or contact the office.</p>
+                  <div className="bg-red-50 border border-red-200 rounded p-4 m-4">
+                    <p className="text-red-800">Unable to load reservation page. Please refresh or contact the office.</p>
                   </div>
                 )}
                 
                 <iframe 
-                  src="https://psprop.net/gfembed/?f=36" 
+                  src="https://psprop.net/falcon-pointe-pool-pavilion-reservation/" 
                   width="100%" 
-                  height="500" 
+                  height="800" 
                   frameBorder="0" 
-                  className="gfiframe calendar-iframe"
-                  title="Pool Pavilion Reservation Form"
-                  sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-modals allow-top-navigation-by-user-activation allow-downloads"
-                  allow="fullscreen; geolocation; camera; microphone"
-                  loading="lazy"
+                  className="w-full"
+                  title="Pool Pavilion Reservation Page"
                   onLoad={handleIframeLoad}
                   onError={handleIframeError}
                   style={{
                     width: "100%",
-                    height: "500px",
+                    height: "800px",
                     border: "none",
                     display: isLoading || hasError ? 'none' : 'block',
-                    minHeight: "500px"
+                    minHeight: "800px"
                   }}
                 />
               </div>
