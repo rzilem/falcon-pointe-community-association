@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Separator } from "@/components/ui/separator";
@@ -7,6 +7,24 @@ import ImageDisplay from "@/components/cms/ImageDisplay";
 import { CheckCircle, Info, Users } from "lucide-react";
 
 const PoolPavilionTab = () => {
+  useEffect(() => {
+    // Create script element for Gravity Form functionality
+    const script = document.createElement("script");
+    script.src = "https://psprop.net/wp-content/plugins/gravity-forms-iframe-master/assets/scripts/gfembed.min.js";
+    script.type = "text/javascript";
+    script.async = true;
+    
+    // Append script to document body
+    document.body.appendChild(script);
+    
+    // Clean up when component unmounts
+    return () => {
+      if (document.body.contains(script)) {
+        document.body.removeChild(script);
+      }
+    };
+  }, []);
+
   return (
     <Card className="overflow-hidden border-0 shadow-lg hover:shadow-xl transition-shadow duration-300">
       <CardContent className="p-0">
@@ -95,17 +113,18 @@ const PoolPavilionTab = () => {
           </div>
           
           {/* Reservation Form Section */}
-          <div className="bg-white" style={{ height: '800px', minHeight: '800px' }}>
+          <div className="bg-white" style={{ height: '500px', minHeight: '500px' }}>
             <iframe 
-              src="https://psprop.net/falcon-pointe-pool-pavilion-reservation/" 
+              src="https://psprop.net/gfembed/?f=36" 
               width="100%" 
-              height="800"
+              height="500"
               frameBorder="0"
               scrolling="auto"
               allowFullScreen
               sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
+              className="gfiframe"
               loading="lazy"
-              title="Falcon Pointe Pool Pavilion Reservation"
+              title="Falcon Pointe Pool Pavilion Reservation Form"
               style={{
                 width: "100%",
                 height: "100%",
