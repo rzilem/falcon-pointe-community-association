@@ -1,3 +1,4 @@
+
 import React, { useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -9,7 +10,7 @@ const PoolPavilionTab = () => {
   useEffect(() => {
     // Create script element for Gravity Form functionality
     const script = document.createElement("script");
-    script.src = "https://psprop.net/wp-content/plugins/gravity-forms-iframe-master/assets/scripts/gfembed.min.js";
+    script.src = "/wp-content/plugins/gravity-forms-iframe-master/assets/scripts/gfembed.min.js";
     script.type = "text/javascript";
     script.async = true;
     
