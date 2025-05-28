@@ -137,9 +137,9 @@ const PoolPavilionTab = () => {
             <CardContent className="p-6 md:p-8">
               <div className="w-full gravity-form-container">
                 <iframe 
-                  src="//psprop.net/gfembed/?f=36" 
+                  src="//psprop.net/gfembed/?f=38" 
                   width="100%" 
-                  height="840" 
+                  height="800" 
                   frameBorder="0" 
                   className="gfiframe"
                   title="Pool Pavilion Reservation Form"
