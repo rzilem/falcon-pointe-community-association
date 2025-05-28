@@ -15,6 +15,28 @@ const Reservations = () => {
   // Track active tab for monitoring
   const [activeTab, setActiveTab] = useState<string>("pool-pavilion");
 
+  // Force iframe reload when tab changes
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const iframes = document.querySelectorAll('iframe[src*="gfembed"]');
+      iframes.forEach((iframe) => {
+        const htmlIframe = iframe as HTMLIFrameElement;
+        const currentSrc = htmlIframe.src;
+        htmlIframe.src = 'about:blank';
+        setTimeout(() => {
+          htmlIframe.src = currentSrc;
+        }, 100);
+      });
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [activeTab]);
+
+  const handleTabChange = (value: string) => {
+    console.log('Tab changing to:', value);
+    setActiveTab(value);
+  };
+
   return (
     <Layout>
       {/* Replace CalendlyScript with GravityFormsMonitor */}
@@ -30,7 +52,7 @@ const Reservations = () => {
             <Tabs 
               defaultValue="pool-pavilion" 
               className="w-full"
-              onValueChange={(value) => setActiveTab(value)}
+              onValueChange={handleTabChange}
             >
               <TabsList className="grid w-full grid-cols-2 mb-6">
                 <TabsTrigger 

@@ -88,12 +88,12 @@ const EventRoomTab = () => {
             </div>
           </div>
           
-          {/* Enhanced Reservation Form Section with correct height */}
+          {/* Enhanced Reservation Form Section with correct form ID */}
           <Card className="gravity-form-card border-0 rounded-none">
             <CardContent className="p-6 md:p-8">
               <div className="w-full gravity-form-container">
                 <iframe 
-                  src="//psprop.net/gfembed/?f=38" 
+                  src="//psprop.net/gfembed/?f=36" 
                   width="100%" 
                   height="500" 
                   frameBorder="0" 
@@ -103,10 +103,10 @@ const EventRoomTab = () => {
                   allow="fullscreen; geolocation; camera; microphone"
                   loading="lazy"
                   onLoad={(e) => {
-                    console.log('Event Room iframe loaded:', e.target);
+                    console.log('Event Room iframe loaded (Form 36):', e.target);
                   }}
                   onError={(e) => {
-                    console.error('Event Room iframe error:', e);
+                    console.error('Event Room iframe error (Form 36):', e);
                   }}
                   style={{
                     width: "100%",

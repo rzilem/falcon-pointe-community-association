@@ -95,12 +95,12 @@ const PoolPavilionTab = () => {
             </div>
           </div>
           
-          {/* Enhanced Reservation Form Section with correct height */}
+          {/* Enhanced Reservation Form Section with correct form ID */}
           <Card className="gravity-form-card border-0 rounded-none">
             <CardContent className="p-6 md:p-8">
               <div className="w-full gravity-form-container">
                 <iframe 
-                  src="//psprop.net/gfembed/?f=36" 
+                  src="//psprop.net/gfembed/?f=35" 
                   width="100%" 
                   height="500" 
                   frameBorder="0" 
@@ -110,10 +110,10 @@ const PoolPavilionTab = () => {
                   allow="fullscreen; geolocation; camera; microphone"
                   loading="lazy"
                   onLoad={(e) => {
-                    console.log('Pool Pavilion iframe loaded:', e.target);
+                    console.log('Pool Pavilion iframe loaded (Form 35):', e.target);
                   }}
                   onError={(e) => {
-                    console.error('Pool Pavilion iframe error:', e);
+                    console.error('Pool Pavilion iframe error (Form 35):', e);
                   }}
                   style={{
                     width: "100%",

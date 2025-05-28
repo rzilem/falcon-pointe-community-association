@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import GravityFormsMonitor from "@/components/reservations/GravityFormsMonitor";
 import DebugPanel from "@/components/reservations/DebugPanel";
@@ -12,6 +12,28 @@ import ReservationStyles from "@/components/reservations/ReservationStyles";
 const ReservationsIframe = () => {
   // Track active tab for monitoring
   const [activeTab, setActiveTab] = useState<string>("pool-pavilion");
+
+  // Force iframe reload when tab changes
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const iframes = document.querySelectorAll('iframe[src*="gfembed"]');
+      iframes.forEach((iframe) => {
+        const htmlIframe = iframe as HTMLIFrameElement;
+        const currentSrc = htmlIframe.src;
+        htmlIframe.src = 'about:blank';
+        setTimeout(() => {
+          htmlIframe.src = currentSrc;
+        }, 100);
+      });
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [activeTab]);
+
+  const handleTabChange = (value: string) => {
+    console.log('Tab changing to:', value);
+    setActiveTab(value);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -28,7 +50,7 @@ const ReservationsIframe = () => {
             <Tabs 
               defaultValue="pool-pavilion" 
               className="w-full"
-              onValueChange={(value) => setActiveTab(value)}
+              onValueChange={handleTabChange}
             >
               <TabsList className="grid w-full grid-cols-2 mb-6">
                 <TabsTrigger 
