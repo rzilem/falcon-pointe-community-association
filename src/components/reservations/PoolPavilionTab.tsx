@@ -27,6 +27,10 @@ const PoolPavilionTab = () => {
     // Add error handling
     script.onload = () => {
       console.log("Gravity Forms script loaded successfully");
+      // Force a slight delay to ensure form initialization
+      setTimeout(() => {
+        console.log("Gravity Forms script initialization complete");
+      }, 500);
     };
     
     script.onerror = () => {
@@ -137,9 +141,9 @@ const PoolPavilionTab = () => {
             <CardContent className="p-6 md:p-8">
               <div className="w-full gravity-form-container">
                 <iframe 
-                  src="//psprop.net/gfembed/?f=38" 
+                  src="//psprop.net/gfembed/?f=36" 
                   width="100%" 
-                  height="800" 
+                  height="600" 
                   frameBorder="0" 
                   className="gfiframe"
                   title="Pool Pavilion Reservation Form"
@@ -147,7 +151,8 @@ const PoolPavilionTab = () => {
                     width: "100%",
                     height: "100%",
                     border: "none",
-                    display: "block"
+                    display: "block",
+                    minHeight: "600px"
                   }}
                 />
               </div>

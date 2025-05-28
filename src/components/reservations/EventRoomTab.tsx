@@ -27,6 +27,10 @@ const EventRoomTab = () => {
     // Add error handling
     script.onload = () => {
       console.log("Gravity Forms script loaded successfully");
+      // Force a slight delay to ensure form initialization
+      setTimeout(() => {
+        console.log("Gravity Forms script initialization complete");
+      }, 500);
     };
     
     script.onerror = () => {
@@ -132,7 +136,7 @@ const EventRoomTab = () => {
                 <iframe 
                   src="//psprop.net/gfembed/?f=38" 
                   width="100%" 
-                  height="500" 
+                  height="600" 
                   frameBorder="0" 
                   className="gfiframe"
                   title="Indoor Event Room Reservation Form"
@@ -140,7 +144,8 @@ const EventRoomTab = () => {
                     width: "100%",
                     height: "100%",
                     border: "none",
-                    display: "block"
+                    display: "block",
+                    minHeight: "600px"
                   }}
                 />
               </div>
