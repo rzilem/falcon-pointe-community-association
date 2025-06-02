@@ -41,23 +41,45 @@ const handler = async (req: Request): Promise<Response> => {
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // Get the raw body first to debug
-    const rawBody = await req.text();
-    console.log("Raw body received:", rawBody);
-    
     let webhookData: CloudmailinWebhook;
+    const contentType = req.headers.get("content-type") || "";
     
-    try {
-      // Try to parse as JSON first
-      webhookData = JSON.parse(rawBody);
-    } catch (jsonError) {
-      console.error("JSON parse error:", jsonError);
-      console.log("Attempting to parse as form data...");
+    if (contentType.includes("application/json")) {
+      // Handle JSON format
+      webhookData = await req.json();
+      console.log("Parsed as JSON:", webhookData);
+    } else if (contentType.includes("multipart/form-data")) {
+      // Handle multipart form data
+      const formData = await req.formData();
+      console.log("Received form data with keys:", Array.from(formData.keys()));
       
-      // If JSON parsing fails, try parsing as form data
+      // Extract data from form
+      webhookData = {
+        envelope: {
+          to: formData.get('envelope[to]')?.toString() || '',
+          from: formData.get('envelope[from]')?.toString() || '',
+          recipients: formData.get('envelope[recipients]')?.toString().split(',') || []
+        },
+        plain: formData.get('plain')?.toString() || '',
+        html: formData.get('html')?.toString() || '',
+        subject: formData.get('subject')?.toString() || '',
+        date: formData.get('date')?.toString() || new Date().toISOString(),
+        headers: {}
+      };
+      
+      console.log("Parsed form data:", {
+        subject: webhookData.subject,
+        hasHtml: !!webhookData.html,
+        hasPlain: !!webhookData.plain,
+        from: webhookData.envelope.from
+      });
+    } else {
+      // Fallback: try to parse as URL-encoded form data
+      const rawBody = await req.text();
+      console.log("Raw body received:", rawBody.substring(0, 500) + "...");
+      
       const formData = new URLSearchParams(rawBody);
       
-      // Convert form data to our expected format
       webhookData = {
         envelope: {
           to: formData.get('envelope[to]') || '',
@@ -80,7 +102,8 @@ const handler = async (req: Request): Promise<Response> => {
     });
 
     // Validate required fields
-    if (!webhookData.subject) {
+    if (!webhookData.subject || webhookData.subject.trim() === '') {
+      console.error("No subject found in email data");
       throw new Error("No subject found in email data");
     }
 
