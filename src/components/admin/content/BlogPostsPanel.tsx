@@ -8,9 +8,12 @@ import ContentFilters from './ContentFilters';
 import BlogPostsTable from './BlogPostsTable';
 import AdminPanel from './AdminPanel';
 import { useBlogPosts } from '@/hooks/useBlogPosts';
+import { useAuth } from '@/context/AuthContext';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 const BlogPostsPanel: React.FC = () => {
   const { openConfirmation } = useConfirmation();
+  const { isAdmin, user } = useAuth();
   const [editingPost, setEditingPost] = useState<SiteContent | null>(null);
   
   const {
@@ -61,6 +64,19 @@ const BlogPostsPanel: React.FC = () => {
     setShowPublishedOnly(false);
     fetchBlogPosts();
   };
+
+  // Show admin status warning if user is not admin
+  if (!isAdmin) {
+    return (
+      <div className="space-y-4">
+        <Alert>
+          <AlertDescription>
+            You need admin privileges to manage blog posts. Current user: {user?.email || 'Not logged in'}
+          </AlertDescription>
+        </Alert>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">

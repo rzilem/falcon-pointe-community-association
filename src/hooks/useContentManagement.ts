@@ -141,7 +141,33 @@ export const useContentManagement = () => {
       console.log('Attempting to delete content with ID:', id);
       setIsDeleting(true);
       
-      // First verify the content exists and user has permission to see it
+      // Check current user and admin status
+      const { data: { user } } = await supabase.auth.getUser();
+      console.log('Current user:', user?.id);
+      
+      if (!user) {
+        throw new Error('You must be logged in to delete content');
+      }
+      
+      // Check admin status
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', user.id)
+        .single();
+      
+      console.log('User profile:', profile);
+      
+      if (profileError) {
+        console.error('Error fetching user profile:', profileError);
+        throw new Error('Unable to verify admin permissions');
+      }
+      
+      if (profile?.role !== 'admin') {
+        throw new Error('You must be an admin to delete content');
+      }
+      
+      // First verify the content exists
       const { data: existingContent, error: fetchError } = await supabase
         .from('site_content')
         .select('id, title')
@@ -151,7 +177,7 @@ export const useContentManagement = () => {
       if (fetchError) {
         console.error('Error fetching content before delete:', fetchError);
         if (fetchError.code === 'PGRST116') {
-          throw new Error('Content not found or you do not have permission to delete it');
+          throw new Error('Content not found');
         }
         throw fetchError;
       }
@@ -169,11 +195,11 @@ export const useContentManagement = () => {
         
         // Provide specific error messages based on error codes
         if (deleteError.code === '42501') {
-          throw new Error('Permission denied: You must be an admin to delete content');
+          throw new Error('Permission denied: Admin privileges required to delete content');
         } else if (deleteError.code === '23503') {
           throw new Error('Cannot delete: This content is referenced by other items');
         } else {
-          throw deleteError;
+          throw new Error(`Delete failed: ${deleteError.message}`);
         }
       }
       
@@ -181,6 +207,13 @@ export const useContentManagement = () => {
       toast.success('Content deleted successfully');
     } catch (err) {
       console.error('Error deleting content:', err);
+      
+      // Show specific error message to user
+      if (err instanceof Error) {
+        toast.error(err.message);
+      } else {
+        toast.error('Failed to delete content. Please try again.');
+      }
       
       // Re-throw the error so the calling component can handle it
       throw err;
