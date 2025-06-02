@@ -20,6 +20,59 @@ interface CloudmailinWebhook {
   headers: Record<string, string>;
 }
 
+// Function to clean and extract meaningful content from email HTML
+function extractCleanContent(htmlContent: string, plainContent: string): string {
+  if (!htmlContent && !plainContent) {
+    return '';
+  }
+  
+  // If we have plain text, use it as a fallback
+  if (!htmlContent && plainContent) {
+    return plainContent.trim();
+  }
+  
+  try {
+    // Remove HTML tags and decode entities
+    let cleanText = htmlContent
+      // Remove script and style elements completely
+      .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+      .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '')
+      // Remove meta tags, title, and other head elements
+      .replace(/<meta[^>]*>/gi, '')
+      .replace(/<title[^>]*>.*?<\/title>/gi, '')
+      .replace(/<link[^>]*>/gi, '')
+      // Remove XML declarations and Office document settings
+      .replace(/<\?xml[^>]*>/gi, '')
+      .replace(/<o:[^>]*>/gi, '')
+      .replace(/<\/o:[^>]*>/gi, '')
+      // Convert br tags to line breaks
+      .replace(/<br\s*\/?>/gi, '\n')
+      // Remove all remaining HTML tags
+      .replace(/<[^>]*>/g, '')
+      // Decode common HTML entities
+      .replace(/&nbsp;/g, ' ')
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      // Remove multiple whitespace/newlines
+      .replace(/\s+/g, ' ')
+      .replace(/\n\s*\n/g, '\n')
+      .trim();
+    
+    // If we extracted something meaningful, return it
+    if (cleanText && cleanText.length > 10) {
+      return cleanText;
+    }
+  } catch (error) {
+    console.log("Error cleaning HTML content:", error);
+  }
+  
+  // Fallback to plain text if HTML cleaning failed or resulted in empty content
+  return plainContent ? plainContent.trim() : '';
+}
+
 const handler = async (req: Request): Promise<Response> => {
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
@@ -125,11 +178,21 @@ const handler = async (req: Request): Promise<Response> => {
       webhookData.subject = `Announcement - ${new Date().toLocaleDateString()}`;
     }
 
+    // Clean the email content to extract only meaningful text
+    const cleanContent = extractCleanContent(webhookData.html, webhookData.plain);
+    
+    console.log("Content cleaning result:", {
+      originalHtmlLength: webhookData.html?.length || 0,
+      originalPlainLength: webhookData.plain?.length || 0,
+      cleanContentLength: cleanContent.length,
+      cleanContentPreview: cleanContent.substring(0, 200) + "..."
+    });
+
     // Create the announcement from the email
     const announcementData = {
       section: `announcement-${Date.now()}`, // Unique section identifier
       title: webhookData.subject,
-      content: webhookData.html || webhookData.plain || '', // Use HTML if available, fallback to plain text
+      content: cleanContent || 'No content available', // Use cleaned content
       section_type: "blog",
       category: "announcements",
       active: true, // Auto-publish as requested
@@ -137,7 +200,12 @@ const handler = async (req: Request): Promise<Response> => {
       updated_at: new Date().toISOString()
     };
 
-    console.log("Creating announcement with data:", announcementData);
+    console.log("Creating announcement with data:", {
+      section: announcementData.section,
+      title: announcementData.title,
+      contentLength: announcementData.content.length,
+      contentPreview: announcementData.content.substring(0, 150) + "..."
+    });
 
     // Insert the announcement into the site_content table
     const { data, error } = await supabase
@@ -151,7 +219,11 @@ const handler = async (req: Request): Promise<Response> => {
       throw error;
     }
 
-    console.log("Successfully created announcement:", data);
+    console.log("Successfully created announcement:", {
+      id: data.id,
+      title: data.title,
+      contentLength: data.content?.length || 0
+    });
 
     return new Response(
       JSON.stringify({
