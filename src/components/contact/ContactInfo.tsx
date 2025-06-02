@@ -32,7 +32,7 @@ const ContactInfo = () => {
           <Mail className="h-5 w-5 mt-1 text-primary" />
           <div>
             <h3 className="font-semibold">Email</h3>
-            <p className="text-gray-600">info@falconpointehoa.com</p>
+            <p className="text-gray-600">manager@falconpointecommunity.com</p>
           </div>
         </div>
         <div className="flex items-start gap-3">

@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -57,7 +58,7 @@ const Footer = () => {
               <p>19015 Falcon Pointe Blvd</p>
               <p>Pflugerville, TX 78660</p>
               <p className="mt-2">Phone: (512) 670-1400</p>
-              <p>Email: info@falconpointehoa.com</p>
+              <p>Email: manager@falconpointecommunity.com</p>
             </address>
             <div className="mt-4 flex space-x-4">
               <a href="#" className="text-gray-300 hover:text-white">Facebook</a>
