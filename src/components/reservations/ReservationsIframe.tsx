@@ -1,57 +1,22 @@
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import GravityFormsMonitor from "@/components/reservations/GravityFormsMonitor";
-import DebugPanel from "@/components/reservations/DebugPanel";
 import { Building2, Waves } from "lucide-react";
 import ReservationHero from "@/components/reservations/ReservationHero";
 import PoolPavilionTab from "@/components/reservations/PoolPavilionTab";
 import EventRoomTab from "@/components/reservations/EventRoomTab";
-import ReservationStyles from "@/components/reservations/ReservationStyles";
 
 const ReservationsIframe = () => {
-  // Track active tab for monitoring
-  const [activeTab, setActiveTab] = useState<string>("pool-pavilion");
-
-  // Force iframe reload when tab changes
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      const iframes = document.querySelectorAll('iframe[src*="gfembed"]');
-      iframes.forEach((iframe) => {
-        const htmlIframe = iframe as HTMLIFrameElement;
-        const currentSrc = htmlIframe.src;
-        htmlIframe.src = 'about:blank';
-        setTimeout(() => {
-          htmlIframe.src = currentSrc;
-        }, 100);
-      });
-    }, 300);
-
-    return () => clearTimeout(timer);
-  }, [activeTab]);
-
-  const handleTabChange = (value: string) => {
-    console.log('Tab changing to:', value);
-    setActiveTab(value);
-  };
-
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Replace CalendlyScript with GravityFormsMonitor */}
-      <GravityFormsMonitor activeTab={activeTab} />
-      
-      {/* Enhanced Hero Section */}
+      {/* Hero Section */}
       <ReservationHero />
 
-      {/* Reservations Content with Enhanced Tabs */}
+      {/* Reservations Content with Tabs */}
       <div className="py-6 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
-            <Tabs 
-              defaultValue="pool-pavilion" 
-              className="w-full"
-              onValueChange={handleTabChange}
-            >
+            <Tabs defaultValue="pool-pavilion" className="w-full">
               <TabsList className="grid w-full grid-cols-2 mb-6">
                 <TabsTrigger 
                   value="pool-pavilion" 
@@ -69,23 +34,17 @@ const ReservationsIframe = () => {
                 </TabsTrigger>
               </TabsList>
               
-              <TabsContent value="pool-pavilion" className="calendly-tab-content animate-fade-in">
+              <TabsContent value="pool-pavilion" className="animate-fade-in">
                 <PoolPavilionTab />
               </TabsContent>
               
-              <TabsContent value="event-room" className="calendly-tab-content animate-fade-in">
+              <TabsContent value="event-room" className="animate-fade-in">
                 <EventRoomTab />
               </TabsContent>
             </Tabs>
           </div>
         </div>
       </div>
-
-      {/* Add custom styles to ensure proper display */}
-      <ReservationStyles />
-      
-      {/* Debug panel for development */}
-      <DebugPanel />
     </div>
   );
 };
