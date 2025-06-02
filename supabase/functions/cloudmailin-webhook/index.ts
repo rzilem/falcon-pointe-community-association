@@ -53,6 +53,18 @@ const handler = async (req: Request): Promise<Response> => {
       const formData = await req.formData();
       console.log("Received form data with keys:", Array.from(formData.keys()));
       
+      // Extract subject from multiple possible locations
+      let subject = formData.get('subject')?.toString() || '';
+      if (!subject) {
+        subject = formData.get('headers[subject]')?.toString() || '';
+      }
+      
+      console.log("Subject extraction debug:", {
+        directSubject: formData.get('subject')?.toString(),
+        headerSubject: formData.get('headers[subject]')?.toString(),
+        finalSubject: subject
+      });
+      
       // Extract data from form
       webhookData = {
         envelope: {
@@ -62,8 +74,8 @@ const handler = async (req: Request): Promise<Response> => {
         },
         plain: formData.get('plain')?.toString() || '',
         html: formData.get('html')?.toString() || '',
-        subject: formData.get('subject')?.toString() || '',
-        date: formData.get('date')?.toString() || new Date().toISOString(),
+        subject: subject,
+        date: formData.get('date')?.toString() || formData.get('headers[date]')?.toString() || new Date().toISOString(),
         headers: {}
       };
       
@@ -80,6 +92,12 @@ const handler = async (req: Request): Promise<Response> => {
       
       const formData = new URLSearchParams(rawBody);
       
+      // Extract subject from multiple possible locations
+      let subject = formData.get('subject') || '';
+      if (!subject) {
+        subject = formData.get('headers[subject]') || '';
+      }
+      
       webhookData = {
         envelope: {
           to: formData.get('envelope[to]') || '',
@@ -88,8 +106,8 @@ const handler = async (req: Request): Promise<Response> => {
         },
         plain: formData.get('plain') || '',
         html: formData.get('html') || '',
-        subject: formData.get('subject') || '',
-        date: formData.get('date') || new Date().toISOString(),
+        subject: subject,
+        date: formData.get('date') || formData.get('headers[date]') || new Date().toISOString(),
         headers: {}
       };
     }
@@ -101,10 +119,10 @@ const handler = async (req: Request): Promise<Response> => {
       date: webhookData.date
     });
 
-    // Validate required fields
+    // Validate required fields - if still no subject, create a fallback
     if (!webhookData.subject || webhookData.subject.trim() === '') {
-      console.error("No subject found in email data");
-      throw new Error("No subject found in email data");
+      console.log("No subject found, creating fallback subject");
+      webhookData.subject = `Announcement - ${new Date().toLocaleDateString()}`;
     }
 
     // Create the announcement from the email
