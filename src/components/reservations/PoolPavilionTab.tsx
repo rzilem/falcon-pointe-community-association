@@ -94,18 +94,19 @@ const PoolPavilionTab = () => {
             </div>
           </div>
           
-          {/* Direct Gravity Forms Embed */}
+          {/* Direct Gravity Forms Embed with correct form ID */}
           <Card className="border-0 rounded-none">
             <CardContent className="p-4">
               <div className="w-full">
                 <iframe 
-                  src="https://psprop.net/gfembed/?f=34" 
+                  src="//psprop.net/gfembed/?f=36" 
                   width="100%" 
-                  height="600" 
+                  height="500" 
                   frameBorder="0" 
-                  className="w-full"
+                  className="w-full gfiframe"
                   title="Pool Pavilion Reservation Form"
                 />
+                <script src="/wp-content/plugins/gravity-forms-iframe-master/assets/scripts/gfembed.min.js" type="text/javascript"></script>
               </div>
             </CardContent>
           </Card>
