@@ -3,8 +3,9 @@ import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
 import ImageDisplay from "@/components/cms/ImageDisplay";
-import { CheckCircle, Info, Users } from "lucide-react";
+import { CheckCircle, Info, Users, ExternalLink } from "lucide-react";
 
 const PoolPavilionTab = () => {
   return (
@@ -94,19 +95,25 @@ const PoolPavilionTab = () => {
             </div>
           </div>
           
-          {/* Direct Gravity Forms Embed with correct form ID */}
+          {/* Reservation Call-to-Action */}
           <Card className="border-0 rounded-none">
-            <CardContent className="p-4">
-              <div className="w-full">
-                <iframe 
-                  src="//psprop.net/gfembed/?f=36" 
-                  width="100%" 
-                  height="500" 
-                  frameBorder="0" 
-                  className="w-full gfiframe"
-                  title="Pool Pavilion Reservation Form"
-                />
-                <script src="/wp-content/plugins/gravity-forms-iframe-master/assets/scripts/gfembed.min.js" type="text/javascript"></script>
+            <CardContent className="p-6 md:p-8 text-center bg-gradient-to-br from-blue-50 to-indigo-50">
+              <div className="max-w-md mx-auto">
+                <h3 className="text-xl font-semibold mb-3 text-gray-800">Ready to Reserve?</h3>
+                <p className="text-gray-600 mb-6">
+                  Complete your Pool Pavilion reservation on our secure form. You'll be redirected to our reservation system.
+                </p>
+                <Button 
+                  size="lg" 
+                  className="w-full md:w-auto px-8 py-3 text-lg font-medium bg-primary hover:bg-primary/90 transition-colors"
+                  onClick={() => window.open('https://psprop.net/falcon-pointe-pool-pavilion-reservation/', '_blank')}
+                >
+                  <ExternalLink className="mr-2 h-5 w-5" />
+                  Make Reservation
+                </Button>
+                <p className="text-xs text-gray-500 mt-3">
+                  Opens in a new window for your security and convenience
+                </p>
               </div>
             </CardContent>
           </Card>

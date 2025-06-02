@@ -3,8 +3,9 @@ import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
 import ImageDisplay from "@/components/cms/ImageDisplay";
-import { CheckCircle, Users } from "lucide-react";
+import { CheckCircle, Users, ExternalLink } from "lucide-react";
 
 const EventRoomTab = () => {
   return (
@@ -87,18 +88,25 @@ const EventRoomTab = () => {
             </div>
           </div>
           
-          {/* Direct Gravity Forms Embed */}
+          {/* Reservation Call-to-Action */}
           <Card className="border-0 rounded-none">
-            <CardContent className="p-4">
-              <div className="w-full">
-                <iframe 
-                  src="//psprop.net/gfembed/?f=38" 
-                  width="100%" 
-                  height="500" 
-                  frameBorder="0" 
-                  className="w-full gfiframe"
-                  title="Indoor Event Room Reservation Form"
-                />
+            <CardContent className="p-6 md:p-8 text-center bg-gradient-to-br from-green-50 to-emerald-50">
+              <div className="max-w-md mx-auto">
+                <h3 className="text-xl font-semibold mb-3 text-gray-800">Ready to Reserve?</h3>
+                <p className="text-gray-600 mb-6">
+                  Complete your Indoor Event Room reservation on our secure form. You'll be redirected to our reservation system.
+                </p>
+                <Button 
+                  size="lg" 
+                  className="w-full md:w-auto px-8 py-3 text-lg font-medium bg-primary hover:bg-primary/90 transition-colors"
+                  onClick={() => window.open('https://psprop.net/falcon-pointe-indoor-event-room-reservation/', '_blank')}
+                >
+                  <ExternalLink className="mr-2 h-5 w-5" />
+                  Make Reservation
+                </Button>
+                <p className="text-xs text-gray-500 mt-3">
+                  Opens in a new window for your security and convenience
+                </p>
               </div>
             </CardContent>
           </Card>
