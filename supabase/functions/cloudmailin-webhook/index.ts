@@ -28,6 +28,8 @@ const handler = async (req: Request): Promise<Response> => {
 
   try {
     console.log("Received Cloudmailin webhook");
+    console.log("Request method:", req.method);
+    console.log("Content-Type:", req.headers.get("content-type"));
     
     // Initialize Supabase client
     const supabaseUrl = Deno.env.get("SUPABASE_URL");
@@ -39,21 +41,54 @@ const handler = async (req: Request): Promise<Response> => {
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // Parse the webhook payload
-    const webhookData: CloudmailinWebhook = await req.json();
+    // Get the raw body first to debug
+    const rawBody = await req.text();
+    console.log("Raw body received:", rawBody);
+    
+    let webhookData: CloudmailinWebhook;
+    
+    try {
+      // Try to parse as JSON first
+      webhookData = JSON.parse(rawBody);
+    } catch (jsonError) {
+      console.error("JSON parse error:", jsonError);
+      console.log("Attempting to parse as form data...");
+      
+      // If JSON parsing fails, try parsing as form data
+      const formData = new URLSearchParams(rawBody);
+      
+      // Convert form data to our expected format
+      webhookData = {
+        envelope: {
+          to: formData.get('envelope[to]') || '',
+          from: formData.get('envelope[from]') || '',
+          recipients: formData.get('envelope[recipients]')?.split(',') || []
+        },
+        plain: formData.get('plain') || '',
+        html: formData.get('html') || '',
+        subject: formData.get('subject') || '',
+        date: formData.get('date') || new Date().toISOString(),
+        headers: {}
+      };
+    }
     
     console.log("Processing email:", {
       subject: webhookData.subject,
-      from: webhookData.envelope.from,
-      to: webhookData.envelope.to,
+      from: webhookData.envelope?.from,
+      to: webhookData.envelope?.to,
       date: webhookData.date
     });
+
+    // Validate required fields
+    if (!webhookData.subject) {
+      throw new Error("No subject found in email data");
+    }
 
     // Create the announcement from the email
     const announcementData = {
       section: `announcement-${Date.now()}`, // Unique section identifier
       title: webhookData.subject,
-      content: webhookData.html, // Use the full HTML content
+      content: webhookData.html || webhookData.plain || '', // Use HTML if available, fallback to plain text
       section_type: "blog",
       category: "announcements",
       active: true, // Auto-publish as requested
