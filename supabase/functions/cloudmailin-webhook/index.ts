@@ -1,77 +1,14 @@
 
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
+import { parseWebhookData } from './emailParser.ts';
+import { extractCleanContent } from './contentCleaner.ts';
+import { AnnouncementData } from './types.ts';
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
-
-interface CloudmailinWebhook {
-  envelope: {
-    to: string;
-    from: string;
-    recipients: string[];
-  };
-  plain: string;
-  html: string;
-  subject: string;
-  date: string;
-  headers: Record<string, string>;
-}
-
-// Function to clean and extract meaningful content from email HTML
-function extractCleanContent(htmlContent: string, plainContent: string): string {
-  if (!htmlContent && !plainContent) {
-    return '';
-  }
-  
-  // If we have plain text, use it as a fallback
-  if (!htmlContent && plainContent) {
-    return plainContent.trim();
-  }
-  
-  try {
-    // Remove HTML tags and decode entities
-    let cleanText = htmlContent
-      // Remove script and style elements completely
-      .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
-      .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '')
-      // Remove meta tags, title, and other head elements
-      .replace(/<meta[^>]*>/gi, '')
-      .replace(/<title[^>]*>.*?<\/title>/gi, '')
-      .replace(/<link[^>]*>/gi, '')
-      // Remove XML declarations and Office document settings
-      .replace(/<\?xml[^>]*>/gi, '')
-      .replace(/<o:[^>]*>/gi, '')
-      .replace(/<\/o:[^>]*>/gi, '')
-      // Convert br tags to line breaks
-      .replace(/<br\s*\/?>/gi, '\n')
-      // Remove all remaining HTML tags
-      .replace(/<[^>]*>/g, '')
-      // Decode common HTML entities
-      .replace(/&nbsp;/g, ' ')
-      .replace(/&amp;/g, '&')
-      .replace(/&lt;/g, '<')
-      .replace(/&gt;/g, '>')
-      .replace(/&quot;/g, '"')
-      .replace(/&#39;/g, "'")
-      // Remove multiple whitespace/newlines
-      .replace(/\s+/g, ' ')
-      .replace(/\n\s*\n/g, '\n')
-      .trim();
-    
-    // If we extracted something meaningful, return it
-    if (cleanText && cleanText.length > 10) {
-      return cleanText;
-    }
-  } catch (error) {
-    console.log("Error cleaning HTML content:", error);
-  }
-  
-  // Fallback to plain text if HTML cleaning failed or resulted in empty content
-  return plainContent ? plainContent.trim() : '';
-}
 
 const handler = async (req: Request): Promise<Response> => {
   // Handle CORS preflight requests
@@ -94,76 +31,8 @@ const handler = async (req: Request): Promise<Response> => {
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    let webhookData: CloudmailinWebhook;
-    const contentType = req.headers.get("content-type") || "";
-    
-    if (contentType.includes("application/json")) {
-      // Handle JSON format
-      webhookData = await req.json();
-      console.log("Parsed as JSON:", webhookData);
-    } else if (contentType.includes("multipart/form-data")) {
-      // Handle multipart form data
-      const formData = await req.formData();
-      console.log("Received form data with keys:", Array.from(formData.keys()));
-      
-      // Extract subject from multiple possible locations
-      let subject = formData.get('subject')?.toString() || '';
-      if (!subject) {
-        subject = formData.get('headers[subject]')?.toString() || '';
-      }
-      
-      console.log("Subject extraction debug:", {
-        directSubject: formData.get('subject')?.toString(),
-        headerSubject: formData.get('headers[subject]')?.toString(),
-        finalSubject: subject
-      });
-      
-      // Extract data from form
-      webhookData = {
-        envelope: {
-          to: formData.get('envelope[to]')?.toString() || '',
-          from: formData.get('envelope[from]')?.toString() || '',
-          recipients: formData.get('envelope[recipients]')?.toString().split(',') || []
-        },
-        plain: formData.get('plain')?.toString() || '',
-        html: formData.get('html')?.toString() || '',
-        subject: subject,
-        date: formData.get('date')?.toString() || formData.get('headers[date]')?.toString() || new Date().toISOString(),
-        headers: {}
-      };
-      
-      console.log("Parsed form data:", {
-        subject: webhookData.subject,
-        hasHtml: !!webhookData.html,
-        hasPlain: !!webhookData.plain,
-        from: webhookData.envelope.from
-      });
-    } else {
-      // Fallback: try to parse as URL-encoded form data
-      const rawBody = await req.text();
-      console.log("Raw body received:", rawBody.substring(0, 500) + "...");
-      
-      const formData = new URLSearchParams(rawBody);
-      
-      // Extract subject from multiple possible locations
-      let subject = formData.get('subject') || '';
-      if (!subject) {
-        subject = formData.get('headers[subject]') || '';
-      }
-      
-      webhookData = {
-        envelope: {
-          to: formData.get('envelope[to]') || '',
-          from: formData.get('envelope[from]') || '',
-          recipients: formData.get('envelope[recipients]')?.split(',') || []
-        },
-        plain: formData.get('plain') || '',
-        html: formData.get('html') || '',
-        subject: subject,
-        date: formData.get('date') || formData.get('headers[date]') || new Date().toISOString(),
-        headers: {}
-      };
-    }
+    // Parse the webhook data
+    const webhookData = await parseWebhookData(req);
     
     console.log("Processing email:", {
       subject: webhookData.subject,
@@ -189,7 +58,7 @@ const handler = async (req: Request): Promise<Response> => {
     });
 
     // Create the announcement from the email
-    const announcementData = {
+    const announcementData: AnnouncementData = {
       section: `announcement-${Date.now()}`, // Unique section identifier
       title: webhookData.subject,
       content: cleanContent || 'No content available', // Use cleaned content
