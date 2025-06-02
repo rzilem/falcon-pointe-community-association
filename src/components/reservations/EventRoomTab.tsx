@@ -92,11 +92,11 @@ const EventRoomTab = () => {
             <CardContent className="p-4">
               <div className="w-full">
                 <iframe 
-                  src="https://psprop.net/gfembed/?f=35" 
+                  src="//psprop.net/gfembed/?f=38" 
                   width="100%" 
-                  height="600" 
+                  height="500" 
                   frameBorder="0" 
-                  className="w-full"
+                  className="w-full gfiframe"
                   title="Indoor Event Room Reservation Form"
                 />
               </div>
