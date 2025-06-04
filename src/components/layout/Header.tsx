@@ -5,6 +5,7 @@ import { Menu, X } from "lucide-react";
 import { NavigationMenu, NavigationMenuList } from '@/components/ui/navigation-menu';
 import DropdownNav from './DropdownNav';
 import MobileNav from "./MobileNav";
+import ImageDisplay from '@/components/cms/ImageDisplay';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -37,10 +38,11 @@ const Header = () => {
           {/* Logo - fixed position on left */}
           <div className="flex-shrink-0">
             <Link to="/" className="flex items-center space-x-2">
-              <img 
-                src="/lovable-uploads/080cd85e-7544-4e3a-98a9-178087f36beb.png" 
+              <ImageDisplay 
+                location="logo"
                 alt="Falcon Pointe Logo" 
                 className="h-12 w-auto"
+                fallbackSrc="/lovable-uploads/080cd85e-7544-4e3a-98a9-178087f36beb.png"
               />
               <div>
                 <h1 className="text-xl font-bold text-gray-800">Falcon Pointe</h1>
