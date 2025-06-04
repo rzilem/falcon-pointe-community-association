@@ -7,8 +7,65 @@ import ImageUploadForm from "@/components/admin/images/ImageUploadForm";
 import ImageList from "@/components/admin/images/ImageList";
 import DefaultAnnouncementUpload from "@/components/admin/images/DefaultAnnouncementUpload";
 import { Image, Upload, Settings } from "lucide-react";
+import { useImages } from "@/hooks/useImages";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 const AdminImages = () => {
+  const { images, loading, refetch } = useImages();
+
+  const locationOptions = [
+    { value: 'hero', label: 'Hero Section' },
+    { value: 'about', label: 'About Page' },
+    { value: 'amenities', label: 'Amenities' },
+    { value: 'gallery', label: 'Gallery' },
+    { value: 'contact', label: 'Contact' },
+    { value: 'announcement-default', label: 'Default Announcement Banner' },
+    { value: 'general', label: 'General Use' }
+  ];
+
+  const handleUploadSuccess = () => {
+    refetch();
+    toast.success('Image uploaded successfully');
+  };
+
+  const handleDelete = async (id: string, path: string) => {
+    try {
+      // Delete from storage
+      const { error: storageError } = await supabase.storage
+        .from('site-images')
+        .remove([path]);
+
+      if (storageError) {
+        console.error('Storage deletion error:', storageError);
+        toast.error('Failed to delete image from storage');
+        return;
+      }
+
+      // Delete from database
+      const { error: dbError } = await supabase
+        .from('site_images')
+        .delete()
+        .eq('id', id);
+
+      if (dbError) {
+        console.error('Database deletion error:', dbError);
+        toast.error('Failed to delete image record');
+        return;
+      }
+
+      toast.success('Image deleted successfully');
+      refetch();
+    } catch (error) {
+      console.error('Error deleting image:', error);
+      toast.error('Failed to delete image');
+    }
+  };
+
+  const handleUpdateComplete = () => {
+    refetch();
+  };
+
   return (
     <AdminRouteGuard>
       <Layout>
@@ -37,11 +94,19 @@ const AdminImages = () => {
             </TabsList>
 
             <TabsContent value="upload" className="mt-6">
-              <ImageUploadForm />
+              <ImageUploadForm 
+                onSuccess={handleUploadSuccess}
+                locationOptions={locationOptions}
+              />
             </TabsContent>
 
             <TabsContent value="manage" className="mt-6">
-              <ImageList />
+              <ImageList 
+                images={images}
+                loading={loading}
+                onDelete={handleDelete}
+                onUpdateComplete={handleUpdateComplete}
+              />
             </TabsContent>
 
             <TabsContent value="defaults" className="mt-6">
