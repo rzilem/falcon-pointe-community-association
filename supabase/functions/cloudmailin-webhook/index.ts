@@ -2,7 +2,7 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
 import { parseWebhookData } from './emailParser.ts';
-import { extractCleanContent } from './contentCleaner.ts';
+import { cleanEmailSubject } from './subjectCleaner.ts';
 import { AnnouncementData } from './types.ts';
 
 const corsHeaders = {
@@ -41,20 +41,19 @@ const handler = async (req: Request): Promise<Response> => {
       date: webhookData.date
     });
 
-    // Validate required fields - if still no subject, create a fallback
-    if (!webhookData.subject || webhookData.subject.trim() === '') {
-      console.log("No subject found, creating fallback subject");
-      webhookData.subject = `Announcement - ${new Date().toLocaleDateString()}`;
-    }
+    // Clean the email subject to make it user-friendly
+    const cleanedSubject = cleanEmailSubject(webhookData.subject);
+    console.log("Cleaned subject:", cleanedSubject);
 
-    // Clean the email content to extract only meaningful text
-    const cleanContent = extractCleanContent(webhookData.html, webhookData.plain);
+    // Use HTML content if available, fallback to plain text
+    const emailContent = webhookData.html || webhookData.plain || 'No content available';
     
-    console.log("Content cleaning result:", {
+    console.log("Content processing result:", {
       originalHtmlLength: webhookData.html?.length || 0,
       originalPlainLength: webhookData.plain?.length || 0,
-      cleanContentLength: cleanContent.length,
-      cleanContentPreview: cleanContent.substring(0, 200) + "..."
+      usingHtml: !!webhookData.html,
+      contentLength: emailContent.length,
+      contentPreview: emailContent.substring(0, 200) + "..."
     });
 
     // Get the default announcement image from site_images
@@ -87,8 +86,8 @@ const handler = async (req: Request): Promise<Response> => {
     // Create the announcement from the email
     const announcementData: AnnouncementData = {
       section: `announcement-${Date.now()}`, // Unique section identifier
-      title: webhookData.subject,
-      content: cleanContent || 'No content available', // Use cleaned content
+      title: cleanedSubject,
+      content: emailContent, // Use full HTML content
       section_type: "blog",
       category: "announcements",
       active: true, // Auto-publish as requested
@@ -105,7 +104,7 @@ const handler = async (req: Request): Promise<Response> => {
       section: insertData.section,
       title: insertData.title,
       contentLength: insertData.content.length,
-      contentPreview: insertData.content.substring(0, 150) + "...",
+      contentType: webhookData.html ? "HTML" : "Plain text",
       featuredImage: featuredImagePath ? "Default image assigned" : "No image"
     });
 
