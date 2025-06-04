@@ -7,12 +7,12 @@ import ImageUploadForm from "@/components/admin/images/ImageUploadForm";
 import ImageList from "@/components/admin/images/ImageList";
 import DefaultAnnouncementUpload from "@/components/admin/images/DefaultAnnouncementUpload";
 import { Image, Upload, Settings } from "lucide-react";
-import { useImages } from "@/hooks/useImages";
+import { useAllImages } from "@/hooks/useAllImages";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 const AdminImages = () => {
-  const { images, loading, refetch } = useImages();
+  const { images, isLoading, refetch } = useAllImages();
 
   const locationOptions = [
     { value: 'hero', label: 'Hero Section' },
@@ -103,7 +103,7 @@ const AdminImages = () => {
             <TabsContent value="manage" className="mt-6">
               <ImageList 
                 images={images}
-                loading={loading}
+                loading={isLoading}
                 onDelete={handleDelete}
                 onUpdateComplete={handleUpdateComplete}
               />
