@@ -57,6 +57,33 @@ const handler = async (req: Request): Promise<Response> => {
       cleanContentPreview: cleanContent.substring(0, 200) + "..."
     });
 
+    // Get the default announcement image from site_images
+    let featuredImagePath = null;
+    try {
+      const { data: defaultImage } = await supabase
+        .from('site_images')
+        .select('path')
+        .eq('location', 'announcement-default')
+        .eq('active', true)
+        .limit(1)
+        .maybeSingle();
+      
+      if (defaultImage) {
+        // Get the public URL for the default image
+        const { data: urlData } = supabase.storage
+          .from('site-images')
+          .getPublicUrl(defaultImage.path);
+        
+        featuredImagePath = urlData.publicUrl;
+        console.log("Using default announcement image:", featuredImagePath);
+      } else {
+        console.log("No default announcement image found");
+      }
+    } catch (error) {
+      console.log("Error fetching default announcement image:", error);
+      // Continue without featured image
+    }
+
     // Create the announcement from the email
     const announcementData: AnnouncementData = {
       section: `announcement-${Date.now()}`, // Unique section identifier
@@ -69,17 +96,23 @@ const handler = async (req: Request): Promise<Response> => {
       updated_at: new Date().toISOString()
     };
 
+    // Add featured image if we have the default one
+    const insertData = featuredImagePath 
+      ? { ...announcementData, featured_image: featuredImagePath }
+      : announcementData;
+
     console.log("Creating announcement with data:", {
-      section: announcementData.section,
-      title: announcementData.title,
-      contentLength: announcementData.content.length,
-      contentPreview: announcementData.content.substring(0, 150) + "..."
+      section: insertData.section,
+      title: insertData.title,
+      contentLength: insertData.content.length,
+      contentPreview: insertData.content.substring(0, 150) + "...",
+      featuredImage: featuredImagePath ? "Default image assigned" : "No image"
     });
 
     // Insert the announcement into the site_content table
     const { data, error } = await supabase
       .from("site_content")
-      .insert(announcementData)
+      .insert(insertData)
       .select()
       .single();
 
@@ -91,7 +124,8 @@ const handler = async (req: Request): Promise<Response> => {
     console.log("Successfully created announcement:", {
       id: data.id,
       title: data.title,
-      contentLength: data.content?.length || 0
+      contentLength: data.content?.length || 0,
+      featuredImage: data.featured_image ? "Image included" : "No image"
     });
 
     return new Response(
@@ -99,7 +133,8 @@ const handler = async (req: Request): Promise<Response> => {
         success: true,
         message: "Announcement created successfully",
         announcement_id: data.id,
-        title: data.title
+        title: data.title,
+        featured_image: data.featured_image ? "Default image assigned" : "No image assigned"
       }),
       {
         status: 200,
