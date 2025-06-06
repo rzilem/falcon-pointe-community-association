@@ -1,3 +1,4 @@
+
 import React from "react";
 import Layout from "@/components/layout/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -28,17 +29,17 @@ const Board = () => {
       image: "/public/lovable-uploads/080cd85e-7544-4e3a-98a9-178087f36beb.png"
     },
     {
-      name: "Jon Jackson",
+      name: "Matt Alvers",
       position: "Secretary",
       bio: "Ensuring clear communication and detailed record-keeping for our community.",
-      email: "jon.jackson@falconpointecommunity.com",
+      email: "matt.alvers@falconpointecommunity.com",
       image: "/public/lovable-uploads/fc16efac-61bf-47f5-8eee-4dacc38eae73.png"
     },
     {
-      name: "Position Available",
-      position: "At Large",
-      bio: "This position is currently open. Contact us if you're interested in serving your community.",
-      email: "board@falconpointecommunity.com",
+      name: "Jeremy Morrow",
+      position: "Member at Large",
+      bio: "Representing community interests and supporting board initiatives.",
+      email: "jeremy.morrow@falconpointecommunity.com",
       image: "/public/lovable-uploads/1e3c41bc-f71c-4013-957d-4fa60e414905.png"
     }
   ];
