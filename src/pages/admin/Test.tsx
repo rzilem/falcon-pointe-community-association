@@ -67,6 +67,14 @@ const Test = () => {
 
   const testUrlValid = testUrl && (testUrl.startsWith('http://') || testUrl.startsWith('https://'));
 
+  const handleSandboxChange = (checked: boolean | "indeterminate") => {
+    setSandbox(checked === true);
+  };
+
+  const handleFullscreenChange = (checked: boolean | "indeterminate") => {
+    setAllowFullscreen(checked === true);
+  };
+
   return (
     <div>
       <AdminNav />
@@ -98,7 +106,7 @@ const Test = () => {
                     <Checkbox
                       id="sandbox"
                       checked={sandbox}
-                      onCheckedChange={setSandbox}
+                      onCheckedChange={handleSandboxChange}
                     />
                     <Label htmlFor="sandbox">Enable Sandbox</Label>
                   </div>
@@ -107,7 +115,7 @@ const Test = () => {
                     <Checkbox
                       id="fullscreen"
                       checked={allowFullscreen}
-                      onCheckedChange={setAllowFullscreen}
+                      onCheckedChange={handleFullscreenChange}
                     />
                     <Label htmlFor="fullscreen">Allow Fullscreen</Label>
                   </div>
