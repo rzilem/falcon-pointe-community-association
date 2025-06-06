@@ -4,7 +4,7 @@ import AdminNav from '@/components/admin/AdminNav';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { supabase } from '@/integrations/supabase/client';
-import { Image, FileText, File, AlertTriangle } from 'lucide-react';
+import { Image, FileText, File, AlertTriangle, TestTube } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getErrorQueue } from '@/utils/errorTracking';
 
@@ -181,6 +181,24 @@ const Dashboard = () => {
                 <p className="text-sm text-gray-500">
                   Upload and organize important documents like bylaws, 
                   forms, meeting minutes, and community guidelines.
+                </p>
+              </CardContent>
+            </Card>
+          </Link>
+          
+          <Link to="/admin/test" className="group">
+            <Card className="h-full hover:shadow-lg transition-all duration-200 cursor-pointer group-hover:scale-[1.02]">
+              <CardHeader>
+                <CardTitle className="flex items-center">
+                  <TestTube className="mr-2 h-5 w-5" />
+                  Test Page
+                </CardTitle>
+                <CardDescription>Test embeds, iframes, and integrations</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-gray-500">
+                  Safe environment to test various embeds, iframes, and third-party 
+                  integrations before implementing them on the live site.
                 </p>
               </CardContent>
             </Card>

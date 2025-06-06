@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -28,6 +27,7 @@ import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import Reservations from "./pages/Reservations";
 import ReservationsIframe from "./components/reservations/ReservationsIframe";
+import Test from "./pages/admin/Test";
 
 const queryClient = new QueryClient();
 
@@ -81,6 +81,11 @@ const App = () => (
             <Route path="/admin/documents" element={
               <AdminRouteGuard>
                 <AdminDocuments />
+              </AdminRouteGuard>
+            } />
+            <Route path="/admin/test" element={
+              <AdminRouteGuard>
+                <Test />
               </AdminRouteGuard>
             } />
             
