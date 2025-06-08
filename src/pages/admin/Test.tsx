@@ -10,18 +10,25 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Checkbox } from '@/components/ui/checkbox';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Copy, ExternalLink, AlertTriangle, CheckCircle } from 'lucide-react';
+import { Copy, ExternalLink, AlertTriangle, CheckCircle, Calendar } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 const Test = () => {
   const [testUrl, setTestUrl] = useState('');
   const [customEmbed, setCustomEmbed] = useState('');
   const [embedType, setEmbedType] = useState('iframe');
-  const [sandbox, setSandbox] = useState(true);
-  const [allowFullscreen, setAllowFullscreen] = useState(false);
+  const [sandbox, setSandbox] = useState(false); // Changed default to false for calendar compatibility
+  const [allowFullscreen, setAllowFullscreen] = useState(true);
+  const [calendarOptimized, setCalendarOptimized] = useState(true);
   const { toast } = useToast();
 
   const presetExamples = [
+    {
+      name: 'Gravity Form Calendar',
+      type: 'iframe',
+      code: '<iframe src="https://psprop.net/gfembed/?f=34" width="100%" height="840" frameborder="0" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-modals" allow="fullscreen" title="Contact Form with Calendar"></iframe>',
+      description: 'Gravity Form with calendar support (optimized settings)'
+    },
     {
       name: 'YouTube Video',
       type: 'iframe',
@@ -59,10 +66,30 @@ const Test = () => {
   const generateIframe = () => {
     if (!testUrl) return '';
     
-    const sandboxAttr = sandbox ? 'sandbox="allow-scripts allow-same-origin allow-forms allow-popups"' : '';
-    const allowFullscreenAttr = allowFullscreen ? 'allowfullscreen' : '';
+    let sandboxAttr = '';
+    if (sandbox) {
+      if (calendarOptimized) {
+        sandboxAttr = 'sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-modals"';
+      } else {
+        sandboxAttr = 'sandbox="allow-scripts allow-same-origin allow-forms allow-popups"';
+      }
+    }
     
-    return `<iframe src="${testUrl}" width="100%" height="500" frameborder="0" ${sandboxAttr} ${allowFullscreenAttr}></iframe>`;
+    const allowFullscreenAttr = allowFullscreen ? 'allowfullscreen' : '';
+    const allowAttr = calendarOptimized ? 'allow="fullscreen"' : '';
+    
+    return `<iframe src="${testUrl}" width="100%" height="500" frameborder="0" ${sandboxAttr} ${allowFullscreenAttr} ${allowAttr}></iframe>`;
+  };
+
+  const testCalendarForm = () => {
+    setTestUrl('https://psprop.net/gfembed/?f=34');
+    setSandbox(false); // Disable sandbox for better calendar compatibility
+    setAllowFullscreen(true);
+    setCalendarOptimized(true);
+    toast({
+      title: "Calendar Form Loaded",
+      description: "Testing calendar form with optimized settings",
+    });
   };
 
   const testUrlValid = testUrl && (testUrl.startsWith('http://') || testUrl.startsWith('https://'));
@@ -73,6 +100,10 @@ const Test = () => {
 
   const handleFullscreenChange = (checked: boolean | "indeterminate") => {
     setAllowFullscreen(checked === true);
+  };
+
+  const handleCalendarOptimizedChange = (checked: boolean | "indeterminate") => {
+    setCalendarOptimized(checked === true);
   };
 
   return (
@@ -101,7 +132,7 @@ const Test = () => {
                   />
                 </div>
                 
-                <div className="flex items-center space-x-4">
+                <div className="flex flex-wrap items-center gap-4">
                   <div className="flex items-center space-x-2">
                     <Checkbox
                       id="sandbox"
@@ -119,7 +150,25 @@ const Test = () => {
                     />
                     <Label htmlFor="fullscreen">Allow Fullscreen</Label>
                   </div>
+
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="calendar-optimized"
+                      checked={calendarOptimized}
+                      onCheckedChange={handleCalendarOptimizedChange}
+                    />
+                    <Label htmlFor="calendar-optimized">Calendar Optimized</Label>
+                  </div>
                 </div>
+
+                <Button
+                  onClick={testCalendarForm}
+                  variant="outline"
+                  className="w-full"
+                >
+                  <Calendar className="mr-2 h-4 w-4" />
+                  Test Calendar Form (Optimized)
+                </Button>
                 
                 {testUrlValid && (
                   <div className="space-y-2">
@@ -128,7 +177,7 @@ const Test = () => {
                       value={generateIframe()}
                       readOnly
                       className="text-sm font-mono"
-                      rows={3}
+                      rows={4}
                     />
                     <Button
                       size="sm"
@@ -193,21 +242,29 @@ const Test = () => {
                 <CardDescription>See how your embed will look</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 min-h-[300px]">
+                <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 min-h-[300px] overflow-visible">
                   {testUrlValid ? (
                     <iframe
                       src={testUrl}
                       width="100%"
-                      height="300"
+                      height="500"
                       frameBorder="0"
-                      sandbox={sandbox ? "allow-scripts allow-same-origin allow-forms allow-popups" : undefined}
+                      sandbox={
+                        sandbox
+                          ? calendarOptimized
+                            ? "allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-modals"
+                            : "allow-scripts allow-same-origin allow-forms allow-popups"
+                          : undefined
+                      }
                       allowFullScreen={allowFullscreen}
+                      allow={calendarOptimized ? "fullscreen" : undefined}
                       className="w-full"
+                      title="Test Preview"
                     />
                   ) : customEmbed ? (
                     <div 
                       dangerouslySetInnerHTML={{ __html: customEmbed }}
-                      className="w-full h-full"
+                      className="w-full h-full overflow-visible"
                     />
                   ) : (
                     <div className="flex items-center justify-center h-full text-gray-500">
@@ -220,24 +277,34 @@ const Test = () => {
 
             <Card>
               <CardHeader>
-                <CardTitle>Security Info</CardTitle>
+                <CardTitle>Calendar Debugging Info</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 <div className="flex items-center space-x-2">
-                  {sandbox ? (
+                  {!sandbox ? (
                     <CheckCircle className="h-4 w-4 text-green-500" />
                   ) : (
                     <AlertTriangle className="h-4 w-4 text-yellow-500" />
                   )}
                   <span className="text-sm">
-                    Sandbox: {sandbox ? 'Enabled (Recommended)' : 'Disabled'}
+                    Sandbox: {sandbox ? 'Enabled (May block calendar)' : 'Disabled (Recommended for calendars)'}
+                  </span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  {calendarOptimized ? (
+                    <CheckCircle className="h-4 w-4 text-green-500" />
+                  ) : (
+                    <AlertTriangle className="h-4 w-4 text-yellow-500" />
+                  )}
+                  <span className="text-sm">
+                    Calendar Optimization: {calendarOptimized ? 'Enabled' : 'Disabled'}
                   </span>
                 </div>
                 <div className="flex items-center space-x-2">
                   {allowFullscreen ? (
-                    <AlertTriangle className="h-4 w-4 text-yellow-500" />
-                  ) : (
                     <CheckCircle className="h-4 w-4 text-green-500" />
+                  ) : (
+                    <AlertTriangle className="h-4 w-4 text-yellow-500" />
                   )}
                   <span className="text-sm">
                     Fullscreen: {allowFullscreen ? 'Allowed' : 'Restricted'}
@@ -255,23 +322,23 @@ const Test = () => {
             <CardDescription>Common embed patterns you can test and modify</CardDescription>
           </CardHeader>
           <CardContent>
-            <Tabs defaultValue="youtube" className="w-full">
-              <TabsList className="grid grid-cols-4 w-full">
+            <Tabs defaultValue="gravity-form-calendar" className="w-full">
+              <TabsList className="grid grid-cols-5 w-full">
                 {presetExamples.map((example, index) => (
-                  <TabsTrigger key={index} value={example.name.toLowerCase().replace(' ', '-')}>
+                  <TabsTrigger key={index} value={example.name.toLowerCase().replace(/\s+/g, '-')}>
                     {example.name}
                   </TabsTrigger>
                 ))}
               </TabsList>
               {presetExamples.map((example, index) => (
-                <TabsContent key={index} value={example.name.toLowerCase().replace(' ', '-')}>
+                <TabsContent key={index} value={example.name.toLowerCase().replace(/\s+/g, '-')}>
                   <div className="space-y-4">
                     <p className="text-sm text-gray-600">{example.description}</p>
                     <Textarea
                       value={example.code}
                       readOnly
                       className="font-mono text-sm"
-                      rows={4}
+                      rows={6}
                     />
                     <div className="flex space-x-2">
                       <Button
