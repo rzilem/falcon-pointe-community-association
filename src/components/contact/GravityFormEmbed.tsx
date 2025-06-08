@@ -6,6 +6,13 @@ import "./GravityFormFields.css";
 import "./GravityFormCalendar.css";
 import "./GravityFormResponsive.css";
 
+// Extend Window interface to include jQuery
+declare global {
+  interface Window {
+    jQuery?: any;
+  }
+}
+
 const GravityFormEmbed = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
@@ -65,16 +72,17 @@ const GravityFormEmbed = () => {
     document.head.appendChild(script);
 
     // Listen for calendar-related messages from iframe
-    const handleMessage = (event) => {
+    const handleMessage = (event: MessageEvent) => {
       if (event.data && event.data.type === 'calendar-interaction') {
         console.log('Calendar interaction detected:', event.data);
         // Force visibility of calendar elements
         setTimeout(() => {
           const calendarElements = document.querySelectorAll('.hasDatepicker, .ui-datepicker, .gfield_calendar');
           calendarElements.forEach(el => {
-            el.style.display = 'block !important';
-            el.style.visibility = 'visible !important';
-            el.style.opacity = '1 !important';
+            const htmlEl = el as HTMLElement;
+            htmlEl.style.display = 'block';
+            htmlEl.style.visibility = 'visible';
+            htmlEl.style.opacity = '1';
           });
         }, 100);
       }
@@ -101,7 +109,7 @@ const GravityFormEmbed = () => {
     
     // Post-load calendar enhancement
     setTimeout(() => {
-      const iframe = document.querySelector('.gfiframe');
+      const iframe = document.querySelector('.gfiframe') as HTMLIFrameElement;
       if (iframe && iframe.contentWindow) {
         try {
           // Inject calendar enhancement script into iframe
