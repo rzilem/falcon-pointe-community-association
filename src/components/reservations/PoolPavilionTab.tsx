@@ -1,5 +1,5 @@
 
-import React, { useEffect } from "react";
+import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Separator } from "@/components/ui/separator";
@@ -7,22 +7,6 @@ import ImageDisplay from "@/components/cms/ImageDisplay";
 import { CheckCircle, Info, Users } from "lucide-react";
 
 const PoolPavilionTab = () => {
-  useEffect(() => {
-    // Load the Gravity Forms script
-    const script = document.createElement('script');
-    script.src = '/wp-content/plugins/gravity-forms-iframe-master/assets/scripts/gfembed.min.js';
-    script.type = 'text/javascript';
-    document.head.appendChild(script);
-
-    // Cleanup function to remove script when component unmounts
-    return () => {
-      const existingScript = document.querySelector('script[src="/wp-content/plugins/gravity-forms-iframe-master/assets/scripts/gfembed.min.js"]');
-      if (existingScript) {
-        document.head.removeChild(existingScript);
-      }
-    };
-  }, []);
-
   return (
     <Card className="overflow-hidden border-0 shadow-lg hover:shadow-xl transition-shadow duration-300">
       <CardContent className="p-0">
@@ -109,28 +93,6 @@ const PoolPavilionTab = () => {
               </div>
             </div>
           </div>
-          
-          {/* Gravity Forms Embed */}
-          <Card className="border-0 rounded-none">
-            <CardContent className="p-6 md:p-8 bg-gradient-to-br from-blue-50 to-indigo-50">
-              <div className="max-w-4xl mx-auto">
-                <h3 className="text-xl font-semibold mb-3 text-gray-800 text-center">Pool Pavilion Reservation</h3>
-                <p className="text-gray-600 mb-6 text-center">
-                  Complete your reservation using the form below.
-                </p>
-                <div className="bg-white rounded-lg shadow-sm p-4">
-                  <iframe 
-                    src="//psprop.net/gfembed/?f=36" 
-                    width="1000" 
-                    height="1200" 
-                    frameBorder="0" 
-                    className="gfiframe max-w-full"
-                    title="Pool Pavilion Reservation Form"
-                  />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
         </div>
       </CardContent>
     </Card>
