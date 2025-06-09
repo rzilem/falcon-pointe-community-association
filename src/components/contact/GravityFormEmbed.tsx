@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import "./GravityFormBase.css";
 import "./GravityFormFields.css";
@@ -14,33 +14,9 @@ const GravityFormEmbed = () => {
   const [hasError, setHasError] = useState(false);
   // Track loading/error state
 
-  useEffect(() => {
-    // Load Gravity Forms iframe helper script
-    const script = document.createElement("script");
-    script.src = "https://psprop.net/wp-content/plugins/gravity-forms-iframe-master/assets/scripts/gfembed.min.js";
-    script.type = "text/javascript";
-    script.async = true;
-
-    script.onload = () => {
-      console.log('Gravity Forms script loaded successfully');
-    };
-
-    script.onerror = () => {
-      console.error('Failed to load Gravity Forms script');
-    };
-
-    // Append script to document head for better loading
-    document.head.appendChild(script);
-
-    // No need to interact with iframe contents from parent
-
-    // Clean up when component unmounts
-    return () => {
-      if (document.head.contains(script)) {
-        document.head.removeChild(script);
-      }
-    };
-  }, []);
+  // No additional scripts required. The Gravity Forms page is loaded with
+  // `jquery=1&jqueryui=1` which ensures jQuery and jQuery UI are available
+  // within the iframe itself.
 
   const handleIframeLoad = () => {
     setIsLoading(false);
