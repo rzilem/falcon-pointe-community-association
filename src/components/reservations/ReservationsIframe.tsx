@@ -14,10 +14,10 @@ const ReservationsIframe = () => {
 
       {/* Reservations Content with Tabs */}
       <div className="py-6 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
+        <div className="container mx-auto px-2 md:px-4">
+          <div className="max-w-full mx-auto">
             <Tabs defaultValue="pool-pavilion" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 mb-6">
+              <TabsList className="grid w-full grid-cols-2 mb-6 max-w-4xl mx-auto">
                 <TabsTrigger 
                   value="pool-pavilion" 
                   className="text-xl font-semibold py-4 flex gap-2 items-center transition-all duration-200 hover:bg-primary/10"
