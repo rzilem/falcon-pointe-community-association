@@ -3,24 +3,19 @@ import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
 import ImageDisplay from "@/components/cms/ImageDisplay";
 import { CheckCircle, Users } from "lucide-react";
 
 const EventRoomTab = () => {
-  const openIndoorRoom = () => {
-    window.open('https://psprop.net/falcon-pointe-indoor-gathering-room-reservation', '_blank');
-  };
-
   return (
-    <Card className="overflow-hidden border-0 shadow-lg hover:shadow-xl transition-shadow duration-300">
-      <CardContent className="p-0">
-        <div className="flex flex-col">
-          {/* Enhanced Info Section */}
-          <div className="p-4 md:p-6 bg-white border-b border-gray-100">
-            <div className="flex flex-col md:flex-row gap-6">
+    <div className="space-y-6">
+      {/* Enhanced Info Section */}
+      <div className="px-2 md:px-4">
+        <Card className="overflow-hidden border-0 shadow-lg hover:shadow-xl transition-shadow duration-300">
+          <CardContent className="p-4 md:p-6 bg-white">
+            <div className="flex flex-col lg:flex-row gap-6">
               {/* Image Section */}
-              <div className="w-full md:w-2/5">
+              <div className="w-full lg:w-2/5">
                 <div className="rounded-lg overflow-hidden border border-gray-200 shadow-md">
                   <ImageDisplay 
                     location="event-room" 
@@ -32,7 +27,7 @@ const EventRoomTab = () => {
               </div>
               
               {/* Content Section */}
-              <div className="w-full md:w-3/5">
+              <div className="w-full lg:w-3/5">
                 <div className="flex items-center gap-2 mb-2">
                   <h2 className="text-2xl font-bold">Indoor Gathering Room</h2>
                   <div className="flex items-center text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded">
@@ -90,29 +85,31 @@ const EventRoomTab = () => {
                 </Accordion>
               </div>
             </div>
-          </div>
-          
-          {/* Reservation Call-to-Action */}
-          <Card className="border-0 rounded-none">
-            <CardContent className="p-6 md:p-8 text-center bg-gradient-to-br from-green-50 to-emerald-50">
-              <div className="max-w-md mx-auto">
-                <h3 className="text-xl font-semibold mb-3 text-gray-800">Ready to Reserve?</h3>
-                <p className="text-gray-600 mb-6">
-                  Complete your Indoor Gathering Room reservation on our dedicated reservation page. Opens in a new window.
-                </p>
-                <Button 
-                  size="lg" 
-                  className="w-full md:w-auto px-8 py-3 text-lg font-medium bg-primary hover:bg-primary/90 transition-colors"
-                  onClick={openIndoorRoom}
-                >
-                  🏠 Reserve Indoor Gathering Room
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+          </CardContent>
+        </Card>
+      </div>
+      
+      {/* Full Page Embed - Full Width Section */}
+      <div className="w-full bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg overflow-hidden shadow-lg">
+        <div className="text-center py-6 px-4">
+          <h3 className="text-xl font-semibold mb-3 text-gray-800">Indoor Gathering Room Reservation</h3>
+          <p className="text-gray-600 mb-6">
+            Complete your reservation using the form below.
+          </p>
         </div>
-      </CardContent>
-    </Card>
+        <div className="w-full pb-6">
+          <iframe 
+            src="https://psprop.net/falcon-pointe-indoor-gathering-room-reservation/" 
+            width="100%" 
+            height="1200" 
+            frameBorder="0" 
+            className="w-full rounded-lg bg-white shadow-inner mx-auto block" 
+            title="Indoor Gathering Room Reservation Page" 
+            style={{ minWidth: '100%', maxWidth: '100%' }}
+          />
+        </div>
+      </div>
+    </div>
   );
 };
 

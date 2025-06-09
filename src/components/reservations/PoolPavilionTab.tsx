@@ -111,7 +111,7 @@ const PoolPavilionTab = () => {
         </Card>
       </div>
       
-      {/* Gravity Forms Embed - Full Width Section */}
+      {/* Full Page Embed - Full Width Section */}
       <div className="w-full bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg overflow-hidden shadow-lg">
         <div className="text-center py-6 px-4">
           <h3 className="text-xl font-semibold mb-3 text-gray-800">Pool Pavilion Reservation</h3>
@@ -119,15 +119,14 @@ const PoolPavilionTab = () => {
             Complete your reservation using the form below.
           </p>
         </div>
-        {/* Remove px-4 padding from iframe container for full width */}
         <div className="w-full pb-6">
           <iframe 
-            src="//psprop.net/gfembed/?f=36" 
+            src="https://psprop.net/falcon-pointe-pool-pavilion-reservationreservation/" 
             width="100%" 
-            height="1000" 
+            height="1200" 
             frameBorder="0" 
-            className="gfiframe w-full rounded-lg bg-white shadow-inner mx-auto block" 
-            title="Pool Pavilion Reservation Form" 
+            className="w-full rounded-lg bg-white shadow-inner mx-auto block" 
+            title="Pool Pavilion Reservation Page" 
             style={{ minWidth: '100%', maxWidth: '100%' }}
           />
         </div>
