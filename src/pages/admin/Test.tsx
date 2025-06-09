@@ -26,7 +26,7 @@ const Test = () => {
     {
       name: 'Gravity Form Calendar',
       type: 'iframe',
-      code: '<iframe src="https://psprop.net/gfembed/?f=34" width="100%" height="840" frameborder="0" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-modals" allow="fullscreen" title="Contact Form with Calendar"></iframe>',
+      code: '<iframe src="https://psprop.net/gfembed/?f=34&jquery=1&jqueryui=1" width="100%" height="840" frameborder="0" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-modals" allow="fullscreen" title="Contact Form with Calendar"></iframe>',
       description: 'Gravity Form with calendar support (optimized settings)'
     },
     {
@@ -82,7 +82,7 @@ const Test = () => {
   };
 
   const testCalendarForm = () => {
-    setTestUrl('https://psprop.net/gfembed/?f=34');
+    setTestUrl('https://psprop.net/gfembed/?f=34&jquery=1&jqueryui=1');
     setSandbox(false); // Disable sandbox for better calendar compatibility
     setAllowFullscreen(true);
     setCalendarOptimized(true);
