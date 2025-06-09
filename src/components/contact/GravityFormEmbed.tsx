@@ -6,9 +6,6 @@ import "./GravityFormFields.css";
 import "./GravityFormCalendar.css";
 import "./GravityFormResponsive.css";
 
-// Extend Window interface to include jQuery
-// No additional declarations needed
-
 const GravityFormEmbed = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
