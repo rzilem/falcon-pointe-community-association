@@ -25,14 +25,20 @@ const ContactInfo = () => {
           <Phone className="h-5 w-5 mt-1 text-primary" />
           <div>
             <h3 className="font-semibold">Phone</h3>
-            <p className="text-gray-600">(512) 670-1400</p>
+            <p className="text-gray-600">
+              <a href="tel:5126701400">(512) 670-1400</a>
+            </p>
           </div>
         </div>
         <div className="flex items-start gap-3">
           <Mail className="h-5 w-5 mt-1 text-primary" />
           <div>
             <h3 className="font-semibold">Email</h3>
-            <p className="text-gray-600">manager@falconpointecommunity.com</p>
+            <p className="text-gray-600">
+              <a href="mailto:manager@falconpointecommunity.com">
+                manager@falconpointecommunity.com
+              </a>
+            </p>
           </div>
         </div>
         <div className="flex items-start gap-3">
