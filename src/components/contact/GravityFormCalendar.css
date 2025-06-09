@@ -1,4 +1,5 @@
 
+
 /* Calendar widget visibility fixes */
 .gform_wrapper .ginput_container_date,
 .gform_wrapper .ginput_container_time,
@@ -19,18 +20,6 @@
   border: 1px solid #ddd !important;
   padding: 10px !important;
   margin: 10px 0 !important;
-  width: 100% !important;
-  max-width: none !important;
-}
-
-/* Calendar input field full width */
-.gform_wrapper .ginput_container_date input,
-.gform_wrapper .gfield_calendar input,
-.gform_wrapper input.hasDatepicker {
-  width: 100% !important;
-  max-width: 100% !important;
-  display: block !important;
-  box-sizing: border-box !important;
 }
 
 /* Enhanced iframe-specific calendar targeting */
@@ -69,8 +58,6 @@ iframe[src*="gfembed"] {
   opacity: 1 !important;
   position: relative !important;
   z-index: 9999 !important;
-  width: 100% !important;
-  max-width: 100% !important;
 }
 
 /* jQuery UI Datepicker specific fixes */
@@ -111,10 +98,8 @@ input.hasDatepicker {
   border: 2px solid #ddd !important;
   padding: 8px 12px !important;
   font-size: 14px !important;
-  width: 100% !important;
-  max-width: 100% !important;
+  min-width: 150px !important;
   cursor: pointer !important;
-  box-sizing: border-box !important;
 }
 
 input.hasDatepicker:focus {
@@ -130,8 +115,6 @@ input.hasDatepicker:focus {
   display: block !important;
   min-height: 60px !important;
   padding: 10px 0 !important;
-  width: 100% !important;
-  max-width: 100% !important;
 }
 
 /* Prevent calendar from being clipped */
@@ -175,3 +158,4 @@ input.hasDatepicker:focus {
   background: rgba(255, 0, 0, 0.1) !important;
 }
 */
+
