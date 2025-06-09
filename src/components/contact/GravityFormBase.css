@@ -31,10 +31,13 @@
   min-height: 60px !important;
 }
 
-/* Iframe styling */
+/* Enhanced iframe styling for full width */
 .gfiframe {
   min-height: 500px !important;
   overflow: visible !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  border: none !important;
 }
 
 .calendar-iframe {
@@ -44,9 +47,17 @@
 
 iframe[src*="gfembed"] {
   min-height: 600px;
-  width: 100%;
+  width: 100% !important;
+  max-width: 100% !important;
   border: none;
   background: white;
+  display: block !important;
+}
+
+/* Ensure iframe content can use full width */
+iframe[src*="gfembed"] .gform_wrapper {
+  max-width: 100% !important;
+  width: 100% !important;
 }
 
 .amenity-form-container {
@@ -54,4 +65,18 @@ iframe[src*="gfembed"] {
   border-radius: 8px;
   padding: 20px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
+/* Full width form container */
+.gform_wrapper {
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
+/* Ensure form fields can use available space */
+.gform_wrapper .gform_body {
+  max-width: 100% !important;
+  width: 100% !important;
 }
