@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Separator } from "@/components/ui/separator";
@@ -6,22 +6,6 @@ import ImageDisplay from "@/components/cms/ImageDisplay";
 import { CheckCircle, Info, Users } from "lucide-react";
 
 const PoolPavilionTab = () => {
-  useEffect(() => {
-    // Load the Gravity Forms script
-    const script = document.createElement('script');
-    script.src = '/wp-content/plugins/gravity-forms-iframe-master/assets/scripts/gfembed.min.js';
-    script.type = 'text/javascript';
-    document.head.appendChild(script);
-
-    // Cleanup function to remove script when component unmounts
-    return () => {
-      const existingScript = document.querySelector('script[src="/wp-content/plugins/gravity-forms-iframe-master/assets/scripts/gfembed.min.js"]');
-      if (existingScript) {
-        document.head.removeChild(existingScript);
-      }
-    };
-  }, []);
-
   return (
     <div className="space-y-6">
       {/* Enhanced Info Section - Keep existing padding */}
@@ -121,7 +105,7 @@ const PoolPavilionTab = () => {
         </div>
         <div className="w-full pb-6">
           <iframe 
-            src="https://psprop.net/falcon-pointe-pool-pavilion-reservationreservation/" 
+            src="https://psprop.net/falcon-pointe-pool-pavilion-reservation/" 
             width="100%" 
             height="1200" 
             frameBorder="0" 
