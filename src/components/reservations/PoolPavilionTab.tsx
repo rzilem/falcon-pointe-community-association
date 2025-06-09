@@ -4,7 +4,6 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Separator } from "@/components/ui/separator";
 import ImageDisplay from "@/components/cms/ImageDisplay";
 import { CheckCircle, Info, Users } from "lucide-react";
-
 const PoolPavilionTab = () => {
   useEffect(() => {
     // Load the Gravity Forms script
@@ -21,9 +20,7 @@ const PoolPavilionTab = () => {
       }
     };
   }, []);
-
-  return (
-    <Card className="overflow-hidden border-0 shadow-lg hover:shadow-xl transition-shadow duration-300">
+  return <Card className="overflow-hidden border-0 shadow-lg hover:shadow-xl transition-shadow duration-300">
       <CardContent className="p-0">
         <div className="flex flex-col">
           {/* Enhanced Info Section */}
@@ -32,12 +29,7 @@ const PoolPavilionTab = () => {
               {/* Image Section */}
               <div className="w-full md:w-2/5">
                 <div className="rounded-lg overflow-hidden border border-gray-200 shadow-md">
-                  <ImageDisplay 
-                    location="pool-pavilion" 
-                    fallbackSrc="/lovable-uploads/ebafe490-e728-4ed8-a428-ff945cb1df98.png" 
-                    alt="Pool Pavilion" 
-                    className="w-full h-64 md:h-72 object-cover hover:scale-105 transition-transform duration-1000" 
-                  />
+                  <ImageDisplay location="pool-pavilion" fallbackSrc="/lovable-uploads/ebafe490-e728-4ed8-a428-ff945cb1df98.png" alt="Pool Pavilion" className="w-full h-64 md:h-72 object-cover hover:scale-105 transition-transform duration-1000" />
                 </div>
                 <div className="mt-4 bg-blue-50 p-3 rounded-md border border-blue-100 flex items-start">
                   <Info className="h-5 w-5 text-blue-500 mt-0.5 mr-2 flex-shrink-0" /> 
@@ -111,29 +103,20 @@ const PoolPavilionTab = () => {
           
           {/* Gravity Forms Embed */}
           <Card className="border-0 rounded-none">
-            <CardContent className="p-6 md:p-8 bg-gradient-to-br from-blue-50 to-indigo-50">
+            <CardContent className="p-6 md:p-8 bg-gradient-to-br from-blue-50 to-indigo-50 py-px px-0 mx-0">
               <div className="max-w-4xl mx-auto">
                 <h3 className="text-xl font-semibold mb-3 text-gray-800 text-center">Pool Pavilion Reservation</h3>
                 <p className="text-gray-600 mb-6 text-center">
                   Complete your reservation using the form below.
                 </p>
                 <div className="bg-white rounded-lg shadow-sm p-4">
-                  <iframe 
-                    src="//psprop.net/gfembed/?f=36" 
-                    width="100%" 
-                    height="1000" 
-                    frameBorder="0" 
-                    className="gfiframe"
-                    title="Pool Pavilion Reservation Form"
-                  />
+                  <iframe src="//psprop.net/gfembed/?f=36" width="100%" height="1000" frameBorder="0" className="gfiframe" title="Pool Pavilion Reservation Form" />
                 </div>
               </div>
             </CardContent>
           </Card>
         </div>
       </CardContent>
-    </Card>
-  );
+    </Card>;
 };
-
 export default PoolPavilionTab;
