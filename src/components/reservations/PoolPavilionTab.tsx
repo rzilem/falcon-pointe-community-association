@@ -121,10 +121,10 @@ const PoolPavilionTab = () => {
                 <div className="bg-white rounded-lg shadow-sm p-4">
                   <iframe 
                     src="//psprop.net/gfembed/?f=36" 
-                    width="100%" 
-                    height="1500" 
+                    width="1000" 
+                    height="1200" 
                     frameBorder="0" 
-                    className="gfiframe w-full"
+                    className="gfiframe max-w-full"
                     title="Pool Pavilion Reservation Form"
                   />
                 </div>
