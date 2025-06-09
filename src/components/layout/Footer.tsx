@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
 import ImageDisplay from "@/components/cms/ImageDisplay";
+import { Phone, Mail } from "lucide-react";
 
 const Footer = () => {
   const { user, signOut } = useAuth();
@@ -52,12 +53,25 @@ const Footer = () => {
 
           <div className="col-span-1">
             <h3 className="text-lg font-semibold mb-4">Contact Us</h3>
-            <address className="not-italic text-gray-300">
+            <address className="not-italic text-gray-300 space-y-1">
               <p>Falcon Pointe Community Association</p>
               <p>19015 Falcon Pointe Blvd</p>
               <p>Pflugerville, TX 78660</p>
-              <p className="mt-2">Phone: (512) 670-1400</p>
-              <p>Email: manager@falconpointecommunity.com</p>
+              <p className="mt-2 flex items-center gap-2">
+                <Phone className="h-4 w-4 text-primary" />
+                <a href="tel:+15126701400" className="hover:underline">
+                  (512) 670-1400
+                </a>
+              </p>
+              <p className="flex items-center gap-2">
+                <Mail className="h-4 w-4 text-primary" />
+                <a
+                  href="mailto:manager@falconpointecommunity.com"
+                  className="hover:underline"
+                >
+                  manager@falconpointecommunity.com
+                </a>
+              </p>
             </address>
           </div>
         </div>
