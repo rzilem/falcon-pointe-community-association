@@ -118,13 +118,13 @@ const PoolPavilionTab = () => {
                 <p className="text-gray-600 mb-6 text-center">
                   Complete your reservation using the form below.
                 </p>
-                <div className="bg-white rounded-lg shadow-sm p-4">
+                <div className="bg-white rounded-lg shadow-sm p-4 flex justify-center">
                   <iframe 
                     src="//psprop.net/gfembed/?f=36" 
-                    width="100%" 
-                    height="500" 
+                    width="800" 
+                    height="1500" 
                     frameBorder="0" 
-                    className="gfiframe w-full"
+                    className="gfiframe max-w-full"
                     title="Pool Pavilion Reservation Form"
                   />
                 </div>
