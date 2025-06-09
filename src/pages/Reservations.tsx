@@ -31,7 +31,7 @@ const Reservations = () => {
                   className="text-xl font-semibold py-4 flex gap-2 items-center transition-all duration-200 hover:bg-primary/10"
                 >
                   <Building2 className="h-5 w-5" />
-                  <span>Indoor Event Room</span>
+                  <span>Indoor Gathering Room</span>
                 </TabsTrigger>
               </TabsList>
               

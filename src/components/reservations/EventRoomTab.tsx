@@ -38,7 +38,7 @@ const EventRoomTab = () => {
                   <ImageDisplay 
                     location="event-room" 
                     fallbackSrc="https://ufhcicqixojqpyykjljw.supabase.co/storage/v1/object/public/site-images//OH%20yeah.jpg" 
-                    alt="Indoor Event Room" 
+                    alt="Indoor Gathering Room" 
                     className="w-full h-64 md:h-72 object-cover hover:scale-105 transition-transform duration-1000" 
                   />
                 </div>
@@ -47,7 +47,7 @@ const EventRoomTab = () => {
               {/* Content Section */}
               <div className="w-full md:w-3/5">
                 <div className="flex items-center gap-2 mb-2">
-                  <h2 className="text-2xl font-bold">Indoor Event Room</h2>
+                  <h2 className="text-2xl font-bold">Indoor Gathering Room</h2>
                   <div className="flex items-center text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded">
                     <Users className="h-4 w-4 mr-1" /> 
                     <span>Capacity: 50 people</span>
@@ -93,7 +93,7 @@ const EventRoomTab = () => {
                         <ul className="list-disc pl-5 space-y-1 text-gray-600">
                           <li>Reservations must be made at least 7 days in advance</li>
                           <li>Residents must be in good standing with HOA dues</li>
-                          <li>Indoor Event Room: $100.00 reservation fee</li>
+                          <li>Indoor Gathering Room: $100.00 reservation fee</li>
                           <li>The resident making the reservation must be present throughout the event</li>
                           <li>All community rules apply during reserved events</li>
                         </ul>
@@ -111,7 +111,7 @@ const EventRoomTab = () => {
               <div className="max-w-md mx-auto">
                 <h3 className="text-xl font-semibold mb-3 text-gray-800">Ready to Reserve?</h3>
                 <p className="text-gray-600 mb-6">
-                  Complete your Indoor Event Room reservation using our calendar form. A new window will open for your convenience.
+                  Complete your Indoor Gathering Room reservation using our calendar form. A new window will open for your convenience.
                 </p>
                 <Button 
                   size="lg" 
