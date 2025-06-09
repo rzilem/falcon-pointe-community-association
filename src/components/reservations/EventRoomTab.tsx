@@ -5,9 +5,26 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import ImageDisplay from "@/components/cms/ImageDisplay";
-import { CheckCircle, Users, ExternalLink } from "lucide-react";
+import { CheckCircle, Users, Calendar } from "lucide-react";
 
 const EventRoomTab = () => {
+  const openIndoorRoom = () => {
+    const popup = window.open(
+      'https://psprop.net/gfembed/?f=37', 
+      'indoorEventRoomReservation', 
+      'width=800,height=600,scrollbars=yes,resizable=yes,location=no,menubar=no,toolbar=no,status=no'
+    );
+    
+    if (!popup) {
+      // Fallback if popup is blocked
+      alert('Please allow popups for this site to open the reservation form, or visit the form directly at: https://psprop.net/gfembed/?f=37');
+      return;
+    }
+    
+    // Focus the popup window
+    popup.focus();
+  };
+
   return (
     <Card className="overflow-hidden border-0 shadow-lg hover:shadow-xl transition-shadow duration-300">
       <CardContent className="p-0">
@@ -94,18 +111,18 @@ const EventRoomTab = () => {
               <div className="max-w-md mx-auto">
                 <h3 className="text-xl font-semibold mb-3 text-gray-800">Ready to Reserve?</h3>
                 <p className="text-gray-600 mb-6">
-                  Complete your Indoor Event Room reservation on our secure form. You'll be redirected to our reservation system.
+                  Complete your Indoor Event Room reservation using our calendar form. A new window will open for your convenience.
                 </p>
                 <Button 
                   size="lg" 
                   className="w-full md:w-auto px-8 py-3 text-lg font-medium bg-primary hover:bg-primary/90 transition-colors"
-                  onClick={() => window.open('https://psprop.net/falcon-pointe-indoor-event-room-reservation/', '_blank')}
+                  onClick={openIndoorRoom}
                 >
-                  <ExternalLink className="mr-2 h-5 w-5" />
-                  Make Reservation
+                  <Calendar className="mr-2 h-5 w-5" />
+                  🏠 Reserve Indoor Gathering Room
                 </Button>
                 <p className="text-xs text-gray-500 mt-3">
-                  Opens in a new window for your security and convenience
+                  Opens in a new window - please allow popups for this site
                 </p>
               </div>
             </CardContent>
