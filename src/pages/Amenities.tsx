@@ -55,7 +55,7 @@ const Amenities = () => {
       {/* Hero Section */}
       <div className="relative h-[300px] bg-cover bg-center">
         <ImageDisplay location="amenities-banner" fallbackSrc="https://ufhcicqixojqpyykjljw.supabase.co/storage/v1/object/public/site-images//Large%20Pool.jpg" alt="Amenities Banner" className="absolute inset-0 w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-black/70" /> {/* Slightly increased overlay opacity */}
+        <div className="absolute inset-0 bg-black/70" />
         <div className="relative container mx-auto px-4 h-full flex items-center justify-center">
           <div className="text-center text-white">
             <h1 className="text-4xl font-bold mb-4">Community Amenities</h1>
@@ -106,7 +106,7 @@ const Amenities = () => {
             
             <div className="bg-white p-6 rounded-lg shadow-md mb-6">
               <ContentDisplay section="amenities-hours" fallbackTitle="Hours of Operation" fallbackContent={<ul className="list-disc list-inside space-y-2 text-gray-600">
-                    <li>Swimming Pools: Pool is all year round 24/7 365 days a year</li>
+                    <li>Swimming Pools: Open 24/7 year-round</li>
                     <li>Tennis & Basketball Courts: 6:00 AM - 10:00 PM (lighted until 10:00 PM)</li>
                     <li>Parks & Trails: Dawn to Dusk</li>
                     <li>Amenity Center: Available for reservation by residents</li>
