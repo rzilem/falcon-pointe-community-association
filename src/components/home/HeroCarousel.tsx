@@ -107,7 +107,7 @@ const HeroCarousel: React.FC<HeroCarouselProps> = ({ images, isLoading }) => {
       
       {/* Navigation dots */}
       {count > 0 && (
-        <div className="absolute bottom-8 left-0 right-0 z-10 flex justify-center gap-3">
+        <div className="absolute bottom-2 sm:bottom-3 md:bottom-4 left-0 right-0 z-10 flex justify-center gap-3">
           {Array.from({ length: count }).map((_, index) => (
             <button
               key={index}
