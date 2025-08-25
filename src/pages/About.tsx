@@ -18,7 +18,7 @@ const About = () => {
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center mb-16">
             <div className="md:w-1/2 mb-8 md:mb-0 md:pr-8">
-              <img src="/public/lovable-uploads/899b4f94-1a92-4f7d-a7c0-37faa59f7550.png" alt="Falcon Pointe Entrance" className="rounded-lg shadow-lg" />
+              <img src="/lovable-uploads/899b4f94-1a92-4f7d-a7c0-37faa59f7550.png" alt="Falcon Pointe Entrance" className="rounded-lg shadow-lg" />
             </div>
             <div className="md:w-1/2">
               <h2 className="text-3xl font-bold mb-4">Our Community</h2>
@@ -42,7 +42,7 @@ const About = () => {
           {/* Location */}
           <div className="flex flex-col md:flex-row-reverse items-center mb-16">
             <div className="md:w-1/2 mb-8 md:mb-0 md:pl-8">
-              <img src="/public/lovable-uploads/41ef6a9e-81d5-4aa9-9169-bba038eba0f5.png" alt="Falcon Pointe Home" className="rounded-lg shadow-lg" />
+              <img src="/lovable-uploads/41ef6a9e-81d5-4aa9-9169-bba038eba0f5.png" alt="Falcon Pointe Home" className="rounded-lg shadow-lg" />
             </div>
             <div className="md:w-1/2">
               <h2 className="text-3xl font-bold mb-4">Location & Accessibility</h2>

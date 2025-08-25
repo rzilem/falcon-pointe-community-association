@@ -16,7 +16,7 @@ const Footer = () => {
             <Link to="/" className="flex items-center mb-4">
               <ImageDisplay 
                 location="logo"
-                fallbackSrc="/public/lovable-uploads/899b4f94-1a92-4f7d-a7c0-37faa59f7550.png"
+                fallbackSrc="/lovable-uploads/899b4f94-1a92-4f7d-a7c0-37faa59f7550.png"
                 alt="Falcon Pointe Community" 
                 className="h-12 mr-2 bg-white p-1 rounded"
               />

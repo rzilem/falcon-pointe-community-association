@@ -14,7 +14,7 @@ const SEO: React.FC<SEOProps> = ({
   title, 
   description = 'Falcon Pointe Community Association - A vibrant community in central Texas with exceptional amenities and services.',
   keywords = 'Falcon Pointe, homeowners association, community, amenities, residents, Texas',
-  ogImage = '/public/lovable-uploads/899b4f94-1a92-4f7d-a7c0-37faa59f7550.png',
+  ogImage = '/lovable-uploads/899b4f94-1a92-4f7d-a7c0-37faa59f7550.png',
   ogUrl,
   twitterCard = 'summary_large_image'
 }) => {

@@ -12,35 +12,35 @@ const Board = () => {
       position: "President",
       bio: "Leading our community with dedication and vision since 2023.",
       email: "david.alley@falconpointecommunity.com",
-      image: "/public/lovable-uploads/6c2a5abb-a4c0-42a6-b7e0-39f8bbfdbf83.png"
+      image: "/lovable-uploads/6c2a5abb-a4c0-42a6-b7e0-39f8bbfdbf83.png"
     },
     {
       name: "Carol Serna",
       position: "Vice President",
       bio: "Bringing years of community leadership experience to Falcon Pointe.",
       email: "carol.serna@falconpointecommunity.com",
-      image: "/public/lovable-uploads/229f09a0-dd6e-4287-a457-2523b2859beb.png"
+      image: "/lovable-uploads/229f09a0-dd6e-4287-a457-2523b2859beb.png"
     },
     {
       name: "Mark Armstrong",
       position: "Treasurer",
       bio: "Managing our community's financial health with expertise and transparency.",
       email: "mark.armstrong@falconpointecommunity.com",
-      image: "/public/lovable-uploads/080cd85e-7544-4e3a-98a9-178087f36beb.png"
+      image: "/lovable-uploads/080cd85e-7544-4e3a-98a9-178087f36beb.png"
     },
     {
       name: "Matt Alvers",
       position: "Secretary",
       bio: "Ensuring clear communication and detailed record-keeping for our community.",
       email: "matt.alvers@falconpointecommunity.com",
-      image: "/public/lovable-uploads/fc16efac-61bf-47f5-8eee-4dacc38eae73.png"
+      image: "/lovable-uploads/fc16efac-61bf-47f5-8eee-4dacc38eae73.png"
     },
     {
       name: "Jeremy Morrow",
       position: "Member at Large",
       bio: "Representing community interests and supporting board initiatives.",
       email: "jeremy.morrow@falconpointecommunity.com",
-      image: "/public/lovable-uploads/1e3c41bc-f71c-4013-957d-4fa60e414905.png"
+      image: "/lovable-uploads/1e3c41bc-f71c-4013-957d-4fa60e414905.png"
     }
   ];
 
