@@ -17,8 +17,8 @@ const ContactInfo = () => {
           <MapPin className="h-5 w-5 mt-1 text-primary" />
           <div>
             <h3 className="font-semibold">Address</h3>
-            <p className="text-gray-600">410 Cool Spring Way</p>
-            <p className="text-gray-600">Austin, TX 78737</p>
+            <p className="text-gray-600">19015 Falcon Pointe Blvd</p>
+            <p className="text-gray-600">Pflugerville, TX 78660</p>
           </div>
         </div>
         <div className="flex items-start gap-3">
@@ -26,7 +26,7 @@ const ContactInfo = () => {
           <div>
             <h3 className="font-semibold">Phone</h3>
             <p className="text-gray-600">
-              <a href="tel:5128294739">(512) 829-4739</a>
+              <a href="tel:5126701400">(512) 670-1400</a>
             </p>
           </div>
         </div>
@@ -35,8 +35,8 @@ const ContactInfo = () => {
           <div>
             <h3 className="font-semibold">Email</h3>
             <p className="text-gray-600">
-              <a href="mailto:highpointe@psprop.net">
-                highpointe@psprop.net
+              <a href="mailto:manager@falconpointecommunity.com">
+                manager@falconpointecommunity.com
               </a>
             </p>
           </div>
@@ -45,18 +45,8 @@ const ContactInfo = () => {
           <Clock className="h-5 w-5 mt-1 text-primary" />
           <div>
             <h3 className="font-semibold">Office Hours</h3>
-            <p className="text-gray-600">Monday - Friday: 9:00 AM - 5:00 PM</p>
+            <p className="text-gray-600">Monday - Friday: 9:00 AM - 5:30 PM</p>
             <p className="text-gray-600">Saturday - Sunday: Closed</p>
-            
-            <div className="mt-4 p-3 bg-accent/10 rounded-lg">
-              <h4 className="font-semibold text-accent">Virtual Assistant Phyllis</h4>
-              <p className="text-sm text-gray-600 mt-1">
-                Text your community's virtual AI assistant Phyllis for answers to your community questions 24-7 all via text. No app or software needed.
-              </p>
-              <p className="font-medium text-primary mt-2">
-                Text: <a href="sms:5123994616" className="underline">(512) 399-4616</a>
-              </p>
-            </div>
           </div>
         </div>
       </CardContent>

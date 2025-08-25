@@ -40,13 +40,13 @@ const Header = () => {
             <Link to="/" className="flex items-center space-x-2">
               <ImageDisplay 
                 location="logo"
-                alt="Highpointe POA Logo" 
+                alt="Falcon Pointe Logo" 
                 className="h-12 w-auto"
                 fallbackSrc="/lovable-uploads/080cd85e-7544-4e3a-98a9-178087f36beb.png"
               />
               <div>
-                <h1 className="text-xl font-bold text-primary">HIGHPOINTE ✝️</h1>
-                <p className="text-sm text-secondary">of Dripping Springs</p>
+                <h1 className="text-xl font-bold text-gray-800">Falcon Pointe</h1>
+                <p className="text-sm text-gray-600">Community Association</p>
               </div>
             </Link>
           </div>
