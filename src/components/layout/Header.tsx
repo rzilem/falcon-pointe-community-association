@@ -52,7 +52,7 @@ const Header = () => {
           </div>
 
           {/* Desktop Navigation - positioned with separate NavigationMenus */}
-          <div className="hidden lg:block absolute left-64 right-8">
+          <nav className="hidden lg:block absolute left-64 right-8" aria-label="Main navigation">
             <div className="flex items-center space-x-32">
               <NavigationMenu>
                 <NavigationMenuList>
@@ -74,21 +74,24 @@ const Header = () => {
               
               <Link
                 to="/contact"
-                className="text-gray-700 hover:text-primary transition-colors duration-200 font-medium px-3 py-3 rounded-md hover:bg-gray-100 text-lg ml-12"
+                className="text-gray-700 hover:text-primary transition-colors duration-200 font-medium px-3 py-3 rounded-md hover:bg-gray-100 text-lg ml-12 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                aria-label="Go to contact page"
               >
                 Contact
               </Link>
             </div>
-          </div>
+          </nav>
 
           {/* Mobile Menu Button - positioned on right */}
           <div className="lg:hidden ml-auto">
             <button
               onClick={toggleMenu}
-              className="p-2 rounded-md text-gray-700 hover:text-primary hover:bg-gray-100 transition-colors duration-200"
-              aria-label="Toggle menu"
+              className="p-2 rounded-md text-gray-700 hover:text-primary hover:bg-gray-100 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+              aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+              aria-expanded={isMenuOpen}
+              aria-controls="mobile-menu"
             >
-              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              {isMenuOpen ? <X size={24} aria-hidden="true" /> : <Menu size={24} aria-hidden="true" />}
             </button>
           </div>
         </div>

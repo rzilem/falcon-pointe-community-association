@@ -34,13 +34,15 @@ const ImageDisplay: React.FC<ImageDisplayProps> = ({
       <div 
         className={`bg-gray-200 animate-pulse ${className}`}
         style={style}
+        role="img"
+        aria-label="Loading image"
       ></div>
     );
   }
 
   // Use image from Supabase if available, otherwise use fallback
   const imageSrc = !imgError && image?.url ? image.url : fallbackSrc;
-  const imageAlt = image?.alt_text || alt;
+  const imageAlt = image?.alt_text || (alt === 'Image' ? `${location} image` : alt);
 
   const handleImageError = () => {
     setImgError(true);
@@ -72,13 +74,16 @@ const ImageDisplay: React.FC<ImageDisplayProps> = ({
         <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <Dialog>
             <DialogTrigger asChild>
-              <Button variant="secondary">
+              <Button 
+                variant="secondary"
+                aria-label={`Replace ${location} image`}
+              >
                 Replace Image
               </Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent aria-labelledby="dialog-title">
               <DialogHeader>
-                <DialogTitle>Quick Image Replacement</DialogTitle>
+                <DialogTitle id="dialog-title">Quick Image Replacement</DialogTitle>
               </DialogHeader>
               <QuickImageReplacement 
                 location={location} 

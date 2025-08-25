@@ -22,14 +22,19 @@ const SEO: React.FC<SEOProps> = ({
     // Update document title
     document.title = `${title} | Falcon Pointe Community Association`;
     
+    // Add language attribute to html element
+    document.documentElement.lang = 'en';
+    
     // Update meta tags
     const metaTags = [
       { name: 'description', content: description },
       { name: 'keywords', content: keywords },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { property: 'og:title', content: title },
       { property: 'og:description', content: description },
       { property: 'og:image', content: ogImage },
       { property: 'og:url', content: ogUrl || window.location.href },
+      { property: 'og:type', content: 'website' },
       { property: 'twitter:card', content: twitterCard },
       { property: 'twitter:title', content: title },
       { property: 'twitter:description', content: description },

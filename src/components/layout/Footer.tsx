@@ -33,21 +33,21 @@ const Footer = () => {
           <div className="col-span-1">
             <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
-              <li><Link to="/" className="text-gray-300 hover:text-white">Home</Link></li>
-              <li><Link to="/about" className="text-gray-300 hover:text-white">About Us</Link></li>
-              <li><Link to="/amenities" className="text-gray-300 hover:text-white">Amenities</Link></li>
-              <li><Link to="/events" className="text-gray-300 hover:text-white">Events</Link></li>
-              <li><Link to="/contact" className="text-gray-300 hover:text-white">Contact</Link></li>
+              <li><Link to="/" className="text-gray-300 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-gray-800 rounded">Home</Link></li>
+              <li><Link to="/about" className="text-gray-300 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-gray-800 rounded">About Us</Link></li>
+              <li><Link to="/amenities" className="text-gray-300 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-gray-800 rounded">Amenities</Link></li>
+              <li><Link to="/events" className="text-gray-300 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-gray-800 rounded">Events</Link></li>
+              <li><Link to="/contact" className="text-gray-300 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-gray-800 rounded">Contact</Link></li>
             </ul>
           </div>
 
           <div className="col-span-1">
             <h3 className="text-lg font-semibold mb-4">Resident Resources</h3>
             <ul className="space-y-2">
-              <li><Link to="/documents" className="text-gray-300 hover:text-white">Association Documents</Link></li>
-              <li><a href="https://portal.example.com" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white">Resident Portal</a></li>
-              <li><Link to="/board" className="text-gray-300 hover:text-white">Board of Directors</Link></li>
-              <li><Link to="/gallery" className="text-gray-300 hover:text-white">Photo Gallery</Link></li>
+              <li><Link to="/documents" className="text-gray-300 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-gray-800 rounded">Association Documents</Link></li>
+              <li><a href="https://portal.example.com" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-gray-800 rounded">Resident Portal</a></li>
+              <li><Link to="/board" className="text-gray-300 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-gray-800 rounded">Board of Directors</Link></li>
+              <li><Link to="/gallery" className="text-gray-300 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-gray-800 rounded">Photo Gallery</Link></li>
             </ul>
           </div>
 

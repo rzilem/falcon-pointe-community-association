@@ -104,8 +104,10 @@ const EventRoomTab = () => {
             height="1200" 
             frameBorder="0" 
             className="w-full rounded-lg bg-white shadow-inner mx-auto block" 
-            title="Indoor Gathering Room Reservation Page" 
+            title="Indoor Gathering Room Reservation Form - Book your event room rental online"
             style={{ minWidth: '100%', maxWidth: '100%' }}
+            aria-label="Indoor gathering room reservation booking form"
+            loading="lazy"
           />
         </div>
       </div>

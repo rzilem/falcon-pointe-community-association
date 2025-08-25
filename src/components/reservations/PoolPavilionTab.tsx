@@ -110,8 +110,10 @@ const PoolPavilionTab = () => {
             height="1200" 
             frameBorder="0" 
             className="w-full rounded-lg bg-white shadow-inner mx-auto block" 
-            title="Pool Pavilion Reservation Page" 
+            title="Pool Pavilion Reservation Form - Book your pool pavilion rental online"
             style={{ minWidth: '100%', maxWidth: '100%' }}
+            aria-label="Pool pavilion reservation booking form"
+            loading="lazy"
           />
         </div>
       </div>
