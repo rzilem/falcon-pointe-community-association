@@ -17,16 +17,16 @@ const Footer = () => {
               <ImageDisplay 
                 location="logo"
                 fallbackSrc="/public/lovable-uploads/899b4f94-1a92-4f7d-a7c0-37faa59f7550.png"
-                alt="Falcon Pointe Community" 
+                alt="Highpointe POA Logo" 
                 className="h-12 mr-2 bg-white p-1 rounded"
               />
               <div>
-                <h2 className="text-xl font-bold">Falcon Pointe</h2>
-                <p className="text-xs">Community Association</p>
+                <h2 className="text-xl font-bold">HIGHPOINTE ✝️</h2>
+                <p className="text-xs">of Dripping Springs</p>
               </div>
             </Link>
             <p className="text-gray-300 text-sm">
-              A master-planned community in Pflugerville, Texas, home to nearly 1,700 families.
+              A gated master-planned community in the beautiful Hill Country of Southwest Austin, TX.
             </p>
           </div>
 
@@ -54,23 +54,26 @@ const Footer = () => {
           <div className="col-span-1">
             <h3 className="text-lg font-semibold mb-4">Contact Us</h3>
             <address className="not-italic text-gray-300 space-y-1">
-              <p>Falcon Pointe Community Association</p>
-              <p>19015 Falcon Pointe Blvd</p>
-              <p>Pflugerville, TX 78660</p>
+              <p>Highpointe POA</p>
+              <p>410 Cool Spring Way</p>
+              <p>Austin, TX 78737</p>
               <p className="mt-2 flex items-center gap-2">
                 <Phone className="h-4 w-4 text-primary" />
-                <a href="tel:+15126701400" className="hover:underline">
-                  (512) 670-1400
+                <a href="tel:+15128294739" className="hover:underline">
+                  (512) 829-4739
                 </a>
               </p>
               <p className="flex items-center gap-2">
                 <Mail className="h-4 w-4 text-primary" />
                 <a
-                  href="mailto:manager@falconpointecommunity.com"
+                  href="mailto:highpointe@psprop.net"
                   className="hover:underline"
                 >
-                  manager@falconpointecommunity.com
+                  highpointe@psprop.net
                 </a>
+              </p>
+              <p className="text-xs mt-3 text-gray-400">
+                Professionally Managed by PS Management
               </p>
             </address>
           </div>
@@ -78,7 +81,7 @@ const Footer = () => {
         
         <div className="mt-8 pt-8 border-t border-gray-700 flex flex-wrap justify-between items-center gap-4">
           <p className="text-gray-300 text-sm order-1 md:order-2">
-            &copy; {new Date().getFullYear()} Falcon Pointe Community Association. All rights reserved.
+            &copy; {new Date().getFullYear()} Highpointe POA of Dripping Springs. All rights reserved.
           </p>
           
           <div className="ml-auto order-2 md:order-1">

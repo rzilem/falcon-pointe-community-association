@@ -12,15 +12,15 @@ interface SEOProps {
 
 const SEO: React.FC<SEOProps> = ({ 
   title, 
-  description = 'Falcon Pointe Community Association - A vibrant community in central Texas with exceptional amenities and services.',
-  keywords = 'Falcon Pointe, homeowners association, community, amenities, residents, Texas',
+  description = 'Highpointe POA of Dripping Springs - A gated master-planned community in the beautiful Hill Country of Southwest Austin, TX with exceptional amenities.',
+  keywords = 'Highpointe POA, Dripping Springs, Hill Country, Austin TX, gated community, master-planned community, amenities, HOA',
   ogImage = '/public/lovable-uploads/899b4f94-1a92-4f7d-a7c0-37faa59f7550.png',
   ogUrl,
   twitterCard = 'summary_large_image'
 }) => {
   useEffect(() => {
     // Update document title
-    document.title = `${title} | Falcon Pointe Community Association`;
+    document.title = `${title} | Highpointe POA of Dripping Springs`;
     
     // Update meta tags
     const metaTags = [
@@ -57,7 +57,7 @@ const SEO: React.FC<SEOProps> = ({
     // Cleanup function
     return () => {
       // No need to remove meta tags as they'll be updated or reused
-      document.title = 'Falcon Pointe Community Association';
+      document.title = 'Highpointe POA of Dripping Springs';
     };
   }, [title, description, keywords, ogImage, ogUrl, twitterCard]);
   
