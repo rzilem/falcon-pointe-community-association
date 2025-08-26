@@ -22,7 +22,7 @@ const PoolPavilionTab = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Enhanced Info Section - Keep existing padding */}
       <div className="px-2 md:px-4">
         <Card className="overflow-hidden border-0 shadow-lg hover:shadow-xl transition-shadow duration-300">
@@ -117,19 +117,18 @@ const PoolPavilionTab = () => {
       <div className="w-full bg-gradient-to-br from-sky-50 via-sky-100/50 to-blue-100 rounded-lg overflow-hidden shadow-lg">
         <div className="text-center py-3 md:py-4 px-4">
           <h3 className="text-xl font-semibold mb-1 md:mb-2 text-gray-800">Pool Pavilion Reservation</h3>
-          <p className="text-gray-600 mb-3 md:mb-4">
+          <p className="text-sm text-gray-600 mb-1 md:mb-2">
             Complete your reservation using the form below.
           </p>
         </div>
-        <div className="w-full pb-6">
+        <div className="w-full pb-2">
           <iframe 
             src="https://psprop.net/falcon-pointe-pool-pavilion-reservation/" 
             width="100%" 
-            height="1200" 
             frameBorder="0" 
-            className="w-full rounded-lg bg-white shadow-inner mx-auto block" 
+            className="w-full block -mt-1 md:-mt-2" 
             title="Pool Pavilion Reservation Form - Book your pool pavilion rental online"
-            style={{ minWidth: '100%', maxWidth: '100%' }}
+            style={{ height: 'min(1100px, 85vh)', minWidth: '100%', maxWidth: '100%' }}
             aria-label="Pool pavilion reservation booking form"
             loading="lazy"
           />
