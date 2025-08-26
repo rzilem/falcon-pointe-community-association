@@ -34,12 +34,6 @@ export const useDocuments = () => {
         const docsFromStorage: Document[] = storageFiles
           .filter(file => !file.id.startsWith('.')) // Filter out hidden files
           .map(file => {
-            // Generate a public URL for the file
-            const { data } = supabase
-              .storage
-              .from('association_documents')
-              .getPublicUrl(file.name);
-            
             const fileExtension = file.name.split('.').pop()?.toLowerCase() || '';
             
             // Determine category based on filename patterns or extensions
@@ -56,7 +50,7 @@ export const useDocuments = () => {
               id: file.id,
               name: file.name.replace(/\.[^/.]+$/, "").replace(/_/g, " "), // Remove extension and replace underscores with spaces
               type: fileExtension,
-              url: data.publicUrl,
+              url: '', // We'll generate signed URLs when needed
               category: category,
               description: "",
               last_updated: file.updated_at || new Date().toISOString()
@@ -91,11 +85,12 @@ export const useDocuments = () => {
         return;
       }
       
-      // Delete the file from storage
+      // Delete the file from storage using the correct filename
+      const filename = documentToDelete.name.includes('.') ? documentToDelete.name : `${documentToDelete.name}.${documentToDelete.type}`;
       const { error } = await supabase
         .storage
         .from('association_documents')
-        .remove([documentToDelete.name]);
+        .remove([filename]);
 
       if (error) throw error;
       toast.success("Document deleted successfully");

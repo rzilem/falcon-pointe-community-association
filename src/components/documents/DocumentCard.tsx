@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Document } from "@/types/document";
 import DocumentPreview from "./DocumentPreview";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 interface DocumentCardProps {
   document: Document;
@@ -16,21 +18,38 @@ const DocumentCard = ({ document, handleDownload }: DocumentCardProps) => {
   const [showPreview, setShowPreview] = useState(false);
   const fileType = document.type ? document.type.toUpperCase() : "";
 
-  const downloadFile = async (url: string) => {
+  const downloadFile = async () => {
     try {
-      const response = await fetch(url);
+      // Extract filename from the document name or URL
+      const filename = document.name.includes('.') ? document.name : `${document.name}.${document.type}`;
+      
+      const { data, error } = await supabase
+        .storage
+        .from('association_documents')
+        .createSignedUrl(filename, 3600); // 1 hour expiry
+
+      if (error) {
+        console.error('Error creating signed URL for download:', error);
+        toast.error('Error downloading document');
+        return;
+      }
+
+      // Use the signed URL to download the file
+      const response = await fetch(data.signedUrl);
       const blob = await response.blob();
       const downloadUrl = window.URL.createObjectURL(blob);
       const link = window.document.createElement('a');
       link.href = downloadUrl;
-      link.download = document.name + '.' + document.type;
+      link.download = filename;
       window.document.body.appendChild(link);
       link.click();
       window.document.body.removeChild(link);
       window.URL.revokeObjectURL(downloadUrl);
-      handleDownload(url);
+      handleDownload(data.signedUrl);
+      toast.success('Document downloaded successfully');
     } catch (error) {
       console.error('Download error:', error);
+      toast.error('Error downloading document');
     }
   };
 
@@ -65,7 +84,7 @@ const DocumentCard = ({ document, handleDownload }: DocumentCardProps) => {
           <Button 
             variant="outline" 
             size="sm"
-            onClick={() => downloadFile(document.url)}
+            onClick={downloadFile}
             className="gap-2"
           >
             <Download className="h-4 w-4" />
