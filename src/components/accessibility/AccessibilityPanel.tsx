@@ -17,6 +17,9 @@ interface AccessibilitySettings {
   reducedMotion: boolean;
   fontSize: number;
   focusIndicators: boolean;
+  stopAnimations: boolean;
+  textSpacing: boolean;
+  linkUnderlines: boolean;
 }
 
 const AccessibilityPanel = () => {
@@ -26,6 +29,9 @@ const AccessibilityPanel = () => {
     reducedMotion: false,
     fontSize: 100,
     focusIndicators: true,
+    stopAnimations: false,
+    textSpacing: false,
+    linkUnderlines: false,
   });
 
   // Load settings from localStorage on mount
@@ -65,6 +71,27 @@ const AccessibilityPanel = () => {
     } else {
       root.classList.remove('accessibility-enhanced-focus');
     }
+    
+    // Stop animations
+    if (newSettings.stopAnimations) {
+      root.classList.add('accessibility-stop-animations');
+    } else {
+      root.classList.remove('accessibility-stop-animations');
+    }
+    
+    // Text spacing
+    if (newSettings.textSpacing) {
+      root.classList.add('accessibility-text-spacing');
+    } else {
+      root.classList.remove('accessibility-text-spacing');
+    }
+    
+    // Link underlines
+    if (newSettings.linkUnderlines) {
+      root.classList.add('accessibility-link-underlines');
+    } else {
+      root.classList.remove('accessibility-link-underlines');
+    }
   };
 
   // Update a single setting
@@ -85,6 +112,9 @@ const AccessibilityPanel = () => {
       reducedMotion: false,
       fontSize: 100,
       focusIndicators: true,
+      stopAnimations: false,
+      textSpacing: false,
+      linkUnderlines: false,
     };
     setSettings(defaultSettings);
     applySettings(defaultSettings);
@@ -183,6 +213,57 @@ const AccessibilityPanel = () => {
                 id="enhanced-focus"
                 checked={settings.focusIndicators}
                 onCheckedChange={(checked) => updateSetting('focusIndicators', checked)}
+              />
+            </div>
+            
+            {/* Stop Animations */}
+            <div className="flex items-center justify-between">
+              <div>
+                <label htmlFor="stop-animations" className="text-sm font-medium">
+                  Stop All Animations
+                </label>
+                <p className="text-xs text-muted-foreground">
+                  Disables all decorative animations and transitions
+                </p>
+              </div>
+              <Switch
+                id="stop-animations"
+                checked={settings.stopAnimations}
+                onCheckedChange={(checked) => updateSetting('stopAnimations', checked)}
+              />
+            </div>
+            
+            {/* Text Spacing */}
+            <div className="flex items-center justify-between">
+              <div>
+                <label htmlFor="text-spacing" className="text-sm font-medium">
+                  Improved Text Spacing
+                </label>
+                <p className="text-xs text-muted-foreground">
+                  Increases line height and letter spacing for better readability
+                </p>
+              </div>
+              <Switch
+                id="text-spacing"
+                checked={settings.textSpacing}
+                onCheckedChange={(checked) => updateSetting('textSpacing', checked)}
+              />
+            </div>
+            
+            {/* Link Underlines */}
+            <div className="flex items-center justify-between">
+              <div>
+                <label htmlFor="link-underlines" className="text-sm font-medium">
+                  Always Show Link Underlines
+                </label>
+                <p className="text-xs text-muted-foreground">
+                  Makes all links permanently underlined for better identification
+                </p>
+              </div>
+              <Switch
+                id="link-underlines"
+                checked={settings.linkUnderlines}
+                onCheckedChange={(checked) => updateSetting('linkUnderlines', checked)}
               />
             </div>
             

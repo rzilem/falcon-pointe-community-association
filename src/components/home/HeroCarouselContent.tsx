@@ -49,9 +49,16 @@ const HeroCarouselContent = () => {
             <div className="absolute inset-0 bg-black/40" />
             <div className="absolute inset-0 flex items-center">
               <div className="container mx-auto px-4 text-center text-white">
-                <h1 className="text-4xl md:text-6xl font-bold mb-6">
-                  {image.title}
-                </h1>
+                {/* Only first slide should have H1, others use H2 for proper heading hierarchy */}
+                {image.id === "overhead" ? (
+                  <h1 className="text-4xl md:text-6xl font-bold mb-6">
+                    {image.title}
+                  </h1>
+                ) : (
+                  <h2 className="text-4xl md:text-6xl font-bold mb-6">
+                    {image.title}
+                  </h2>
+                )}
                 <p className="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">
                   {image.description}
                 </p>

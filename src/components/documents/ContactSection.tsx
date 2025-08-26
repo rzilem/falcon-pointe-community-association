@@ -1,6 +1,7 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const ContactSection = () => {
   return (
@@ -13,7 +14,7 @@ const ContactSection = () => {
             please contact the management office.
           </p>
           <Button variant="default" size="lg" asChild>
-            <a href="/contact">Contact Management</a>
+            <Link to="/contact">Contact Management</Link>
           </Button>
         </div>
       </div>

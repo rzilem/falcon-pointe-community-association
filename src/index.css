@@ -227,10 +227,31 @@ button, a, input, select, textarea, [role="button"] {
   scroll-behavior: auto !important;
 }
 
-.accessibility-enhanced-focus *:focus {
-  outline: 3px solid hsl(var(--primary)) !important;
-  outline-offset: 2px !important;
-}
+  .accessibility-enhanced-focus *:focus {
+    outline: 3px solid hsl(var(--primary)) !important;
+    outline-offset: 2px !important;
+  }
+  
+  /* Stop animations accessibility feature */
+  .accessibility-stop-animations * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  /* Text spacing accessibility feature */
+  .accessibility-text-spacing * {
+    line-height: 1.6 !important;
+    letter-spacing: 0.05em !important;
+    word-spacing: 0.1em !important;
+    margin-bottom: 0.5em !important;
+  }
+  
+  /* Link underlines accessibility feature */
+  .accessibility-link-underlines a {
+    text-decoration: underline !important;
+  }
 
 /* Font size scaling */
 html {

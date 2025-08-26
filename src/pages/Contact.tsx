@@ -45,24 +45,27 @@ const Contact = () => {
                   <TabsTrigger 
                     value="office" 
                     className="contact-tabs-trigger flex items-center gap-3 py-4 data-[state=active]:bg-white"
+                    aria-label="Office Information tab"
                   >
-                    <Building2 className="h-5 w-5" />
+                    <Building2 className="h-5 w-5" aria-hidden="true" />
                     <span className="hidden sm:inline font-medium">Office Information</span>
                     <span className="sm:hidden font-medium">Office</span>
                   </TabsTrigger>
                   <TabsTrigger 
                     value="contact" 
                     className="contact-tabs-trigger flex items-center gap-3 py-4 data-[state=active]:bg-white"
+                    aria-label="Contact Form tab"
                   >
-                    <Mail className="h-5 w-5" />
+                    <Mail className="h-5 w-5" aria-hidden="true" />
                     <span className="hidden sm:inline font-medium">Contact Form</span>
                     <span className="sm:hidden font-medium">Form</span>
                   </TabsTrigger>
                   <TabsTrigger 
                     value="chat" 
                     className="contact-tabs-trigger flex items-center gap-3 py-4 data-[state=active]:bg-white"
+                    aria-label="HOA Assistant chat tab"
                   >
-                    <MessageSquareText className="h-5 w-5" />
+                    <MessageSquareText className="h-5 w-5" aria-hidden="true" />
                     <span className="hidden sm:inline font-medium">HOA Assistant</span>
                     <span className="sm:hidden font-medium">Chat</span>
                   </TabsTrigger>

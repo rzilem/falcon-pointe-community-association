@@ -7,12 +7,27 @@ const Hero = () => {
   const [api, setApi] = useState<any>(null);
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
+  
+  // Slide titles for accessibility announcements
+  const slideAltTexts = [
+    "Welcome to Falcon Pointe - Experience luxury living",
+    "Family-Friendly Amenities - Enjoy our splash pad", 
+    "Your Dream Home Awaits - Discover beautifully designed homes",
+    "Resort-Style Living - Take a dip in our expansive pool"
+  ];
   useEffect(() => {
     if (!api) return;
     setCount(api.scrollSnapList().length);
     setCurrent(api.selectedScrollSnap());
     const onSelect = () => {
-      setCurrent(api.selectedScrollSnap());
+      const newIndex = api.selectedScrollSnap();
+      setCurrent(newIndex);
+      
+      // Announce slide change to screen readers
+      const statusElement = document.getElementById('carousel-status');
+      if (statusElement && slideAltTexts[newIndex]) {
+        statusElement.textContent = `Slide ${newIndex + 1} of ${count}: ${slideAltTexts[newIndex]}`;
+      }
     };
     api.on("select", onSelect);
     return () => {

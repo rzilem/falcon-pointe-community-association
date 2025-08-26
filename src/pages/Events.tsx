@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
 import { Calendar } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface Event {
   id: string;
@@ -192,7 +193,7 @@ const Events = () => {
             <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
               <p className="text-blue-800">
                 <strong>Note:</strong> No events found in the database. The events below are sample data. 
-                <a href="/admin/events" className="underline ml-1">Create real events in the admin panel</a> to see them here.
+                <Link to="/admin/events" className="underline ml-1">Create real events in the admin panel</Link> to see them here.
               </p>
             </div>
           )}

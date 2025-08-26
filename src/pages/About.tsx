@@ -1,6 +1,7 @@
 import React from "react";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 const About = () => {
   return <Layout>
       {/* Hero Section */}
@@ -79,10 +80,10 @@ const About = () => {
             </p>
             <div className="flex justify-center space-x-4">
               <Button asChild>
-                <a href="#contact">Contact Us</a>
+                <Link to="/contact">Contact Us</Link>
               </Button>
-              <Button variant="outline">
-                <a href="/amenities">Explore Amenities</a>
+              <Button variant="outline" asChild>
+                <Link to="/amenities">Explore Amenities</Link>
               </Button>
             </div>
           </div>
