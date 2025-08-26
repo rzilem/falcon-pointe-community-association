@@ -10,6 +10,7 @@ interface AuthContextType {
   isAdmin: boolean;
   loading: boolean;
   signOut: () => Promise<void>;
+  ensureProfile: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -18,6 +19,7 @@ const AuthContext = createContext<AuthContextType>({
   isAdmin: false,
   loading: true,
   signOut: async () => {},
+  ensureProfile: async () => {},
 });
 
 export const useAuth = () => useContext(AuthContext);
@@ -32,6 +34,50 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+  const ensureProfile = useCallback(async () => {
+    if (!session?.user) return;
+
+    try {
+      console.log("Ensuring profile exists for user:", session.user.id);
+      
+      // Check if profile exists
+      const { data: existingProfile, error: fetchError } = await supabase
+        .from('profiles')
+        .select('id, role')
+        .eq('id', session.user.id)
+        .maybeSingle();
+
+      if (fetchError) {
+        console.error('Error checking profile:', fetchError);
+        return;
+      }
+
+      if (!existingProfile) {
+        console.log("No profile found, creating one...");
+        
+        // Create profile with default user role
+        const { error: insertError } = await supabase
+          .from('profiles')
+          .insert({
+            id: session.user.id,
+            username: session.user.email?.split('@')[0] || null,
+            full_name: session.user.user_metadata?.full_name || null,
+            role: 'user'
+          });
+
+        if (insertError) {
+          console.error('Error creating profile:', insertError);
+        } else {
+          console.log("Profile created successfully");
+        }
+      } else {
+        console.log("Profile already exists with role:", existingProfile.role);
+      }
+    } catch (error) {
+      console.error('Unexpected error ensuring profile:', error);
+    }
+  }, [session]);
 
   const checkAdminStatus = useCallback(async (userId: string): Promise<boolean> => {
     // Return cached result if available
@@ -167,7 +213,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }
 
   return (
-    <AuthContext.Provider value={{ user, session, isAdmin, loading, signOut }}>
+    <AuthContext.Provider value={{ user, session, isAdmin, loading, signOut, ensureProfile }}>
       {children}
     </AuthContext.Provider>
   );
