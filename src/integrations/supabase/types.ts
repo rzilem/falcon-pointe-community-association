@@ -269,6 +269,13 @@ export type Database = {
         Args: { title: string }
         Returns: string
       }
+      get_public_profile: {
+        Args: { profile_id: string }
+        Returns: {
+          id: string
+          username: string
+        }[]
+      }
       is_current_user_admin: {
         Args: Record<PropertyKey, never>
         Returns: boolean
