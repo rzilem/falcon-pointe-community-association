@@ -33,9 +33,9 @@ const carouselImages = [
 
 const HeroCarouselContent = () => {
   return (
-    <CarouselContent>
+    <CarouselContent className="ml-0">
       {carouselImages.map((image) => (
-        <CarouselItem key={image.id}>
+        <CarouselItem key={image.id} className="pl-0">
           <div className="relative h-[600px] w-full">
             <img 
               src={image.url} 

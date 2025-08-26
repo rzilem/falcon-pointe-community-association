@@ -53,7 +53,7 @@ const Hero = () => {
       api.scrollTo(index);
     }
   };
-  return <section className="relative h-[600px] overflow-hidden" aria-label="Hero image carousel">
+  return <section className="relative h-[600px] overflow-hidden p-0" aria-label="Hero image carousel">
       <div className="absolute top-4 right-4 z-20 flex gap-2">
         <button 
           onClick={() => setIsPlaying(!isPlaying)} 
