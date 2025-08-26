@@ -20,8 +20,11 @@ const DocumentCard = ({ document, handleDownload }: DocumentCardProps) => {
 
   const downloadFile = async () => {
     try {
-      // Extract filename from the document name or URL
-      const filename = document.name.includes('.') ? document.name : `${document.name}.${document.type}`;
+      // Proper filename construction - check if name ends with an extension
+      const hasExtension = /\.[a-zA-Z0-9]+$/.test(document.name);
+      const filename = hasExtension ? document.name : `${document.name}.${document.type}`;
+      
+      console.log('Attempting to download:', filename);
       
       const { data, error } = await supabase
         .storage
@@ -34,19 +37,10 @@ const DocumentCard = ({ document, handleDownload }: DocumentCardProps) => {
         return;
       }
 
-      // Use the signed URL to download the file
-      const response = await fetch(data.signedUrl);
-      const blob = await response.blob();
-      const downloadUrl = window.URL.createObjectURL(blob);
-      const link = window.document.createElement('a');
-      link.href = downloadUrl;
-      link.download = filename;
-      window.document.body.appendChild(link);
-      link.click();
-      window.document.body.removeChild(link);
-      window.URL.revokeObjectURL(downloadUrl);
+      // Simplified download - open in new tab
+      window.open(data.signedUrl, '_blank');
       handleDownload(data.signedUrl);
-      toast.success('Document downloaded successfully');
+      toast.success('Document download started');
     } catch (error) {
       console.error('Download error:', error);
       toast.error('Error downloading document');

@@ -86,7 +86,10 @@ export const useDocuments = () => {
       }
       
       // Delete the file from storage using the correct filename
-      const filename = documentToDelete.name.includes('.') ? documentToDelete.name : `${documentToDelete.name}.${documentToDelete.type}`;
+      const hasExtension = /\.[a-zA-Z0-9]+$/.test(documentToDelete.name);
+      const filename = hasExtension ? documentToDelete.name : `${documentToDelete.name}.${documentToDelete.type}`;
+      
+      console.log('Attempting to delete:', filename);
       const { error } = await supabase
         .storage
         .from('association_documents')
