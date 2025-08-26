@@ -115,9 +115,9 @@ const PoolPavilionTab = () => {
       
       {/* Full Page Embed - Full Width Section */}
       <div className="w-full bg-gradient-to-br from-sky-50 via-sky-100/50 to-blue-100 rounded-lg overflow-hidden shadow-lg">
-        <div className="text-center py-6 px-4">
-          <h3 className="text-xl font-semibold mb-3 text-gray-800">Pool Pavilion Reservation</h3>
-          <p className="text-gray-600 mb-6">
+        <div className="text-center py-3 md:py-4 px-4">
+          <h3 className="text-xl font-semibold mb-1 md:mb-2 text-gray-800">Pool Pavilion Reservation</h3>
+          <p className="text-gray-600 mb-3 md:mb-4">
             Complete your reservation using the form below.
           </p>
         </div>
