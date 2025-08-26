@@ -101,7 +101,7 @@ const Hero = () => {
         
         {count > 0 && (
           <div 
-            className="absolute bottom-8 left-0 right-0 z-10 flex justify-center gap-3"
+            className="absolute bottom-2 sm:bottom-3 md:bottom-4 left-0 right-0 z-10 flex justify-center gap-3"
             role="tablist"
             aria-label="Carousel slide selection"
           >
@@ -113,7 +113,7 @@ const Hero = () => {
                 aria-label={`Go to slide ${index + 1} of ${count}`}
                 aria-selected={current === index}
                 tabIndex={current === index ? 0 : -1}
-                className={`w-4 h-4 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black/50 ${
+                className={`w-3 h-3 md:w-4 md:h-4 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black/50 ${
                   current === index
                     ? 'bg-white scale-110'
                     : 'bg-white/50 hover:bg-white/70'
