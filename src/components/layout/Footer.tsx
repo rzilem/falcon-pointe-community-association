@@ -58,13 +58,13 @@ const Footer = () => {
               <p>19015 Falcon Pointe Blvd</p>
               <p>Pflugerville, TX 78660</p>
               <p className="mt-2 flex items-center gap-2">
-                <Phone className="h-4 w-4 text-primary" />
+                <Phone className="h-4 w-4 text-primary" aria-hidden="true" />
                 <a href="tel:+15126701400" className="hover:underline">
                   (512) 670-1400
                 </a>
               </p>
               <p className="flex items-center gap-2">
-                <Mail className="h-4 w-4 text-primary" />
+                <Mail className="h-4 w-4 text-primary" aria-hidden="true" />
                 <a
                   href="mailto:manager@falconpointecommunity.com"
                   className="hover:underline"

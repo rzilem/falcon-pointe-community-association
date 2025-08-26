@@ -6,15 +6,18 @@ import {
   Sheet, 
   SheetContent, 
   SheetHeader, 
-  SheetTitle, 
-  SheetTrigger 
+  SheetTitle 
 } from '@/components/ui/sheet';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import { ChevronDown, Menu } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 
-const MobileNav = () => {
-  const [open, setOpen] = useState(false);
+interface MobileNavProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+const MobileNav = ({ isOpen, onClose }: MobileNavProps) => {
   const [openSections, setOpenSections] = useState<string[]>([]);
   const { user, isAdmin, signOut } = useAuth();
 
@@ -27,16 +30,11 @@ const MobileNav = () => {
   };
 
   const handleLinkClick = () => {
-    setOpen(false);
+    onClose();
   };
   
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger asChild>
-        <Button variant="outline" size="sm">
-          <Menu className="h-5 w-5" />
-        </Button>
-      </SheetTrigger>
+    <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetContent side="left" className="w-[85%] sm:w-[350px]">
         <SheetHeader>
           <SheetTitle className="text-center flex items-center justify-center">
@@ -46,7 +44,7 @@ const MobileNav = () => {
               className="h-12 mr-2" 
             />
             <div>
-              <h1 className="text-xl font-bold text-primary">Falcon Pointe</h1>
+              <div className="text-xl font-bold text-primary">Falcon Pointe</div>
               <p className="text-xs text-gray-600">Community Association</p>
             </div>
           </SheetTitle>
@@ -57,12 +55,17 @@ const MobileNav = () => {
             onOpenChange={() => handleToggleSection('about')}
           >
             <CollapsibleTrigger asChild>
-              <Button variant="ghost" className="w-full justify-between">
+              <Button 
+                variant="ghost" 
+                className="w-full justify-between"
+                aria-expanded={openSections.includes('about')}
+                aria-controls="about-section"
+              >
                 <span>About</span>
-                <ChevronDown className={`h-4 w-4 transition-transform ${openSections.includes('about') ? 'transform rotate-180' : ''}`} />
+                <ChevronDown className={`h-4 w-4 transition-transform ${openSections.includes('about') ? 'transform rotate-180' : ''}`} aria-hidden="true" />
               </Button>
             </CollapsibleTrigger>
-            <CollapsibleContent className="pl-4 space-y-2">
+            <CollapsibleContent className="pl-4 space-y-2" id="about-section">
               <Link to="/about" onClick={handleLinkClick}>
                 <Button variant="ghost" className="w-full justify-start text-sm">
                   Community Overview
@@ -86,12 +89,17 @@ const MobileNav = () => {
             onOpenChange={() => handleToggleSection('amenities')}
           >
             <CollapsibleTrigger asChild>
-              <Button variant="ghost" className="w-full justify-between">
+              <Button 
+                variant="ghost" 
+                className="w-full justify-between"
+                aria-expanded={openSections.includes('amenities')}
+                aria-controls="amenities-section"
+              >
                 <span>Amenities</span>
-                <ChevronDown className={`h-4 w-4 transition-transform ${openSections.includes('amenities') ? 'transform rotate-180' : ''}`} />
+                <ChevronDown className={`h-4 w-4 transition-transform ${openSections.includes('amenities') ? 'transform rotate-180' : ''}`} aria-hidden="true" />
               </Button>
             </CollapsibleTrigger>
-            <CollapsibleContent className="pl-4 space-y-2">
+            <CollapsibleContent className="pl-4 space-y-2" id="amenities-section">
               <Link to="/amenities" onClick={handleLinkClick}>
                 <Button variant="ghost" className="w-full justify-start text-sm">
                   All Amenities
@@ -115,12 +123,17 @@ const MobileNav = () => {
             onOpenChange={() => handleToggleSection('residents')}
           >
             <CollapsibleTrigger asChild>
-              <Button variant="ghost" className="w-full justify-between">
+              <Button 
+                variant="ghost" 
+                className="w-full justify-between"
+                aria-expanded={openSections.includes('residents')}
+                aria-controls="residents-section"
+              >
                 <span>Residents</span>
-                <ChevronDown className={`h-4 w-4 transition-transform ${openSections.includes('residents') ? 'transform rotate-180' : ''}`} />
+                <ChevronDown className={`h-4 w-4 transition-transform ${openSections.includes('residents') ? 'transform rotate-180' : ''}`} aria-hidden="true" />
               </Button>
             </CollapsibleTrigger>
-            <CollapsibleContent className="pl-4 space-y-2">
+            <CollapsibleContent className="pl-4 space-y-2" id="residents-section">
               <Link to="/news-events" onClick={handleLinkClick}>
                 <Button variant="ghost" className="w-full justify-start text-sm">
                   News & Events

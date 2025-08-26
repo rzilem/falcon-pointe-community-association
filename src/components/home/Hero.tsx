@@ -38,11 +38,20 @@ const Hero = () => {
       api.scrollTo(index);
     }
   };
-  return <section className="relative h-[600px] overflow-hidden" aria-label="Hero image carousel" aria-live="polite" aria-atomic="false">
+  return <section className="relative h-[600px] overflow-hidden" aria-label="Hero image carousel">
       <div className="absolute top-4 right-4 z-20 flex gap-2">
-        <button onClick={() => setIsPlaying(!isPlaying)} aria-label={isPlaying ? "Pause carousel autoplay" : "Start carousel autoplay"} className="bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors">
+        <button 
+          onClick={() => setIsPlaying(!isPlaying)} 
+          aria-label={isPlaying ? "Pause carousel autoplay" : "Start carousel autoplay"}
+          aria-pressed={isPlaying}
+          className="bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
+        >
           {isPlaying ? "⏸️" : "▶️"}
         </button>
+      </div>
+      
+      <div aria-live="polite" aria-atomic="true" className="sr-only" id="carousel-status">
+        {/* Carousel status will be announced here */}
       </div>
       
       <Carousel setApi={setApi} className="w-full h-full" opts={{
@@ -63,10 +72,16 @@ const Hero = () => {
         </CarouselNext>
       </Carousel>
       
-      {count > 0 && <div role="tablist" aria-label="Carousel slide selection" className="absolute inset-x-0 bottom-2 sm:bottom-3 md:bottom-4 z-20 flex justify-center gap-2 pointer-events-none">
+      {count > 0 && <div className="absolute inset-x-0 bottom-2 sm:bottom-3 md:bottom-4 z-20 flex justify-center gap-2 pointer-events-none">
           {Array.from({
         length: count
-      }).map((_, index) => <button key={index} role="tab" onClick={() => goToSlide(index)} aria-label={`Go to slide ${index + 1} of ${count}`} aria-selected={current === index} tabIndex={current === index ? 0 : -1} className="pointer-events-auto w-6 h-6 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black/50 flex items-center justify-center">
+      }).map((_, index) => <button 
+            key={index} 
+            onClick={() => goToSlide(index)} 
+            aria-label={`Go to slide ${index + 1} of ${count}`} 
+            aria-current={current === index ? "true" : "false"}
+            className="pointer-events-auto w-6 h-6 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black/50 flex items-center justify-center"
+          >
             <span className={`w-2 h-2 rounded-full transition-all duration-300 ${current === index ? 'bg-white scale-110' : 'bg-white/50'}`} />
           </button>)}
         </div>}

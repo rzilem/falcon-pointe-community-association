@@ -13,6 +13,7 @@ const ContactForm = () => {
     subject: "",
     message: "",
   });
+  const [statusMessage, setStatusMessage] = useState("");
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -38,6 +39,7 @@ const ContactForm = () => {
           title: "Message Sent",
           description: "We'll get back to you as soon as possible.",
         });
+        setStatusMessage("Message sent successfully! We'll get back to you as soon as possible.");
         setFormData({ name: "", email: "", subject: "", message: "" });
       } else {
         throw new Error("Failed to send message");
@@ -48,6 +50,7 @@ const ContactForm = () => {
         description: "Failed to send message. Please try again later.",
         variant: "destructive",
       });
+      setStatusMessage("Failed to send message. Please try again later.");
     } finally {
       setIsLoading(false);
     }
@@ -66,6 +69,9 @@ const ContactForm = () => {
         <CardTitle>Send us a Message</CardTitle>
       </CardHeader>
       <CardContent>
+        <div aria-live="polite" aria-atomic="true" className="sr-only">
+          {statusMessage}
+        </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <FormField
             label="Name"

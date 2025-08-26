@@ -37,13 +37,14 @@ const BlogSearch: React.FC<BlogSearchProps> = ({
     <div className={`relative ${className}`}>
       <div className="flex items-center">
         <div className="relative w-full">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" aria-hidden="true" />
           <Input
             type="text"
             placeholder="Search posts..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-10 pr-10"
+            aria-label="Search blog posts"
           />
           {searchQuery && (
             <Button

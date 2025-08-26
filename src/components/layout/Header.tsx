@@ -45,7 +45,7 @@ const Header = () => {
                 fallbackSrc="/lovable-uploads/080cd85e-7544-4e3a-98a9-178087f36beb.png"
               />
               <div>
-                <h1 className="text-xl font-bold text-gray-800">Falcon Pointe</h1>
+                <div className="text-xl font-bold text-gray-800">Falcon Pointe</div>
                 <p className="text-sm text-gray-600">Community Association</p>
               </div>
             </Link>
@@ -98,7 +98,7 @@ const Header = () => {
       </div>
 
       {/* Mobile Navigation */}
-      {isMenuOpen && <MobileNav />}
+      <MobileNav isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
     </header>
   );
 };

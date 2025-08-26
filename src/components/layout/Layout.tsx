@@ -2,6 +2,7 @@
 import React from "react";
 import Header from "./Header";
 import Footer from "./Footer";
+import AccessibilityPanel from "../accessibility/AccessibilityPanel";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -16,6 +17,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <Header />
       <main id="main-content" tabIndex={-1} className="flex-grow">{children}</main>
       <Footer />
+      <AccessibilityPanel />
     </div>
   );
 };
