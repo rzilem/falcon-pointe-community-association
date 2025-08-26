@@ -107,18 +107,20 @@ const HeroCarousel: React.FC<HeroCarouselProps> = ({ images, isLoading }) => {
       
       {/* Navigation dots */}
       {count > 0 && (
-        <div className="absolute bottom-2 sm:bottom-3 md:bottom-4 left-0 right-0 z-10 flex justify-center gap-3">
+        <div className="absolute bottom-2 sm:bottom-3 md:bottom-4 left-0 right-0 z-10 flex justify-center gap-2">
           {Array.from({ length: count }).map((_, index) => (
             <button
               key={index}
               onClick={() => goToSlide(index)}
               aria-label={`Go to slide ${index + 1}`}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+              className="w-6 h-6 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black/50 flex items-center justify-center"
+            >
+              <span className={`w-2 h-2 rounded-full transition-all duration-300 ${
                 current === index
                   ? 'bg-white scale-110'
-                  : 'bg-white/50 hover:bg-white/70'
-              }`}
-            />
+                  : 'bg-white/50'
+              }`} />
+            </button>
           ))}
         </div>
       )}

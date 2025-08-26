@@ -63,10 +63,12 @@ const Hero = () => {
         </CarouselNext>
       </Carousel>
       
-      {count > 0 && <div role="tablist" aria-label="Carousel slide selection" className="absolute inset-x-0 bottom-2 sm:bottom-3 md:bottom-4 z-20 flex justify-center gap-3 pointer-events-none">
+      {count > 0 && <div role="tablist" aria-label="Carousel slide selection" className="absolute inset-x-0 bottom-2 sm:bottom-3 md:bottom-4 z-20 flex justify-center gap-2 pointer-events-none">
           {Array.from({
         length: count
-      }).map((_, index) => <button key={index} role="tab" onClick={() => goToSlide(index)} aria-label={`Go to slide ${index + 1} of ${count}`} aria-selected={current === index} tabIndex={current === index ? 0 : -1} className={`pointer-events-auto w-3 h-3 md:w-4 md:h-4 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black/50 ${current === index ? 'bg-white scale-110' : 'bg-white/50 hover:bg-white/70'}`} />)}
+      }).map((_, index) => <button key={index} role="tab" onClick={() => goToSlide(index)} aria-label={`Go to slide ${index + 1} of ${count}`} aria-selected={current === index} tabIndex={current === index ? 0 : -1} className="pointer-events-auto w-6 h-6 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black/50 flex items-center justify-center">
+            <span className={`w-2 h-2 rounded-full transition-all duration-300 ${current === index ? 'bg-white scale-110' : 'bg-white/50'}`} />
+          </button>)}
         </div>}
     </section>;
 };
