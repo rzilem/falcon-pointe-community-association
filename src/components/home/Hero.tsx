@@ -101,7 +101,7 @@ const Hero = () => {
         
         {count > 0 && (
           <div 
-            className="absolute bottom-2 sm:bottom-3 md:bottom-4 left-0 right-0 z-10 flex justify-center gap-3"
+            className="absolute bottom-0 sm:bottom-1 md:bottom-2 left-0 right-0 z-10 flex justify-center gap-3"
             role="tablist"
             aria-label="Carousel slide selection"
           >
