@@ -17,7 +17,27 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    console.log("Received Cloudmailin webhook");
+    // Verify webhook authentication
+    const authHeader = req.headers.get('authorization')
+    const webhookSecret = Deno.env.get('CLOUDMAILIN_WEBHOOK_SECRET')
+    
+    if (!webhookSecret) {
+      console.error('CLOUDMAILIN_WEBHOOK_SECRET not configured')
+      return new Response(JSON.stringify({ error: 'Webhook not configured' }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 500,
+      })
+    }
+
+    if (!authHeader || authHeader !== `Bearer ${webhookSecret}`) {
+      console.error('Unauthorized webhook request')
+      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 401,
+      })
+    }
+
+    console.log("Received authenticated Cloudmailin webhook");
     console.log("Request method:", req.method);
     console.log("Content-Type:", req.headers.get("content-type"));
     
@@ -45,8 +65,20 @@ const handler = async (req: Request): Promise<Response> => {
     const cleanedSubject = cleanEmailSubject(webhookData.subject);
     console.log("Cleaned subject:", cleanedSubject);
 
-    // Use HTML content if available, fallback to plain text
-    const emailContent = webhookData.html || webhookData.plain || 'No content available';
+    // Use HTML content if available, fallback to plain text, then sanitize
+    const rawContent = webhookData.html || webhookData.plain || 'No content available';
+    
+    // Sanitize content to prevent XSS and other attacks
+    const emailContent = rawContent
+      .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '') // Remove scripts
+      .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '') // Remove iframes  
+      .replace(/<object\b[^<]*(?:(?!<\/object>)<[^<]*)*<\/object>/gi, '') // Remove objects
+      .replace(/<embed\b[^<]*(?:(?!<\/embed>)<[^<]*)*<\/embed>/gi, '') // Remove embeds
+      .replace(/javascript:/gi, '') // Remove javascript: URLs
+      .replace(/on\w+\s*=/gi, '') // Remove event handlers
+      .replace(/<link\b[^>]*>/gi, '') // Remove link tags
+      .replace(/<meta\b[^>]*>/gi, '') // Remove meta tags
+      .substring(0, 10000); // Limit content length
     
     console.log("Content processing result:", {
       originalHtmlLength: webhookData.html?.length || 0,
@@ -86,7 +118,7 @@ const handler = async (req: Request): Promise<Response> => {
     // Create the announcement from the email
     const announcementData: AnnouncementData = {
       section: `announcement-${Date.now()}`, // Unique section identifier
-      title: cleanedSubject,
+      title: cleanedSubject.substring(0, 200), // Limit title length
       content: emailContent, // Use full HTML content
       section_type: "blog",
       category: "announcements",
