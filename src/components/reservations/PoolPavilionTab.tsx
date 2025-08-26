@@ -2,7 +2,7 @@ import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Separator } from "@/components/ui/separator";
-import ImageDisplay from "@/components/cms/ImageDisplay";
+import TwoImageSlideshow from "@/components/ui/TwoImageSlideshow";
 import { CheckCircle, Info, Users } from "lucide-react";
 
 const PoolPavilionTab = () => {
@@ -16,11 +16,16 @@ const PoolPavilionTab = () => {
               {/* Image Section */}
               <div className="w-full lg:w-2/5">
                 <div className="rounded-lg overflow-hidden border border-gray-200 shadow-md">
-                  <ImageDisplay 
-                    location="pool-pavilion" 
-                    fallbackSrc="/lovable-uploads/ebafe490-e728-4ed8-a428-ff945cb1df98.png" 
-                    alt="Pool Pavilion" 
-                    className="w-full h-64 md:h-72 object-cover hover:scale-105 transition-transform duration-1000" 
+                  <TwoImageSlideshow
+                    image1={{
+                      src: "/lovable-uploads/ebafe490-e728-4ed8-a428-ff945cb1df98.png",
+                      alt: "Pool Pavilion covered seating area with outdoor grills"
+                    }}
+                    image2={{
+                      src: "/lovable-uploads/fc16efac-61bf-47f5-8eee-4dacc38eae73.png",
+                      alt: "Pool Pavilion showing pool access and amenities"
+                    }}
+                    className="h-64 md:h-72 hover:scale-105 transition-transform duration-1000"
                   />
                 </div>
                 <div className="mt-4 bg-blue-50 p-3 rounded-md border border-blue-100 flex items-start">
