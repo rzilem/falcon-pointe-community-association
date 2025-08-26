@@ -61,13 +61,13 @@ const Hero = () => {
         <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-black/30 hover:bg-black/50 border-none text-white" aria-label="Next slide">
           <ChevronRight className="w-6 h-6" aria-hidden="true" />
         </CarouselNext>
-        
-        {count > 0 && <div role="tablist" aria-label="Carousel slide selection" className="absolute bottom-0 sm:bottom-1 md:bottom-2 left-0 right-0 z-10 flex justify-center gap-3 py-0 my-0 rounded-sm">
-            {Array.from({
-          length: count
-        }).map((_, index) => <button key={index} role="tab" onClick={() => goToSlide(index)} aria-label={`Go to slide ${index + 1} of ${count}`} aria-selected={current === index} tabIndex={current === index ? 0 : -1} className={`w-3 h-3 md:w-4 md:h-4 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black/50 ${current === index ? 'bg-white scale-110' : 'bg-white/50 hover:bg-white/70'}`} />)}
-          </div>}
       </Carousel>
+      
+      {count > 0 && <div role="tablist" aria-label="Carousel slide selection" className="absolute inset-x-0 bottom-2 sm:bottom-3 md:bottom-4 z-20 flex justify-center gap-3 pointer-events-none">
+          {Array.from({
+        length: count
+      }).map((_, index) => <button key={index} role="tab" onClick={() => goToSlide(index)} aria-label={`Go to slide ${index + 1} of ${count}`} aria-selected={current === index} tabIndex={current === index ? 0 : -1} className={`pointer-events-auto w-3 h-3 md:w-4 md:h-4 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black/50 ${current === index ? 'bg-white scale-110' : 'bg-white/50 hover:bg-white/70'}`} />)}
+        </div>}
     </section>;
 };
 export default Hero;
