@@ -3,10 +3,25 @@ import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Separator } from "@/components/ui/separator";
-import ImageDisplay from "@/components/cms/ImageDisplay";
+import TwoImageSlideshow from "@/components/ui/TwoImageSlideshow";
 import { CheckCircle, Users } from "lucide-react";
+import { useImages } from "@/hooks/useImages";
 
 const EventRoomTab = () => {
+  const { images, isLoading } = useImages('gathering-room');
+
+  // Prepare slideshow images with fallback
+  const slideshowImages = {
+    image1: {
+      src: images[0]?.url || "https://ufhcicqixojqpyykjljw.supabase.co/storage/v1/object/public/site-images//OH%20yeah.jpg",
+      alt: images[0]?.alt_text || "Indoor Gathering Room main view"
+    },
+    image2: {
+      src: images[1]?.url || "https://ufhcicqixojqpyykjljw.supabase.co/storage/v1/object/public/site-images//OH%20yeah.jpg",
+      alt: images[1]?.alt_text || "Indoor Gathering Room alternate view"
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* Enhanced Info Section */}
@@ -17,12 +32,15 @@ const EventRoomTab = () => {
               {/* Image Section */}
               <div className="w-full lg:w-2/5">
                 <div className="rounded-lg overflow-hidden border border-gray-200 shadow-md">
-                  <ImageDisplay 
-                    location="event-room" 
-                    fallbackSrc="https://ufhcicqixojqpyykjljw.supabase.co/storage/v1/object/public/site-images//OH%20yeah.jpg" 
-                    alt="Indoor Gathering Room" 
-                    className="w-full h-64 md:h-72 object-cover hover:scale-105 transition-transform duration-1000" 
-                  />
+                  {isLoading ? (
+                    <div className="h-64 md:h-72 bg-gray-200 animate-pulse" />
+                  ) : (
+                    <TwoImageSlideshow
+                      image1={slideshowImages.image1}
+                      image2={slideshowImages.image2}
+                      className="h-64 md:h-72 hover:scale-105 transition-transform duration-1000"
+                    />
+                  )}
                 </div>
               </div>
               

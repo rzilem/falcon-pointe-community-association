@@ -4,8 +4,23 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Separator } from "@/components/ui/separator";
 import TwoImageSlideshow from "@/components/ui/TwoImageSlideshow";
 import { CheckCircle, Info, Users } from "lucide-react";
+import { useImages } from "@/hooks/useImages";
 
 const PoolPavilionTab = () => {
+  const { images, isLoading } = useImages('pool-pavilion');
+
+  // Prepare slideshow images with fallback
+  const slideshowImages = {
+    image1: {
+      src: images[0]?.url || "/lovable-uploads/ebafe490-e728-4ed8-a428-ff945cb1df98.png",
+      alt: images[0]?.alt_text || "Pool Pavilion covered seating area with outdoor grills"
+    },
+    image2: {
+      src: images[1]?.url || "/lovable-uploads/fc16efac-61bf-47f5-8eee-4dacc38eae73.png", 
+      alt: images[1]?.alt_text || "Pool Pavilion showing pool access and amenities"
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* Enhanced Info Section - Keep existing padding */}
@@ -16,17 +31,15 @@ const PoolPavilionTab = () => {
               {/* Image Section */}
               <div className="w-full lg:w-2/5">
                 <div className="rounded-lg overflow-hidden border border-gray-200 shadow-md">
-                  <TwoImageSlideshow
-                    image1={{
-                      src: "/lovable-uploads/ebafe490-e728-4ed8-a428-ff945cb1df98.png",
-                      alt: "Pool Pavilion covered seating area with outdoor grills"
-                    }}
-                    image2={{
-                      src: "/lovable-uploads/fc16efac-61bf-47f5-8eee-4dacc38eae73.png",
-                      alt: "Pool Pavilion showing pool access and amenities"
-                    }}
-                    className="h-64 md:h-72 hover:scale-105 transition-transform duration-1000"
-                  />
+                  {isLoading ? (
+                    <div className="h-64 md:h-72 bg-gray-200 animate-pulse" />
+                  ) : (
+                    <TwoImageSlideshow
+                      image1={slideshowImages.image1}
+                      image2={slideshowImages.image2}
+                      className="h-64 md:h-72 hover:scale-105 transition-transform duration-1000"
+                    />
+                  )}
                 </div>
                 <div className="mt-4 bg-blue-50 p-3 rounded-md border border-blue-100 flex items-start">
                   <Info className="h-5 w-5 text-blue-500 mt-0.5 mr-2 flex-shrink-0" /> 
