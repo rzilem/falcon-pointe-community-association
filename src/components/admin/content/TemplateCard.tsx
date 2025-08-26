@@ -4,6 +4,7 @@ import { SiteContent } from '@/types/content';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Copy, Trash } from 'lucide-react';
+import DOMPurify from 'dompurify';
 
 interface TemplateCardProps {
   template: SiteContent;
@@ -20,11 +21,16 @@ const TemplateCard: React.FC<TemplateCardProps> = ({ template, onUse, onDelete }
       </CardHeader>
       <CardContent className="flex-grow">
         <div className="max-h-40 overflow-hidden text-sm text-gray-500">
-          {template.content && (
-            <div className="prose prose-sm max-w-none">
-              <div dangerouslySetInnerHTML={{ __html: template.content }} />
-            </div>
-          )}
+        {template.content && (
+          <div className="prose prose-sm max-w-none">
+            <div dangerouslySetInnerHTML={{ 
+              __html: DOMPurify.sanitize(template.content, { 
+                ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'u', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li'],
+                ALLOWED_ATTR: []
+              }) 
+            }} />
+          </div>
+        )}
         </div>
       </CardContent>
       <CardFooter className="flex justify-between border-t pt-4">

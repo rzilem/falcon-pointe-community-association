@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import DOMPurify from 'dompurify';
 import AdminNav from '@/components/admin/AdminNav';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -263,7 +264,13 @@ const Test = () => {
                     />
                   ) : customEmbed ? (
                     <div 
-                      dangerouslySetInnerHTML={{ __html: customEmbed }}
+                      dangerouslySetInnerHTML={{ 
+                        __html: DOMPurify.sanitize(customEmbed, {
+                          ALLOWED_TAGS: ['iframe', 'div', 'span', 'p', 'br'],
+                          ALLOWED_ATTR: ['src', 'width', 'height', 'frameborder', 'allowfullscreen', 'class', 'style'],
+                          ALLOWED_URI_REGEXP: /^(?:(?:https?|data):)/i
+                        })
+                      }}
                       className="w-full h-full overflow-visible"
                     />
                   ) : (

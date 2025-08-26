@@ -67,3 +67,6 @@ inspector_port = 8083
 
 [functions.cloudmailin-webhook]
 verify_jwt = false
+
+[functions.contact-form]
+verify_jwt = false
