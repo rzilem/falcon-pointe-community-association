@@ -108,7 +108,7 @@ const EventRoomTab = () => {
       </div>
       
       {/* Full Page Embed - Full Width Section */}
-      <div className="w-full bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg overflow-hidden shadow-lg">
+      <div className="w-full bg-gradient-to-br from-sky-50 via-sky-100/50 to-blue-100 rounded-lg overflow-hidden shadow-lg">
         <div className="text-center py-6 px-4">
           <h3 className="text-xl font-semibold mb-3 text-gray-800">Indoor Gathering Room Reservation</h3>
           <p className="text-gray-600 mb-6">
