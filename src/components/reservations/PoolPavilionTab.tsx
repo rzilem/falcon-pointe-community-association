@@ -126,9 +126,10 @@ const PoolPavilionTab = () => {
             src="https://psprop.net/falcon-pointe-pool-pavilion-reservation/" 
             width="100%" 
             frameBorder="0" 
+            scrolling="no"
             className="w-full block -mt-1 md:-mt-2" 
             title="Pool Pavilion Reservation Form - Book your pool pavilion rental online"
-            style={{ height: 'min(1100px, 85vh)', minWidth: '100%', maxWidth: '100%' }}
+            style={{ height: 'clamp(1300px, 150vh, 2200px)', minWidth: '100%', maxWidth: '100%' }}
             aria-label="Pool pavilion reservation booking form"
             loading="lazy"
           />

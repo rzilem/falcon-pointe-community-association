@@ -120,9 +120,10 @@ const EventRoomTab = () => {
             src="https://psprop.net/falcon-pointe-indoor-gathering-room-reservation/" 
             width="100%" 
             frameBorder="0" 
+            scrolling="no"
             className="w-full block -mt-1 md:-mt-2" 
             title="Indoor Gathering Room Reservation Form - Book your event room rental online"
-            style={{ height: 'min(1100px, 85vh)', minWidth: '100%', maxWidth: '100%' }}
+            style={{ height: 'clamp(1300px, 150vh, 2200px)', minWidth: '100%', maxWidth: '100%' }}
             aria-label="Indoor gathering room reservation booking form"
             loading="lazy"
           />
