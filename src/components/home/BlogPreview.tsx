@@ -84,9 +84,15 @@ const BlogPreview = () => {
                   {post.featured_image && (
                     <div className="w-full h-40 overflow-hidden">
                       <img 
-                        src={post.featured_image} 
+                        src={post.featured_image.startsWith('http') 
+                          ? post.featured_image 
+                          : `https://ufhcicqixojqpyykjljw.supabase.co/storage/v1/object/public/site-images/${post.featured_image}`
+                        } 
                         alt={post.title || 'Blog post'} 
                         className="w-full h-full object-cover"
+                        onError={(e) => {
+                          e.currentTarget.style.display = 'none';
+                        }}
                       />
                     </div>
                   )}
