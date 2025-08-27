@@ -25,7 +25,7 @@ const DocumentPreview = ({ document, isOpen, onClose }: DocumentPreviewProps) =>
 
   useEffect(() => {
     if (isOpen && document) {
-      generateSignedUrl();
+      generateBlobUrl();
     }
     
     // Cleanup blob URL when component unmounts or dialog closes
@@ -36,59 +36,33 @@ const DocumentPreview = ({ document, isOpen, onClose }: DocumentPreviewProps) =>
     };
   }, [isOpen, document, blobUrl]);
 
-  const generateSignedUrl = async () => {
+  const generateBlobUrl = async () => {
     if (!document) return;
-    
+
     setLoading(true);
     try {
-      // Prefer exact storage key when available
       const hasExtension = /\.[a-zA-Z0-9]+$/.test(document.name);
       const fallbackFilename = hasExtension ? document.name : `${document.name}.${document.type}`;
       const key = document.storagePath ?? fallbackFilename;
-      
-      console.log('Attempting to generate signed URL for:', key);
-      
+
+      console.log('Attempting storage.download for preview:', key);
+
       const { data, error } = await supabase
         .storage
         .from('association_documents')
-        .createSignedUrl(key, 3600); // 1 hour expiry
+        .download(key);
 
-      if (error) {
-        // If it fails and we haven't tried with .pdf yet, try that as fallback
-        if (!document.storagePath && !hasExtension && document.type !== 'pdf') {
-          console.log('Retrying with .pdf extension');
-          const pdfFilename = `${document.name}.pdf`;
-          const { data: pdfData, error: pdfError } = await supabase
-            .storage
-            .from('association_documents')
-            .createSignedUrl(pdfFilename, 3600);
-          
-          if (!pdfError && pdfData) {
-            setSignedUrl(pdfData.signedUrl);
-            return;
-          }
-        }
-        
-        console.error('Error creating signed URL:', error);
+      if (error || !data) {
+        console.error('Error downloading file for preview:', error);
         toast.error('Error loading document preview');
         return;
       }
 
-      setSignedUrl(data.signedUrl);
-      
-      // For PDFs, create a blob URL to avoid iframe restrictions in sandboxed environments
-      if (document.type?.toLowerCase() === 'pdf') {
-        try {
-          const response = await fetch(data.signedUrl);
-          const blob = await response.blob();
-          const blobURL = URL.createObjectURL(blob);
-          setBlobUrl(blobURL);
-        } catch (blobError) {
-          console.warn('Could not create blob URL, falling back to signed URL:', blobError);
-        }
-      }
+      // Create a blob URL for preview (works around cross-origin restrictions)
+      const blobURL = URL.createObjectURL(data);
+      setBlobUrl(blobURL);
     } catch (error) {
-      console.error('Error creating signed URL:', error);
+      console.error('Error creating blob preview URL:', error);
       toast.error('Error loading document preview');
     } finally {
       setLoading(false);
@@ -97,32 +71,32 @@ const DocumentPreview = ({ document, isOpen, onClose }: DocumentPreviewProps) =>
 
   const downloadDocument = async () => {
     if (!document) return;
-    
+
     try {
       const hasExtension = /\.[a-zA-Z0-9]+$/.test(document.name);
       const fallbackFilename = hasExtension ? document.name : `${document.name}.${document.type}`;
       const key = document.storagePath ?? fallbackFilename;
-      
+
       const { data, error } = await supabase
         .storage
         .from('association_documents')
-        .createSignedUrl(key, 3600);
+        .download(key);
 
-      if (error) {
-        console.error('Error creating signed URL for download:', error);
+      if (error || !data) {
+        console.error('Storage download error:', error);
         toast.error('Error downloading document');
         return;
       }
 
-      // Use anchor download instead of window.open to avoid popup blockers
+      const blobUrl = URL.createObjectURL(data);
       const link = window.document.createElement('a');
-      link.href = data.signedUrl;
-      link.download = document.name;
-      link.target = '_blank';
+      link.href = blobUrl;
+      link.download = fallbackFilename;
       window.document.body.appendChild(link);
       link.click();
       window.document.body.removeChild(link);
-      
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
+
       toast.success('Document download started');
     } catch (error) {
       console.error('Download error:', error);
@@ -131,10 +105,28 @@ const DocumentPreview = ({ document, isOpen, onClose }: DocumentPreviewProps) =>
   };
 
   const copyLink = async () => {
-    if (!signedUrl) return;
-    
+    if (!document) return;
+
     try {
-      await navigator.clipboard.writeText(signedUrl);
+      let urlToCopy = signedUrl;
+      if (!urlToCopy) {
+        const hasExtension = /\.[a-zA-Z0-9]+$/.test(document.name);
+        const fallbackFilename = hasExtension ? document.name : `${document.name}.${document.type}`;
+        const key = document.storagePath ?? fallbackFilename;
+        const { data, error } = await supabase
+          .storage
+          .from('association_documents')
+          .createSignedUrl(key, 3600);
+        if (error || !data) {
+          console.error('Error creating signed URL for copy:', error);
+          toast.error('Error copying link');
+          return;
+        }
+        urlToCopy = data.signedUrl;
+        setSignedUrl(urlToCopy);
+      }
+
+      await navigator.clipboard.writeText(urlToCopy);
       toast.success('Document link copied to clipboard');
     } catch (error) {
       console.error('Copy error:', error);
@@ -155,13 +147,13 @@ const DocumentPreview = ({ document, isOpen, onClose }: DocumentPreviewProps) =>
             <div className="flex items-center justify-center h-full">
               <div className="text-muted-foreground">Loading preview...</div>
             </div>
-          ) : signedUrl && document.type?.toLowerCase() === 'pdf' ? (
+          ) : document.type?.toLowerCase() === 'pdf' && blobUrl ? (
             <iframe
-              src={blobUrl || signedUrl}
+              src={blobUrl}
               className="w-full h-full border-0"
               title={document.name}
             />
-          ) : signedUrl && document.type?.toLowerCase() !== 'pdf' ? (
+          ) : document.type?.toLowerCase() !== 'pdf' ? (
             <div className="flex flex-col items-center justify-center h-full gap-4">
               <div className="text-muted-foreground text-center">
                 <p>Preview not supported for {document.type?.toUpperCase()} files</p>
@@ -175,11 +167,11 @@ const DocumentPreview = ({ document, isOpen, onClose }: DocumentPreviewProps) =>
                 <Button onClick={copyLink} variant="outline" className="gap-2">
                   <Copy className="h-4 w-4" />
                   Copy Link
-                </Button>
+                  </Button>
+                </div>
               </div>
-            </div>
-          ) : (
-            <div className="flex flex-col items-center justify-center h-full gap-4">
+            ) : (
+              <div className="flex flex-col items-center justify-center h-full gap-4">
               <div className="text-muted-foreground text-center">
                 <p>Unable to load preview</p>
                 <p className="text-sm mt-2">Try downloading the document instead</p>

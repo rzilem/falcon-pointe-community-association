@@ -20,34 +20,32 @@ const DocumentCard = ({ document, handleDownload }: DocumentCardProps) => {
 
   const downloadFile = async () => {
     try {
-      // Prefer exact storage key (full path) when available
       const hasExtension = /\.[a-zA-Z0-9]+$/.test(document.name);
       const fallbackFilename = hasExtension ? document.name : `${document.name}.${document.type}`;
       const key = document.storagePath ?? fallbackFilename;
-      
-      console.log('Attempting to download:', key);
-      
+
+      console.log('Downloading via blob:', key);
+
       const { data, error } = await supabase
         .storage
         .from('association_documents')
-        .createSignedUrl(key, 3600); // 1 hour expiry
+        .download(key);
 
-      if (error) {
-        console.error('Error creating signed URL for download:', error);
+      if (error || !data) {
+        console.error('Storage download error:', error);
         toast.error('Error downloading document');
         return;
       }
 
-      // Use anchor download instead of window.open to avoid popup blockers
+      const blobUrl = URL.createObjectURL(data);
       const link = window.document.createElement('a');
-      link.href = data.signedUrl;
-      link.download = document.name;
-      link.target = '_blank';
+      link.href = blobUrl;
+      link.download = fallbackFilename;
       window.document.body.appendChild(link);
       link.click();
       window.document.body.removeChild(link);
-      
-      handleDownload(data.signedUrl);
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
+
       toast.success('Document download started');
     } catch (error) {
       console.error('Download error:', error);
