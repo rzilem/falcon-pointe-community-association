@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Document } from "@/types/document";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Download } from "lucide-react";
+import { Download, Copy } from "lucide-react";
 
 interface DocumentPreviewProps {
   document: Document | null;
@@ -20,13 +20,21 @@ interface DocumentPreviewProps {
 
 const DocumentPreview = ({ document, isOpen, onClose }: DocumentPreviewProps) => {
   const [signedUrl, setSignedUrl] = useState<string | null>(null);
+  const [blobUrl, setBlobUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (isOpen && document) {
       generateSignedUrl();
     }
-  }, [isOpen, document]);
+    
+    // Cleanup blob URL when component unmounts or dialog closes
+    return () => {
+      if (blobUrl) {
+        URL.revokeObjectURL(blobUrl);
+      }
+    };
+  }, [isOpen, document, blobUrl]);
 
   const generateSignedUrl = async () => {
     if (!document) return;
@@ -67,6 +75,18 @@ const DocumentPreview = ({ document, isOpen, onClose }: DocumentPreviewProps) =>
       }
 
       setSignedUrl(data.signedUrl);
+      
+      // For PDFs, create a blob URL to avoid iframe restrictions in sandboxed environments
+      if (document.type?.toLowerCase() === 'pdf') {
+        try {
+          const response = await fetch(data.signedUrl);
+          const blob = await response.blob();
+          const blobURL = URL.createObjectURL(blob);
+          setBlobUrl(blobURL);
+        } catch (blobError) {
+          console.warn('Could not create blob URL, falling back to signed URL:', blobError);
+        }
+      }
     } catch (error) {
       console.error('Error creating signed URL:', error);
       toast.error('Error loading document preview');
@@ -94,11 +114,31 @@ const DocumentPreview = ({ document, isOpen, onClose }: DocumentPreviewProps) =>
         return;
       }
 
-      window.open(data.signedUrl, '_blank');
+      // Use anchor download instead of window.open to avoid popup blockers
+      const link = window.document.createElement('a');
+      link.href = data.signedUrl;
+      link.download = document.name;
+      link.target = '_blank';
+      window.document.body.appendChild(link);
+      link.click();
+      window.document.body.removeChild(link);
+      
       toast.success('Document download started');
     } catch (error) {
       console.error('Download error:', error);
       toast.error('Error downloading document');
+    }
+  };
+
+  const copyLink = async () => {
+    if (!signedUrl) return;
+    
+    try {
+      await navigator.clipboard.writeText(signedUrl);
+      toast.success('Document link copied to clipboard');
+    } catch (error) {
+      console.error('Copy error:', error);
+      toast.error('Error copying link');
     }
   };
 
@@ -117,7 +157,7 @@ const DocumentPreview = ({ document, isOpen, onClose }: DocumentPreviewProps) =>
             </div>
           ) : signedUrl && document.type?.toLowerCase() === 'pdf' ? (
             <iframe
-              src={signedUrl}
+              src={blobUrl || signedUrl}
               className="w-full h-full border-0"
               title={document.name}
             />
@@ -127,10 +167,16 @@ const DocumentPreview = ({ document, isOpen, onClose }: DocumentPreviewProps) =>
                 <p>Preview not supported for {document.type?.toUpperCase()} files</p>
                 <p className="text-sm mt-2">Click download to view the document</p>
               </div>
-              <Button onClick={downloadDocument} className="gap-2">
-                <Download className="h-4 w-4" />
-                Download {document.name}
-              </Button>
+              <div className="flex gap-2">
+                <Button onClick={downloadDocument} className="gap-2">
+                  <Download className="h-4 w-4" />
+                  Download {document.name}
+                </Button>
+                <Button onClick={copyLink} variant="outline" className="gap-2">
+                  <Copy className="h-4 w-4" />
+                  Copy Link
+                </Button>
+              </div>
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center h-full gap-4">
@@ -138,10 +184,16 @@ const DocumentPreview = ({ document, isOpen, onClose }: DocumentPreviewProps) =>
                 <p>Unable to load preview</p>
                 <p className="text-sm mt-2">Try downloading the document instead</p>
               </div>
-              <Button onClick={downloadDocument} className="gap-2">
-                <Download className="h-4 w-4" />
-                Download {document.name}
-              </Button>
+              <div className="flex gap-2">
+                <Button onClick={downloadDocument} className="gap-2">
+                  <Download className="h-4 w-4" />
+                  Download {document.name}
+                </Button>
+                <Button onClick={copyLink} variant="outline" className="gap-2">
+                  <Copy className="h-4 w-4" />
+                  Copy Link
+                </Button>
+              </div>
             </div>
           )}
         </div>

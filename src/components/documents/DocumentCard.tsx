@@ -38,8 +38,15 @@ const DocumentCard = ({ document, handleDownload }: DocumentCardProps) => {
         return;
       }
 
-      // Simplified download - open in new tab
-      window.open(data.signedUrl, '_blank');
+      // Use anchor download instead of window.open to avoid popup blockers
+      const link = window.document.createElement('a');
+      link.href = data.signedUrl;
+      link.download = document.name;
+      link.target = '_blank';
+      window.document.body.appendChild(link);
+      link.click();
+      window.document.body.removeChild(link);
+      
       handleDownload(data.signedUrl);
       toast.success('Document download started');
     } catch (error) {

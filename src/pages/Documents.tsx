@@ -16,7 +16,14 @@ const Documents = () => {
 
   const handleDownload = async (url: string) => {
     try {
-      window.open(url, '_blank');
+      // Create anchor element for download instead of window.open to avoid popup blockers
+      const link = window.document.createElement('a');
+      link.href = url;
+      link.download = '';
+      link.target = '_blank';
+      window.document.body.appendChild(link);
+      link.click();
+      window.document.body.removeChild(link);
       toast.success("Document download started");
     } catch (error) {
       toast.error("Error downloading document");
