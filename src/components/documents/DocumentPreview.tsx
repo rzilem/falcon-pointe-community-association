@@ -33,20 +33,21 @@ const DocumentPreview = ({ document, isOpen, onClose }: DocumentPreviewProps) =>
     
     setLoading(true);
     try {
-      // Proper filename construction - check if name ends with an extension
+      // Prefer exact storage key when available
       const hasExtension = /\.[a-zA-Z0-9]+$/.test(document.name);
-      const filename = hasExtension ? document.name : `${document.name}.${document.type}`;
+      const fallbackFilename = hasExtension ? document.name : `${document.name}.${document.type}`;
+      const key = document.storagePath ?? fallbackFilename;
       
-      console.log('Attempting to generate signed URL for:', filename);
+      console.log('Attempting to generate signed URL for:', key);
       
       const { data, error } = await supabase
         .storage
         .from('association_documents')
-        .createSignedUrl(filename, 3600); // 1 hour expiry
+        .createSignedUrl(key, 3600); // 1 hour expiry
 
       if (error) {
         // If it fails and we haven't tried with .pdf yet, try that as fallback
-        if (!hasExtension && document.type !== 'pdf') {
+        if (!document.storagePath && !hasExtension && document.type !== 'pdf') {
           console.log('Retrying with .pdf extension');
           const pdfFilename = `${document.name}.pdf`;
           const { data: pdfData, error: pdfError } = await supabase
@@ -79,12 +80,13 @@ const DocumentPreview = ({ document, isOpen, onClose }: DocumentPreviewProps) =>
     
     try {
       const hasExtension = /\.[a-zA-Z0-9]+$/.test(document.name);
-      const filename = hasExtension ? document.name : `${document.name}.${document.type}`;
+      const fallbackFilename = hasExtension ? document.name : `${document.name}.${document.type}`;
+      const key = document.storagePath ?? fallbackFilename;
       
       const { data, error } = await supabase
         .storage
         .from('association_documents')
-        .createSignedUrl(filename, 3600);
+        .createSignedUrl(key, 3600);
 
       if (error) {
         console.error('Error creating signed URL for download:', error);

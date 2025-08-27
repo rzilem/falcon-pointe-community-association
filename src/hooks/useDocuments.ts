@@ -53,7 +53,8 @@ export const useDocuments = () => {
               url: '', // We'll generate signed URLs when needed
               category: category,
               description: "",
-              last_updated: file.updated_at || new Date().toISOString()
+              last_updated: file.updated_at || new Date().toISOString(),
+              storagePath: file.name // exact key in the bucket
             };
           });
         
@@ -85,15 +86,19 @@ export const useDocuments = () => {
         return;
       }
       
-      // Delete the file from storage using the correct filename
-      const hasExtension = /\.[a-zA-Z0-9]+$/.test(documentToDelete.name);
-      const filename = hasExtension ? documentToDelete.name : `${documentToDelete.name}.${documentToDelete.type}`;
+      // Prefer exact storage key when available
+      const key = documentToDelete.storagePath
+        ? documentToDelete.storagePath
+        : (() => {
+            const hasExtension = /\.[a-zA-Z0-9]+$/.test(documentToDelete.name);
+            return hasExtension ? documentToDelete.name : `${documentToDelete.name}.${documentToDelete.type}`;
+          })();
       
-      console.log('Attempting to delete:', filename);
+      console.log('Attempting to delete:', key);
       const { error } = await supabase
         .storage
         .from('association_documents')
-        .remove([filename]);
+        .remove([key]);
 
       if (error) throw error;
       toast.success("Document deleted successfully");

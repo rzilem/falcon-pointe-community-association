@@ -20,16 +20,17 @@ const DocumentCard = ({ document, handleDownload }: DocumentCardProps) => {
 
   const downloadFile = async () => {
     try {
-      // Proper filename construction - check if name ends with an extension
+      // Prefer exact storage key (full path) when available
       const hasExtension = /\.[a-zA-Z0-9]+$/.test(document.name);
-      const filename = hasExtension ? document.name : `${document.name}.${document.type}`;
+      const fallbackFilename = hasExtension ? document.name : `${document.name}.${document.type}`;
+      const key = document.storagePath ?? fallbackFilename;
       
-      console.log('Attempting to download:', filename);
+      console.log('Attempting to download:', key);
       
       const { data, error } = await supabase
         .storage
         .from('association_documents')
-        .createSignedUrl(filename, 3600); // 1 hour expiry
+        .createSignedUrl(key, 3600); // 1 hour expiry
 
       if (error) {
         console.error('Error creating signed URL for download:', error);
