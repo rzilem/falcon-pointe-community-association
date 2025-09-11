@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Dialog,
   DialogContent,
@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Document } from "@/types/document";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Download, Copy } from "lucide-react";
+import { Download, Copy, ExternalLink } from "lucide-react";
 
 interface DocumentPreviewProps {
   document: Document | null;
@@ -22,6 +22,7 @@ const DocumentPreview = ({ document, isOpen, onClose }: DocumentPreviewProps) =>
   const [signedUrl, setSignedUrl] = useState<string | null>(null);
   const [blobUrl, setBlobUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const blobUrlRef = useRef<string | null>(null);
 
   useEffect(() => {
     if (isOpen && document) {
@@ -30,17 +31,24 @@ const DocumentPreview = ({ document, isOpen, onClose }: DocumentPreviewProps) =>
     
     // Cleanup blob URL when component unmounts or dialog closes
     return () => {
-      if (blobUrl) {
-        URL.revokeObjectURL(blobUrl);
+      if (blobUrlRef.current) {
+        URL.revokeObjectURL(blobUrlRef.current);
+        blobUrlRef.current = null;
       }
     };
-  }, [isOpen, document, blobUrl]);
+  }, [isOpen, document]);
 
   const generateBlobUrl = async () => {
     if (!document) return;
 
     setLoading(true);
     try {
+      // Clean up any existing blob URL
+      if (blobUrlRef.current) {
+        URL.revokeObjectURL(blobUrlRef.current);
+        blobUrlRef.current = null;
+      }
+
       const hasExtension = /\.[a-zA-Z0-9]+$/.test(document.name);
       const fallbackFilename = hasExtension ? document.name : `${document.name}.${document.type}`;
       const key = document.storagePath ?? fallbackFilename;
@@ -60,6 +68,7 @@ const DocumentPreview = ({ document, isOpen, onClose }: DocumentPreviewProps) =>
 
       // Create a blob URL for preview (works around cross-origin restrictions)
       const blobURL = URL.createObjectURL(data);
+      blobUrlRef.current = blobURL;
       setBlobUrl(blobURL);
     } catch (error) {
       console.error('Error creating blob preview URL:', error);
@@ -134,6 +143,12 @@ const DocumentPreview = ({ document, isOpen, onClose }: DocumentPreviewProps) =>
     }
   };
 
+  const isPDF = (doc: Document): boolean => {
+    return doc.type?.toLowerCase() === 'pdf' || 
+           doc.name?.toLowerCase().endsWith('.pdf') ||
+           false;
+  };
+
   if (!document) return null;
 
   return (
@@ -147,13 +162,37 @@ const DocumentPreview = ({ document, isOpen, onClose }: DocumentPreviewProps) =>
             <div className="flex items-center justify-center h-full">
               <div className="text-muted-foreground">Loading preview...</div>
             </div>
-          ) : document.type?.toLowerCase() === 'pdf' && blobUrl ? (
-            <iframe
-              src={blobUrl}
-              className="w-full h-full border-0"
-              title={document.name}
-            />
-          ) : document.type?.toLowerCase() !== 'pdf' ? (
+          ) : isPDF(document) && blobUrl ? (
+            <div className="w-full h-full flex flex-col">
+              <object
+                data={blobUrl}
+                type="application/pdf"
+                className="w-full h-full"
+                aria-label={`PDF preview of ${document.name}`}
+              >
+                <div className="flex flex-col items-center justify-center h-full gap-4">
+                  <div className="text-muted-foreground text-center">
+                    <p>PDF preview not supported in this browser</p>
+                    <p className="text-sm mt-2">Use the buttons below to view or download</p>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button 
+                      onClick={() => window.open(blobUrl, '_blank')}
+                      variant="outline" 
+                      className="gap-2"
+                    >
+                      <ExternalLink className="h-4 w-4" />
+                      Open in New Tab
+                    </Button>
+                    <Button onClick={downloadDocument} className="gap-2">
+                      <Download className="h-4 w-4" />
+                      Download
+                    </Button>
+                  </div>
+                </div>
+              </object>
+            </div>
+          ) : !isPDF(document) ? (
             <div className="flex flex-col items-center justify-center h-full gap-4">
               <div className="text-muted-foreground text-center">
                 <p>Preview not supported for {document.type?.toUpperCase()} files</p>
@@ -167,11 +206,11 @@ const DocumentPreview = ({ document, isOpen, onClose }: DocumentPreviewProps) =>
                 <Button onClick={copyLink} variant="outline" className="gap-2">
                   <Copy className="h-4 w-4" />
                   Copy Link
-                  </Button>
-                </div>
+                </Button>
               </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center h-full gap-4">
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center h-full gap-4">
               <div className="text-muted-foreground text-center">
                 <p>Unable to load preview</p>
                 <p className="text-sm mt-2">Try downloading the document instead</p>
