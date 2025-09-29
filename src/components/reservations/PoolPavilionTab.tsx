@@ -132,6 +132,11 @@ const PoolPavilionTab = () => {
             style={{ height: 'clamp(1300px, 150vh, 2200px)', minWidth: '100%', maxWidth: '100%' }}
             aria-label="Pool pavilion reservation booking form"
             loading="lazy"
+            allow="camera=*; microphone=*; geolocation=*; fullscreen=*; payment=*; autoplay=*"
+            sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-modals"
+            referrerPolicy="strict-origin-when-cross-origin"
+            onError={(e) => console.log('Pool Pavilion iframe failed to load:', e)}
+            onLoad={() => console.log('Pool Pavilion iframe loaded successfully')}
           />
         </div>
       </div>
