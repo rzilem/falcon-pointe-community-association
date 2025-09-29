@@ -6,6 +6,7 @@ import { Separator } from "@/components/ui/separator";
 import TwoImageSlideshow from "@/components/ui/TwoImageSlideshow";
 import { CheckCircle, Users } from "lucide-react";
 import { useImages } from "@/hooks/useImages";
+import { gravityFormsLogger } from "@/utils/gravityFormsLogger";
 
 const EventRoomTab = () => {
   const { images, isLoading } = useImages('gathering-room');
@@ -142,12 +143,42 @@ const EventRoomTab = () => {
             sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-modals allow-top-navigation"
             referrerPolicy="strict-origin-when-cross-origin"
             onError={(e) => {
-              console.error('Event Room iframe failed to load:', e);
-              console.log('Attempted iframe URL:', 'https://psprop.net/falcon-pointe-indoor-gathering-room-reservation/');
+              gravityFormsLogger.log('error', 'iframe', 'Event Room iframe failed to load', {
+                error: e.toString(),
+                url: 'https://psprop.net/falcon-pointe-indoor-gathering-room-reservation/',
+                userAgent: navigator.userAgent,
+                timestamp: new Date().toISOString(),
+                pageUrl: window.location.href
+              });
             }}
-            onLoad={() => {
-              console.log('Event Room iframe loaded successfully');
-              console.log('Loaded iframe URL:', 'https://psprop.net/falcon-pointe-indoor-gathering-room-reservation/');
+            onLoad={(e) => {
+              gravityFormsLogger.log('info', 'iframe', 'Event Room iframe loaded successfully', {
+                url: 'https://psprop.net/falcon-pointe-indoor-gathering-room-reservation/',
+                loadTime: performance.now(),
+                timestamp: new Date().toISOString()
+              });
+              
+              // Test iframe communication
+              try {
+                const iframe = e.target as HTMLIFrameElement;
+                setTimeout(() => {
+                  try {
+                    const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
+                    if (iframeDoc) {
+                      gravityFormsLogger.log('info', 'iframe', 'Iframe document accessible', {
+                        title: iframeDoc.title,
+                        readyState: iframeDoc.readyState
+                      });
+                    } else {
+                      gravityFormsLogger.log('warn', 'iframe', 'Iframe document not accessible (cross-origin)');
+                    }
+                  } catch (err) {
+                    gravityFormsLogger.log('warn', 'iframe', 'Cross-origin iframe access blocked', { error: err.message });
+                  }
+                }, 1000);
+              } catch (err) {
+                gravityFormsLogger.log('error', 'iframe', 'Error testing iframe communication', { error: err.message });
+              }
             }}
           />
         </div>

@@ -1,6 +1,7 @@
 
 import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
+import { gravityFormsLogger } from "@/utils/gravityFormsLogger";
 import "./GravityFormBase.css";
 import "./GravityFormFields.css";
 import "./GravityFormCalendar.css";
@@ -15,18 +16,51 @@ const GravityFormEmbed = () => {
   // `jquery=1&jqueryui=1` which ensures jQuery and jQuery UI are available
   // within the iframe itself.
 
-  const handleIframeLoad = () => {
+  const handleIframeLoad = (e: React.SyntheticEvent<HTMLIFrameElement>) => {
     setIsLoading(false);
     setHasError(false);
-    console.log('Contact form iframe loaded successfully');
     
-    // Post-load handling if needed
+    gravityFormsLogger.log('info', 'iframe', 'Contact form iframe loaded successfully', {
+      url: 'https://psprop.net/gfembed/?f=34&jquery=1&jqueryui=1',
+      loadTime: performance.now(),
+      timestamp: new Date().toISOString()
+    });
+    
+    // Test iframe accessibility
+    try {
+      const iframe = e.target as HTMLIFrameElement;
+      setTimeout(() => {
+        try {
+          const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
+          if (iframeDoc) {
+            gravityFormsLogger.log('info', 'iframe', 'Contact form iframe document accessible', {
+              title: iframeDoc.title,
+              readyState: iframeDoc.readyState,
+              hasJQuery: !!(iframe.contentWindow as any)?.jQuery
+            });
+          } else {
+            gravityFormsLogger.log('warn', 'iframe', 'Contact form iframe document not accessible (cross-origin)');
+          }
+        } catch (err) {
+          gravityFormsLogger.log('warn', 'iframe', 'Cross-origin contact form iframe access blocked', { error: (err as Error).message });
+        }
+      }, 1000);
+    } catch (err) {
+      gravityFormsLogger.log('error', 'iframe', 'Error testing contact form iframe communication', { error: (err as Error).message });
+    }
   };
 
-  const handleIframeError = () => {
+  const handleIframeError = (e: React.SyntheticEvent<HTMLIFrameElement>) => {
     setIsLoading(false);
     setHasError(true);
-    console.error('Contact form iframe failed to load');
+    
+    gravityFormsLogger.log('error', 'iframe', 'Contact form iframe failed to load', {
+      error: e.toString(),
+      url: 'https://psprop.net/gfembed/?f=34&jquery=1&jqueryui=1',
+      userAgent: navigator.userAgent,
+      timestamp: new Date().toISOString(),
+      pageUrl: window.location.href
+    });
   };
 
   return (
