@@ -140,7 +140,7 @@ const EventRoomTab = () => {
             style={{ height: 'clamp(1300px, 150vh, 2200px)', minWidth: '100%', maxWidth: '100%' }}
             aria-label="Indoor gathering room reservation booking form"
             allow="camera *; microphone *; geolocation *; fullscreen *; payment *; autoplay *; form-data *; publickey-credentials-get"
-            sandbox="allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox allow-modals allow-top-navigation"
+            sandbox="allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox allow-modals"
             referrerPolicy="strict-origin-when-cross-origin"
             onError={(e) => {
               gravityFormsLogger.log('error', 'iframe', 'Event Room iframe failed to load', {

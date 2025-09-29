@@ -146,7 +146,7 @@ const PoolPavilionTab = () => {
             style={{ height: 'clamp(1300px, 150vh, 2200px)', minWidth: '100%', maxWidth: '100%' }}
             aria-label="Pool pavilion reservation booking form"
             allow="camera *; microphone *; geolocation *; fullscreen *; payment *; autoplay *; form-data *; publickey-credentials-get"
-            sandbox="allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox allow-modals allow-top-navigation"
+            sandbox="allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox allow-modals"
             referrerPolicy="strict-origin-when-cross-origin"
             onError={(e) => {
               gravityFormsLogger.log('error', 'iframe', 'Pool Pavilion iframe failed to load', {
