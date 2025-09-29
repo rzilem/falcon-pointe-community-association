@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Separator } from "@/components/ui/separator";
@@ -7,6 +7,26 @@ import ImageDisplay from "@/components/cms/ImageDisplay";
 import { CheckCircle, Users } from "lucide-react";
 
 const EventRoomTab = () => {
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = '/wp-content/plugins/gravity-forms-iframe-master/assets/scripts/gfembed.min.js';
+    script.type = 'text/javascript';
+    script.async = true;
+    
+    // Check if script is already loaded
+    const existingScript = document.querySelector('script[src="/wp-content/plugins/gravity-forms-iframe-master/assets/scripts/gfembed.min.js"]');
+    if (!existingScript) {
+      document.head.appendChild(script);
+    }
+    
+    return () => {
+      // Cleanup on unmount
+      if (script.parentNode) {
+        script.parentNode.removeChild(script);
+      }
+    };
+  }, []);
+
   return (
     <div className="space-y-6">
       {/* Enhanced Info Section */}
@@ -99,11 +119,11 @@ const EventRoomTab = () => {
         </div>
         <div className="w-full pb-6">
           <iframe 
-            src="https://psprop.net/falcon-pointe-indoor-gathering-room-reservation/" 
+            src="//psprop.net/gfembed/?f=38" 
             width="100%" 
             height="1200" 
             frameBorder="0" 
-            className="w-full rounded-lg bg-white shadow-inner mx-auto block" 
+            className="w-full rounded-lg bg-white shadow-inner mx-auto block gfiframe" 
             title="Indoor Gathering Room Reservation Form - Book your event room rental online"
             style={{ minWidth: '100%', maxWidth: '100%' }}
             aria-label="Indoor gathering room reservation booking form"
