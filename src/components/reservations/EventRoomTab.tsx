@@ -131,16 +131,16 @@ const EventRoomTab = () => {
             </a>
           </div>
           <iframe 
-            src="https://psprop.net/falcon-pointe-indoor-gathering-room-reservation/" 
+            src="https://psprop.net/gfembed/?f=28&jquery=1&jqueryui=1" 
             width="100%" 
+            height="1200"
             frameBorder="0" 
-            scrolling="no"
             className="w-full block -mt-1 md:-mt-2" 
             title="Indoor Gathering Room Reservation Form - Book your event room rental online"
-            style={{ height: 'clamp(1300px, 150vh, 2200px)', minWidth: '100%', maxWidth: '100%' }}
+            style={{ minWidth: '100%', maxWidth: '100%' }}
             aria-label="Indoor gathering room reservation booking form"
             allow="camera *; microphone *; geolocation *; fullscreen *; payment *; autoplay *; form-data *; publickey-credentials-get"
-            sandbox="allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox allow-modals"
+            sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-modals"
             referrerPolicy="strict-origin-when-cross-origin"
             onError={(e) => {
               gravityFormsLogger.log('error', 'iframe', 'Event Room iframe failed to load', {
