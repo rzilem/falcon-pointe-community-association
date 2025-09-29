@@ -13,7 +13,7 @@ const EventRoomTab = () => {
   useEffect(() => {
     // Load Gravity Forms embed script with timeout
     const script = document.createElement('script');
-    script.src = 'https://psprop.net/wp-content/plugins/gravityforms/js/gfembed.min.js';
+    script.src = 'https://psprop.net/wp-content/plugins/gravity-forms-iframe-master/assets/scripts/gfembed.min.js';
     script.async = true;
     
     const timeout = setTimeout(() => {
@@ -39,7 +39,7 @@ const EventRoomTab = () => {
     return () => {
       clearTimeout(timeout);
       // Cleanup script if component unmounts
-      const existingScript = document.querySelector('script[src="https://psprop.net/wp-content/plugins/gravityforms/js/gfembed.min.js"]');
+      const existingScript = document.querySelector('script[src="https://psprop.net/wp-content/plugins/gravity-forms-iframe-master/assets/scripts/gfembed.min.js"]');
       if (existingScript) {
         existingScript.remove();
       }
@@ -182,11 +182,11 @@ const EventRoomTab = () => {
           )}
           
           <iframe 
-            src="https://psprop.net/gfembed/?f=38" 
+            src="//psprop.net/gfembed/?f=38" 
             width="100%" 
             height="1200" 
-            frameBorder="0" 
-            className={`w-full rounded-lg bg-white shadow-inner mx-auto block transition-opacity duration-300 ${hasError ? 'opacity-50' : 'opacity-100'}`}
+            frameBorder="0"
+            className={`gfiframe w-full rounded-lg bg-white shadow-inner mx-auto block transition-opacity duration-300 ${hasError ? 'opacity-50' : 'opacity-100'}`}
             title="Indoor Gathering Room Reservation Form - Book your event room rental online"
             style={{ minWidth: '100%', maxWidth: '100%' }}
             aria-label="Indoor gathering room reservation booking form"
