@@ -145,7 +145,7 @@ const PoolPavilionTab = () => {
             title="Pool Pavilion Reservation Form - Book your pool pavilion rental online"
             style={{ height: 'clamp(1300px, 150vh, 2200px)', minWidth: '100%', maxWidth: '100%' }}
             aria-label="Pool pavilion reservation booking form"
-            allow="camera *; microphone *; geolocation *; fullscreen *; payment *; autoplay *; form-data *"
+            allow="camera *; microphone *; geolocation *; fullscreen *; payment *; autoplay *; form-data *; publickey-credentials-get"
             sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-modals allow-top-navigation"
             referrerPolicy="strict-origin-when-cross-origin"
             onError={(e) => {
