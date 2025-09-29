@@ -18,11 +18,11 @@ const PoolPavilionTab = () => {
                 <div className="rounded-lg overflow-hidden border border-gray-200 shadow-md">
                   <TwoImageSlideshow
                     image1={{
-                      src: "/lovable-uploads/pool-pavilion-1.png",
+                      src: "/lovable-uploads/ebafe490-e728-4ed8-a428-ff945cb1df98.png",
                       alt: "Pool Pavilion covered seating area with outdoor grills"
                     }}
                     image2={{
-                      src: "/lovable-uploads/pool-pavilion-2.png",
+                      src: "/lovable-uploads/6c2a5abb-a4c0-42a6-b7e0-39f8bbfdbf83.png",
                       alt: "Pool Pavilion showing pool access and amenities"
                     }}
                     className="h-64 md:h-72 hover:scale-105 transition-transform duration-1000"
