@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -11,6 +10,7 @@ interface FormFieldProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   required?: boolean;
+  error?: string;
 }
 
 const FormField = ({
@@ -21,6 +21,7 @@ const FormField = ({
   value,
   onChange,
   required = false,
+  error,
 }: FormFieldProps) => {
   const fieldId = `field-${name}`;
   const errorId = `${fieldId}-error`;
@@ -37,12 +38,12 @@ const FormField = ({
           id={fieldId}
           name={name}
           placeholder={placeholder}
-          className="h-32"
+          className={`h-32 ${error ? 'border-red-500' : ''}`}
           value={value}
           onChange={onChange}
           required={required}
           aria-required={required}
-          aria-describedby={`${helpId} ${errorId}`}
+          aria-describedby={`${helpId} ${error ? errorId : ''}`}
         />
       ) : (
         <Input
@@ -54,15 +55,18 @@ const FormField = ({
           onChange={onChange}
           required={required}
           aria-required={required}
-          aria-describedby={`${helpId} ${errorId}`}
+          className={error ? 'border-red-500' : ''}
+          aria-describedby={`${helpId} ${error ? errorId : ''}`}
         />
       )}
       <div id={helpId} className="sr-only">
         {label} field. {required ? 'This field is required.' : 'This field is optional.'}
       </div>
-      <div id={errorId} role="alert" aria-live="polite" className="sr-only">
-        {/* Error messages would be populated here dynamically */}
-      </div>
+      {error && (
+        <div id={errorId} role="alert" aria-live="polite" className="text-sm text-red-600 mt-1">
+          {error}
+        </div>
+      )}
     </div>
   );
 };

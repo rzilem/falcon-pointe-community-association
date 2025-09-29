@@ -47,7 +47,7 @@ image_transformation = { enabled = true }
 enabled = true
 site_url = "http://127.0.0.1:3000"
 additional_redirect_urls = ["https://127.0.0.1:3000"]
-jwt_expiry = 3600
+jwt_expiry = 600
 enable_manual_linking = false
 
 [auth.email]
@@ -69,4 +69,7 @@ inspector_port = 8083
 verify_jwt = false
 
 [functions.contact-form]
+verify_jwt = false
+
+[functions.secure-contact]
 verify_jwt = false
