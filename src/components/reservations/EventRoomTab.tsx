@@ -116,6 +116,19 @@ const EventRoomTab = () => {
           </p>
         </div>
         <div className="w-full pb-2">
+          <div className="bg-background border border-border rounded-lg p-4 mb-4 mx-2">
+            <p className="text-sm text-muted-foreground mb-2">
+              If the form below doesn't load, you can access it directly:
+            </p>
+            <a 
+              href="https://psprop.net/falcon-pointe-indoor-gathering-room-reservation/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-primary hover:text-primary/80 underline font-medium"
+            >
+              Open Indoor Gathering Room Reservation Form →
+            </a>
+          </div>
           <iframe 
             src="https://psprop.net/falcon-pointe-indoor-gathering-room-reservation/" 
             width="100%" 
@@ -125,12 +138,17 @@ const EventRoomTab = () => {
             title="Indoor Gathering Room Reservation Form - Book your event room rental online"
             style={{ height: 'clamp(1300px, 150vh, 2200px)', minWidth: '100%', maxWidth: '100%' }}
             aria-label="Indoor gathering room reservation booking form"
-            loading="lazy"
-            allow="camera=*; microphone=*; geolocation=*; fullscreen=*; payment=*; autoplay=*"
-            sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-modals"
+            allow="camera *; microphone *; geolocation *; fullscreen *; payment *; autoplay *; form-data *"
+            sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-modals allow-top-navigation"
             referrerPolicy="strict-origin-when-cross-origin"
-            onError={(e) => console.log('Event Room iframe failed to load:', e)}
-            onLoad={() => console.log('Event Room iframe loaded successfully')}
+            onError={(e) => {
+              console.error('Event Room iframe failed to load:', e);
+              console.log('Attempted iframe URL:', 'https://psprop.net/falcon-pointe-indoor-gathering-room-reservation/');
+            }}
+            onLoad={() => {
+              console.log('Event Room iframe loaded successfully');
+              console.log('Loaded iframe URL:', 'https://psprop.net/falcon-pointe-indoor-gathering-room-reservation/');
+            }}
           />
         </div>
       </div>

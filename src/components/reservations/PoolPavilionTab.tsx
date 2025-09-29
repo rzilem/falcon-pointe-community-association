@@ -122,6 +122,19 @@ const PoolPavilionTab = () => {
           </p>
         </div>
         <div className="w-full pb-2">
+          <div className="bg-background border border-border rounded-lg p-4 mb-4 mx-2">
+            <p className="text-sm text-muted-foreground mb-2">
+              If the form below doesn't load, you can access it directly:
+            </p>
+            <a 
+              href="https://psprop.net/falcon-pointe-pool-pavilion-reservation/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-primary hover:text-primary/80 underline font-medium"
+            >
+              Open Pool Pavilion Reservation Form →
+            </a>
+          </div>
           <iframe 
             src="https://psprop.net/falcon-pointe-pool-pavilion-reservation/" 
             width="100%" 
@@ -131,12 +144,17 @@ const PoolPavilionTab = () => {
             title="Pool Pavilion Reservation Form - Book your pool pavilion rental online"
             style={{ height: 'clamp(1300px, 150vh, 2200px)', minWidth: '100%', maxWidth: '100%' }}
             aria-label="Pool pavilion reservation booking form"
-            loading="lazy"
-            allow="camera=*; microphone=*; geolocation=*; fullscreen=*; payment=*; autoplay=*"
-            sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-modals"
+            allow="camera *; microphone *; geolocation *; fullscreen *; payment *; autoplay *; form-data *"
+            sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-modals allow-top-navigation"
             referrerPolicy="strict-origin-when-cross-origin"
-            onError={(e) => console.log('Pool Pavilion iframe failed to load:', e)}
-            onLoad={() => console.log('Pool Pavilion iframe loaded successfully')}
+            onError={(e) => {
+              console.error('Pool Pavilion iframe failed to load:', e);
+              console.log('Attempted iframe URL:', 'https://psprop.net/falcon-pointe-pool-pavilion-reservation/');
+            }}
+            onLoad={() => {
+              console.log('Pool Pavilion iframe loaded successfully');
+              console.log('Loaded iframe URL:', 'https://psprop.net/falcon-pointe-pool-pavilion-reservation/');
+            }}
           />
         </div>
       </div>
