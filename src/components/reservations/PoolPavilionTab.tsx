@@ -10,14 +10,24 @@ const PoolPavilionTab = () => {
   const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
-    // Load Gravity Forms embed script
+    // Load Gravity Forms embed script with timeout
     const script = document.createElement('script');
-    script.src = '//psprop.net/wp-content/plugins/gravityforms/js/gfembed.min.js';
+    script.src = 'https://psprop.net/wp-content/plugins/gravityforms/js/gfembed.min.js';
     script.async = true;
+    
+    const timeout = setTimeout(() => {
+      console.warn('Gravity Forms script loading timeout');
+      setHasError(true);
+      setIsLoading(false);
+    }, 10000); // 10 second timeout
+    
     script.onload = () => {
+      clearTimeout(timeout);
       console.log('Gravity Forms embed script loaded');
     };
+    
     script.onerror = () => {
+      clearTimeout(timeout);
       console.error('Failed to load Gravity Forms embed script');
       setHasError(true);
       setIsLoading(false);
@@ -26,8 +36,9 @@ const PoolPavilionTab = () => {
     document.head.appendChild(script);
     
     return () => {
+      clearTimeout(timeout);
       // Cleanup script if component unmounts
-      const existingScript = document.querySelector('script[src="//psprop.net/wp-content/plugins/gravityforms/js/gfembed.min.js"]');
+      const existingScript = document.querySelector('script[src="https://psprop.net/wp-content/plugins/gravityforms/js/gfembed.min.js"]');
       if (existingScript) {
         existingScript.remove();
       }
@@ -182,7 +193,7 @@ const PoolPavilionTab = () => {
           )}
           
           <iframe 
-            src="//psprop.net/gfembed/?f=36" 
+            src="https://psprop.net/gfembed/?f=36" 
             width="100%" 
             height="1200" 
             frameBorder="0" 
@@ -193,6 +204,8 @@ const PoolPavilionTab = () => {
             loading="lazy"
             onLoad={handleIframeLoad}
             onError={handleIframeError}
+            sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals"
+            allow="fullscreen"
           />
         </div>
       </div>
