@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Separator } from "@/components/ui/separator";
@@ -6,26 +6,6 @@ import TwoImageSlideshow from "@/components/ui/TwoImageSlideshow";
 import { CheckCircle, Info, Users } from "lucide-react";
 
 const PoolPavilionTab = () => {
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = '/wp-content/plugins/gravity-forms-iframe-master/assets/scripts/gfembed.min.js';
-    script.type = 'text/javascript';
-    script.async = true;
-    
-    // Check if script is already loaded
-    const existingScript = document.querySelector('script[src="/wp-content/plugins/gravity-forms-iframe-master/assets/scripts/gfembed.min.js"]');
-    if (!existingScript) {
-      document.head.appendChild(script);
-    }
-    
-    return () => {
-      // Cleanup on unmount
-      if (script.parentNode) {
-        script.parentNode.removeChild(script);
-      }
-    };
-  }, []);
-
   return (
     <div className="space-y-6">
       {/* Enhanced Info Section - Keep existing padding */}
@@ -130,11 +110,11 @@ const PoolPavilionTab = () => {
         </div>
         <div className="w-full pb-6">
           <iframe 
-            src="//psprop.net/gfembed/?f=36" 
+            src="https://psprop.net/falcon-pointe-pool-pavilion-reservation/" 
             width="100%" 
             height="1200" 
             frameBorder="0" 
-            className="w-full rounded-lg bg-white shadow-inner mx-auto block gfiframe" 
+            className="w-full rounded-lg bg-white shadow-inner mx-auto block" 
             title="Pool Pavilion Reservation Form - Book your pool pavilion rental online"
             style={{ minWidth: '100%', maxWidth: '100%' }}
             aria-label="Pool pavilion reservation booking form"
