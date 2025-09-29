@@ -20,14 +20,7 @@ const QuickLinks = () => {
               <h3 className="text-xl font-bold">Resident Portal</h3>
               <p className="text-gray-600">Access your account, pay assessments, and submit requests through our convenient resident portal.</p>
               <Button variant="default" asChild className="w-full">
-                <a 
-                  href="https://owner.psprop.net" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  aria-label="Access Resident Portal (opens in new tab)"
-                >
-                  Access Portal
-                </a>
+                <a href="https://owner.psprop.net" target="_blank" rel="noopener noreferrer">Access Portal</a>
               </Button>
             </CardContent>
           </Card>

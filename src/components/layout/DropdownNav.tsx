@@ -5,6 +5,7 @@ import {
   NavigationMenu,
   NavigationMenuContent,
   NavigationMenuItem,
+  NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
@@ -36,37 +37,39 @@ const DropdownNav: React.FC<DropdownNavProps> = ({ title, items, className }) =>
         <ul className="grid w-[230px] gap-1.5 py-2 navigation-dropdown">
           {items.map((item) => (
             <li key={item.title} className="navigation-item">
-              {item.external ? (
-                <a
-                  href={item.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={cn(
-                    "block select-none space-y-1 rounded-md pl-0 pr-3 py-2 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                  )}
-                >
-                  <div className="text-lg font-medium leading-none">{item.title}</div>
-                  {item.description && (
-                    <p className="line-clamp-2 text-xs leading-snug text-gray-600">
-                      {item.description}
-                    </p>
-                  )}
-                </a>
-              ) : (
-                <Link
-                  to={item.href}
-                  className={cn(
-                    "block select-none space-y-1 rounded-md pl-0 pr-3 py-2 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                  )}
-                >
-                  <div className="text-lg font-medium leading-none">{item.title}</div>
-                  {item.description && (
-                    <p className="line-clamp-2 text-xs leading-snug text-gray-600">
-                      {item.description}
-                    </p>
-                  )}
-                </Link>
-              )}
+              <NavigationMenuLink asChild>
+                {item.external ? (
+                  <a
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={cn(
+                      "block select-none space-y-1 rounded-md pl-0 pr-3 py-2 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                    )}
+                  >
+                    <div className="text-lg font-medium leading-none">{item.title}</div>
+                    {item.description && (
+                      <p className="line-clamp-2 text-xs leading-snug text-gray-600">
+                        {item.description}
+                      </p>
+                    )}
+                  </a>
+                ) : (
+                  <Link
+                    to={item.href}
+                    className={cn(
+                      "block select-none space-y-1 rounded-md pl-0 pr-3 py-2 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                    )}
+                  >
+                    <div className="text-lg font-medium leading-none">{item.title}</div>
+                    {item.description && (
+                      <p className="line-clamp-2 text-xs leading-snug text-gray-600">
+                        {item.description}
+                      </p>
+                    )}
+                  </Link>
+                )}
+              </NavigationMenuLink>
             </li>
           ))}
         </ul>

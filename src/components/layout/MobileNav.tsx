@@ -144,7 +144,7 @@ const MobileNav = ({ isOpen, onClose }: MobileNavProps) => {
                   Association Documents
                 </Button>
               </Link>
-              <a href="https://owner.psprop.net" target="_blank" rel="noopener noreferrer" aria-label="Resident Portal (opens in new tab)" onClick={handleLinkClick}>
+              <a href="https://owner.psprop.net" target="_blank" rel="noopener noreferrer" onClick={handleLinkClick}>
                 <Button variant="ghost" className="w-full justify-start text-sm">
                   Resident Portal
                 </Button>

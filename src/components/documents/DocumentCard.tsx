@@ -5,8 +5,6 @@ import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Document } from "@/types/document";
 import DocumentPreview from "./DocumentPreview";
-import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner";
 
 interface DocumentCardProps {
   document: Document;
@@ -18,38 +16,21 @@ const DocumentCard = ({ document, handleDownload }: DocumentCardProps) => {
   const [showPreview, setShowPreview] = useState(false);
   const fileType = document.type ? document.type.toUpperCase() : "";
 
-  const downloadFile = async () => {
+  const downloadFile = async (url: string) => {
     try {
-      const hasExtension = /\.[a-zA-Z0-9]+$/.test(document.name);
-      const fallbackFilename = hasExtension ? document.name : `${document.name}.${document.type}`;
-      const key = document.storagePath ?? fallbackFilename;
-
-      console.log('Downloading via blob:', key);
-
-      const { data, error } = await supabase
-        .storage
-        .from('association_documents')
-        .download(key);
-
-      if (error || !data) {
-        console.error('Storage download error:', error);
-        toast.error('Error downloading document');
-        return;
-      }
-
-      const blobUrl = URL.createObjectURL(data);
+      const response = await fetch(url);
+      const blob = await response.blob();
+      const downloadUrl = window.URL.createObjectURL(blob);
       const link = window.document.createElement('a');
-      link.href = blobUrl;
-      link.download = fallbackFilename;
+      link.href = downloadUrl;
+      link.download = document.name + '.' + document.type;
       window.document.body.appendChild(link);
       link.click();
       window.document.body.removeChild(link);
-      setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
-
-      toast.success('Document download started');
+      window.URL.revokeObjectURL(downloadUrl);
+      handleDownload(url);
     } catch (error) {
       console.error('Download error:', error);
-      toast.error('Error downloading document');
     }
   };
 
@@ -84,7 +65,7 @@ const DocumentCard = ({ document, handleDownload }: DocumentCardProps) => {
           <Button 
             variant="outline" 
             size="sm"
-            onClick={downloadFile}
+            onClick={() => downloadFile(document.url)}
             className="gap-2"
           >
             <Download className="h-4 w-4" />

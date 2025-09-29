@@ -3,28 +3,12 @@ import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Separator } from "@/components/ui/separator";
-import TwoImageSlideshow from "@/components/ui/TwoImageSlideshow";
+import ImageDisplay from "@/components/cms/ImageDisplay";
 import { CheckCircle, Users } from "lucide-react";
-import { useImages } from "@/hooks/useImages";
-import { gravityFormsLogger } from "@/utils/gravityFormsLogger";
 
 const EventRoomTab = () => {
-  const { images, isLoading } = useImages('gathering-room');
-
-  // Prepare slideshow images with fallback
-  const slideshowImages = {
-    image1: {
-      src: images[0]?.url || "https://ufhcicqixojqpyykjljw.supabase.co/storage/v1/object/public/site-images//OH%20yeah.jpg",
-      alt: images[0]?.alt_text || "Indoor Gathering Room main view"
-    },
-    image2: {
-      src: images[1]?.url || "https://ufhcicqixojqpyykjljw.supabase.co/storage/v1/object/public/site-images//OH%20yeah.jpg",
-      alt: images[1]?.alt_text || "Indoor Gathering Room alternate view"
-    }
-  };
-
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       {/* Enhanced Info Section */}
       <div className="px-2 md:px-4">
         <Card className="overflow-hidden border-0 shadow-lg hover:shadow-xl transition-shadow duration-300">
@@ -33,15 +17,12 @@ const EventRoomTab = () => {
               {/* Image Section */}
               <div className="w-full lg:w-2/5">
                 <div className="rounded-lg overflow-hidden border border-gray-200 shadow-md">
-                  {isLoading ? (
-                    <div className="h-64 md:h-72 bg-gray-200 animate-pulse" />
-                  ) : (
-                    <TwoImageSlideshow
-                      image1={slideshowImages.image1}
-                      image2={slideshowImages.image2}
-                      className="h-64 md:h-72 hover:scale-105 transition-transform duration-1000"
-                    />
-                  )}
+                  <ImageDisplay 
+                    location="event-room" 
+                    fallbackSrc="https://ufhcicqixojqpyykjljw.supabase.co/storage/v1/object/public/site-images//OH%20yeah.jpg" 
+                    alt="Indoor Gathering Room" 
+                    className="w-full h-64 md:h-72 object-cover hover:scale-105 transition-transform duration-1000" 
+                  />
                 </div>
               </div>
               
@@ -109,77 +90,24 @@ const EventRoomTab = () => {
       </div>
       
       {/* Full Page Embed - Full Width Section */}
-      <div className="w-full bg-gradient-to-br from-sky-50 via-sky-100/50 to-blue-100 rounded-lg overflow-hidden shadow-lg">
-        <div className="text-center py-3 md:py-4 px-4">
-          <h3 className="text-xl font-semibold mb-1 md:mb-2 text-gray-800">Indoor Gathering Room Reservation</h3>
-          <p className="text-sm text-gray-600 mb-1 md:mb-2">
+      <div className="w-full bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg overflow-hidden shadow-lg">
+        <div className="text-center py-6 px-4">
+          <h3 className="text-xl font-semibold mb-3 text-gray-800">Indoor Gathering Room Reservation</h3>
+          <p className="text-gray-600 mb-6">
             Complete your reservation using the form below.
           </p>
         </div>
-        <div className="w-full pb-2">
-          <div className="bg-background border border-border rounded-lg p-4 mb-4 mx-2">
-            <p className="text-sm text-muted-foreground mb-2">
-              If the form below doesn't load, you can access it directly:
-            </p>
-            <a 
-              href="https://psprop.net/falcon-pointe-indoor-gathering-room-reservation/" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-primary hover:text-primary/80 underline font-medium"
-            >
-              Open Indoor Gathering Room Reservation Form →
-            </a>
-          </div>
+        <div className="w-full pb-6">
           <iframe 
-            src="https://psprop.net/gfembed/?f=28&jquery=1&jqueryui=1" 
+            src="https://psprop.net/falcon-pointe-indoor-gathering-room-reservation/" 
             width="100%" 
-            height="1200"
+            height="1200" 
             frameBorder="0" 
-            className="w-full block -mt-1 md:-mt-2" 
+            className="w-full rounded-lg bg-white shadow-inner mx-auto block" 
             title="Indoor Gathering Room Reservation Form - Book your event room rental online"
             style={{ minWidth: '100%', maxWidth: '100%' }}
             aria-label="Indoor gathering room reservation booking form"
-            allow="camera *; microphone *; geolocation *; fullscreen *; payment *; autoplay *; form-data *; publickey-credentials-get"
-            sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-modals"
-            referrerPolicy="strict-origin-when-cross-origin"
-            onError={(e) => {
-              gravityFormsLogger.log('error', 'iframe', 'Event Room iframe failed to load', {
-                error: e.toString(),
-                url: 'https://psprop.net/falcon-pointe-indoor-gathering-room-reservation/',
-                userAgent: navigator.userAgent,
-                timestamp: new Date().toISOString(),
-                pageUrl: window.location.href
-              });
-            }}
-            onLoad={(e) => {
-              gravityFormsLogger.log('info', 'iframe', 'Event Room iframe loaded successfully', {
-                url: 'https://psprop.net/falcon-pointe-indoor-gathering-room-reservation/',
-                loadTime: performance.now(),
-                timestamp: new Date().toISOString()
-              });
-              
-              // Test iframe communication
-              try {
-                const iframe = e.target as HTMLIFrameElement;
-                setTimeout(() => {
-                  try {
-                    const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
-                    if (iframeDoc) {
-                      gravityFormsLogger.log('info', 'iframe', 'Iframe document accessible', {
-                        title: iframeDoc.title,
-                        readyState: iframeDoc.readyState
-                      });
-                    } else {
-                      gravityFormsLogger.log('warn', 'iframe', 'Iframe document not accessible (cross-origin)');
-                    }
-                  } catch (err) {
-                    gravityFormsLogger.log('warn', 'iframe', 'Cross-origin iframe access blocked', { error: err.message });
-                  }
-                }, 1000);
-              } catch (err) {
-                gravityFormsLogger.log('error', 'iframe', 'Error testing iframe communication', { error: err.message });
-              }
-            }}
+            loading="lazy"
           />
         </div>
       </div>

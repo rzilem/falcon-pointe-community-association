@@ -46,7 +46,7 @@ const ContentPreview: React.FC<ContentPreviewProps> = ({ content }) => {
           
           <TabsContent value="desktop" className="mt-0">
             <div className="border rounded-md p-6">
-              <h2 className="text-3xl font-bold mb-4">{content.title || 'Untitled'}</h2>
+              <h1 className="text-3xl font-bold mb-4">{content.title || 'Untitled'}</h1>
               <div className="prose max-w-none">
                 {content.content?.split('\n').map((paragraph, index) => (
                   <p key={index} className="mb-4">{paragraph}</p>
@@ -57,7 +57,7 @@ const ContentPreview: React.FC<ContentPreviewProps> = ({ content }) => {
           
           <TabsContent value="mobile" className="mt-0 flex justify-center">
             <div className="border rounded-md p-4 w-[375px] h-[667px] overflow-y-auto">
-              <h2 className="text-2xl font-bold mb-3">{content.title || 'Untitled'}</h2>
+              <h1 className="text-2xl font-bold mb-3">{content.title || 'Untitled'}</h1>
               <div className="prose prose-sm">
                 {content.content?.split('\n').map((paragraph, index) => (
                   <p key={index} className="mb-3">{paragraph}</p>

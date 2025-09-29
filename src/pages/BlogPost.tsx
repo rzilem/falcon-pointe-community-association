@@ -121,16 +121,9 @@ const BlogPost = () => {
           {post.featured_image && (
             <div className="mb-8 rounded-lg overflow-hidden">
               <img 
-                src={post.featured_image.startsWith('http') 
-                  ? post.featured_image 
-                  : `https://ufhcicqixojqpyykjljw.supabase.co/storage/v1/object/public/site-images/${post.featured_image}`
-                } 
+                src={post.featured_image} 
                 alt={post.title || 'Blog post'} 
                 className="w-full h-auto object-cover max-h-96"
-                onError={(e) => {
-                  // Hide image if it fails to load
-                  e.currentTarget.style.display = 'none';
-                }}
               />
             </div>
           )}

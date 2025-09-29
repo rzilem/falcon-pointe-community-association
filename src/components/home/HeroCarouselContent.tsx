@@ -46,21 +46,20 @@ const HeroCarouselContent = () => {
                 e.currentTarget.src = "/placeholder.svg";
               }}
             />
-            <div className="absolute inset-0 on-image-overlay" />
-            <div className="absolute inset-0 on-image-gradient" />
+            <div className="absolute inset-0 bg-black/40" />
             <div className="absolute inset-0 flex items-center">
               <div className="container mx-auto px-4 text-center text-white">
                 {/* Only first slide should have H1, others use H2 for proper heading hierarchy */}
                 {image.id === "overhead" ? (
-                  <h1 className="text-4xl md:text-6xl font-bold mb-6 text-contrast-shadow">
+                  <h1 className="text-4xl md:text-6xl font-bold mb-6">
                     {image.title}
                   </h1>
                 ) : (
-                  <h2 className="text-4xl md:text-6xl font-bold mb-6 text-contrast-shadow">
+                  <h2 className="text-4xl md:text-6xl font-bold mb-6">
                     {image.title}
                   </h2>
                 )}
-                <p className="text-xl md:text-2xl mb-8 max-w-2xl mx-auto text-contrast-shadow">
+                <p className="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">
                   {image.description}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">

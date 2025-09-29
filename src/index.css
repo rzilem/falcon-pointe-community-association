@@ -262,44 +262,4 @@ html {
   .text-gradient {
     @apply bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent;
   }
-
-  /* WCAG contrast utilities for text/controls over images */
-  .on-image-overlay {
-    @apply bg-black/50;
-  }
-
-  .on-image-gradient {
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.6) 100%);
-  }
-
-  .text-contrast-shadow {
-    text-shadow: 
-      0 1px 3px rgba(0, 0, 0, 0.8),
-      0 0 10px rgba(0, 0, 0, 0.5);
-  }
-
-  .control-contrast-bg {
-    @apply bg-black/50 hover:bg-black/70;
-  }
-
-  .indicator-contrast-bg {
-    @apply bg-black/30 rounded-full;
-  }
-
-  /* High contrast mode enhancements */
-  @media (prefers-contrast: more) {
-    .on-image-overlay {
-      @apply bg-black/70;
-    }
-    
-    .on-image-gradient {
-      background: linear-gradient(180deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0.8) 100%);
-    }
-    
-    .text-contrast-shadow {
-      text-shadow: 
-        0 2px 4px rgba(0, 0, 0, 1),
-        0 0 15px rgba(0, 0, 0, 0.8);
-    }
-  }
 }

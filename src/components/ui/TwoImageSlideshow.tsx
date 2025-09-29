@@ -35,8 +35,8 @@ const TwoImageSlideshow = ({ image1, image2, className = "" }: TwoImageSlideshow
             />
           </CarouselItem>
         </CarouselContent>
-        <CarouselPrevious className="!left-2 !h-4 !w-4 !p-0 [&_svg]:!h-2 [&_svg]:!w-2 !ring-0 focus-visible:!ring-0 focus-visible:!ring-offset-0" />
-        <CarouselNext className="!right-2 !h-4 !w-4 !p-0 [&_svg]:!h-2 [&_svg]:!w-2 !ring-0 focus-visible:!ring-0 focus-visible:!ring-offset-0" />
+        <CarouselPrevious className="left-2 h-6 w-6 p-0.5 [&_svg]:h-3 [&_svg]:w-3" />
+        <CarouselNext className="right-2 h-6 w-6 p-0.5 [&_svg]:h-3 [&_svg]:w-3" />
       </Carousel>
     </div>
   );

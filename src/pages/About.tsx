@@ -2,7 +2,6 @@ import React from "react";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import ImageDisplay from "@/components/cms/ImageDisplay";
 const About = () => {
   return <Layout>
       {/* Hero Section */}
@@ -20,12 +19,7 @@ const About = () => {
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center mb-16">
             <div className="md:w-1/2 mb-8 md:mb-0 md:pr-8">
-              <ImageDisplay 
-                location="about-community"
-                fallbackSrc="/lovable-uploads/899b4f94-1a92-4f7d-a7c0-37faa59f7550.png"
-                alt="Beautiful entrance to Falcon Pointe community with stone signage and landscaping"
-                className="rounded-lg shadow-lg w-full h-auto"
-              />
+              <img src="/lovable-uploads/899b4f94-1a92-4f7d-a7c0-37faa59f7550.png" alt="Falcon Pointe Entrance" className="rounded-lg shadow-lg" />
             </div>
             <div className="md:w-1/2">
               <h2 className="text-3xl font-bold mb-4">Our Community</h2>
@@ -49,12 +43,7 @@ const About = () => {
           {/* Location */}
           <div className="flex flex-col md:flex-row-reverse items-center mb-16">
             <div className="md:w-1/2 mb-8 md:mb-0 md:pl-8">
-              <ImageDisplay 
-                location="about-location"
-                fallbackSrc="/lovable-uploads/41ef6a9e-81d5-4aa9-9169-bba038eba0f5.png"
-                alt="Modern two-story home in Falcon Pointe community showcasing quality construction and design"
-                className="rounded-lg shadow-lg w-full h-auto"
-              />
+              <img src="/lovable-uploads/41ef6a9e-81d5-4aa9-9169-bba038eba0f5.png" alt="Falcon Pointe Home" className="rounded-lg shadow-lg" />
             </div>
             <div className="md:w-1/2">
               <h2 className="text-3xl font-bold mb-4">Location & Accessibility</h2>

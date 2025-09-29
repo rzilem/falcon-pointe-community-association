@@ -6,7 +6,6 @@ export interface Document {
   category: string;
   description: string;
   last_updated: string;
-  storagePath?: string;
 }
 
 export interface DocumentCategory {

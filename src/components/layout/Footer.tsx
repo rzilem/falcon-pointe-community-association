@@ -45,7 +45,7 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-4">Resident Resources</h3>
             <ul className="space-y-2">
               <li><Link to="/documents" className="text-gray-300 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-gray-800 rounded">Association Documents</Link></li>
-              <li><a href="https://portal.example.com" target="_blank" rel="noopener noreferrer" aria-label="Resident Portal (opens in new tab)" className="text-gray-300 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-gray-800 rounded">Resident Portal</a></li>
+              <li><a href="https://portal.example.com" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-gray-800 rounded">Resident Portal</a></li>
               <li><Link to="/board" className="text-gray-300 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-gray-800 rounded">Board of Directors</Link></li>
               <li><Link to="/gallery" className="text-gray-300 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-gray-800 rounded">Photo Gallery</Link></li>
             </ul>
