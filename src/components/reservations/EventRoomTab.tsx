@@ -93,9 +93,23 @@ const EventRoomTab = () => {
       <div className="w-full bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg overflow-hidden shadow-lg">
         <div className="text-center py-6 px-4">
           <h3 className="text-xl font-semibold mb-3 text-gray-800">Indoor Gathering Room Reservation</h3>
-          <p className="text-gray-600 mb-6">
+          <p className="text-gray-600 mb-4">
             Complete your reservation using the form below.
           </p>
+          <div className="mb-4">
+            <a 
+              href="https://psprop.net/falcon-pointe-indoor-gathering-room-reservation/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors text-sm font-medium"
+              aria-label="Open Indoor Gathering Room reservation form in new tab"
+            >
+              Having trouble viewing the form? Open in new tab
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+          </div>
         </div>
         <div className="w-full pb-6">
           <iframe 
