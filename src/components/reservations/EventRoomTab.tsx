@@ -1,12 +1,49 @@
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Separator } from "@/components/ui/separator";
 import ImageDisplay from "@/components/cms/ImageDisplay";
-import { CheckCircle, Users } from "lucide-react";
+import { CheckCircle, Users, AlertCircle } from "lucide-react";
 
 const EventRoomTab = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
+
+  useEffect(() => {
+    // Load Gravity Forms embed script
+    const script = document.createElement('script');
+    script.src = '//psprop.net/wp-content/plugins/gravityforms/js/gfembed.min.js';
+    script.async = true;
+    script.onload = () => {
+      console.log('Gravity Forms embed script loaded');
+    };
+    script.onerror = () => {
+      console.error('Failed to load Gravity Forms embed script');
+      setHasError(true);
+      setIsLoading(false);
+    };
+    
+    document.head.appendChild(script);
+    
+    return () => {
+      // Cleanup script if component unmounts
+      const existingScript = document.querySelector('script[src="//psprop.net/wp-content/plugins/gravityforms/js/gfembed.min.js"]');
+      if (existingScript) {
+        existingScript.remove();
+      }
+    };
+  }, []);
+
+  const handleIframeLoad = () => {
+    setIsLoading(false);
+    setHasError(false);
+  };
+
+  const handleIframeError = () => {
+    setIsLoading(false);
+    setHasError(true);
+  };
   return (
     <div className="space-y-6">
       {/* Enhanced Info Section */}
@@ -111,17 +148,40 @@ const EventRoomTab = () => {
             </a>
           </div>
         </div>
-        <div className="w-full pb-6">
+        <div className="w-full pb-6 relative">
+          {isLoading && (
+            <div className="absolute inset-0 flex items-center justify-center bg-white/80 z-10 rounded-lg">
+              <div className="flex items-center gap-2 text-gray-600">
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary"></div>
+                <span>Loading reservation form...</span>
+              </div>
+            </div>
+          )}
+          
+          {hasError && (
+            <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-4">
+              <div className="flex items-center gap-2 text-orange-700 mb-2">
+                <AlertCircle className="h-4 w-4" />
+                <span className="font-medium">Form temporarily unavailable</span>
+              </div>
+              <p className="text-sm text-orange-600">
+                Please use the "Open in new tab" button above to access the reservation form directly.
+              </p>
+            </div>
+          )}
+          
           <iframe 
-            src="https://psprop.net/falcon-pointe-indoor-gathering-room-reservation/" 
+            src="//psprop.net/gfembed/?f=38" 
             width="100%" 
             height="1200" 
             frameBorder="0" 
-            className="w-full rounded-lg bg-white shadow-inner mx-auto block" 
+            className={`w-full rounded-lg bg-white shadow-inner mx-auto block transition-opacity duration-300 ${hasError ? 'opacity-50' : 'opacity-100'}`}
             title="Indoor Gathering Room Reservation Form - Book your event room rental online"
             style={{ minWidth: '100%', maxWidth: '100%' }}
             aria-label="Indoor gathering room reservation booking form"
             loading="lazy"
+            onLoad={handleIframeLoad}
+            onError={handleIframeError}
           />
         </div>
       </div>
