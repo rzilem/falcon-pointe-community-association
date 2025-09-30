@@ -165,7 +165,7 @@ const EventRoomTab = () => {
           </div>
           
           <div className="w-full flex justify-center overflow-x-auto pb-8">
-            <div className="bg-white rounded-xl shadow-2xl overflow-hidden relative" style={{ minWidth: '1600px', width: '1600px' }}>
+            <div className="bg-white rounded-xl shadow-2xl overflow-hidden relative" style={{ minWidth: '1800px', width: '1800px' }}>
               {isLoading && (
                 <div className="absolute inset-0 flex items-center justify-center bg-white/90 z-20">
                   <div className="flex items-center gap-3 text-gray-600">
@@ -188,13 +188,13 @@ const EventRoomTab = () => {
               )}
               
               <iframe 
-                src="https://psprop.net/falcon-pointe-indoor-gathering-room-reservation/?layout=horizontal&view=wide&responsive=false" 
-                width="1600" 
+                src="https://psprop.net/falcon-pointe-indoor-gathering-room-reservation/" 
+                width="1800" 
                 height="1800" 
                 frameBorder="0"
                 className={`w-full bg-white transition-opacity duration-300 ${hasError ? 'opacity-50' : 'opacity-100'}`}
                 title="Indoor Gathering Room Reservation Form - Book your event room rental online"
-                style={{ minWidth: '1600px', width: '1600px', minHeight: '1800px' }}
+                style={{ minWidth: '1800px', width: '1800px', minHeight: '1800px' }}
                 aria-label="Indoor gathering room reservation booking form"
                 loading="lazy"
                 onLoad={handleIframeLoad}

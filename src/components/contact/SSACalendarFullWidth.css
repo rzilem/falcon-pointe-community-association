@@ -4,7 +4,7 @@
 .ssa-booking-app {
     width: 100% !important;
     max-width: 100% !important;
-    min-width: 800px !important; /* Minimum width to show times on right */
+    min-width: 1200px !important; /* Increased minimum width to force side-by-side layout */
 }
 
 /* Make the step container full width */
@@ -12,14 +12,17 @@
 .ssa-step {
     width: 100% !important;
     max-width: 100% !important;
-    min-width: 800px !important;
+    min-width: 1200px !important;
+    display: flex !important;
+    flex-direction: row !important;
 }
 
 /* Calendar and time selection layout */
 .ssa-calendar-wrapper {
     width: 100% !important;
-    min-width: 800px !important;
+    min-width: 1200px !important;
     display: flex !important;
+    flex-direction: row !important;
     flex-wrap: nowrap !important;
 }
 
@@ -152,7 +155,25 @@ html, body {
 .ssa-appointment-calendar-wrapper,
 .ssa-booking-calendar-container {
     width: 100% !important;
-    min-width: 800px !important;
+    min-width: 1200px !important;
+    display: flex !important;
+    flex-direction: row !important;
+}
+
+/* Force specific SSA booking flow into horizontal layout */
+.ssa-booking-form .ssa-step-1,
+.ssa-booking-form .ssa-step-2,
+.ssa-booking-form .ssa-calendar-step {
+    display: flex !important;
+    flex-direction: row !important;
+    width: 100% !important;
+    min-width: 1200px !important;
+}
+
+/* Override SSA's default step-by-step flow for this specific service */
+iframe[src*="falcon-pointe-indoor-gathering-room-reservation"] .ssa-booking-app,
+iframe[src*="falcon-pointe-indoor-gathering-room-reservation"] .ssa-step {
+    min-width: 1200px !important;
     display: flex !important;
     flex-direction: row !important;
 }
