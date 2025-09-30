@@ -1,0 +1,158 @@
+/* SSA Calendar Layout Fix - Force wider layout for proper time display */
+
+/* Force the main booking container to be full width */
+.ssa-booking-app {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 800px !important; /* Minimum width to show times on right */
+}
+
+/* Make the step container full width */
+.ssa-step-booking-form,
+.ssa-step {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 800px !important;
+}
+
+/* Calendar and time selection layout */
+.ssa-calendar-wrapper {
+    width: 100% !important;
+    min-width: 800px !important;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+}
+
+/* Calendar should take up left side */
+.ssa-calendar {
+    flex: 0 0 400px !important; /* Fixed width for calendar */
+    min-width: 400px !important;
+    margin-right: 20px !important;
+}
+
+/* Time selection should appear on the right */
+.ssa-time-selection,
+.ssa-timeslot-picker,
+.ssa-available-times {
+    flex: 1 !important;
+    min-width: 300px !important;
+    margin-left: 20px !important;
+}
+
+/* Force horizontal layout for calendar + times */
+.ssa-calendar-and-times,
+.ssa-booking-calendar-wrapper {
+    display: flex !important;
+    flex-direction: row !important;
+    width: 100% !important;
+    min-width: 800px !important;
+}
+
+/* Ensure calendar month view has proper width */
+.ssa-calendar-month-view {
+    width: 100% !important;
+    min-width: 350px !important;
+}
+
+/* Calendar day cells sizing */
+.ssa-calendar .ssa-day {
+    min-width: 45px !important;
+    height: 45px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+/* Calendar header spacing */
+.ssa-calendar-header {
+    width: 100% !important;
+    margin-bottom: 15px !important;
+}
+
+/* Time slots styling when they appear on the right */
+.ssa-available-times .ssa-timeslot {
+    margin-bottom: 8px !important;
+    width: 100% !important;
+}
+
+/* Prevent wrapping of the main layout */
+.ssa-booking-form-step {
+    width: 100% !important;
+    min-width: 800px !important;
+    overflow-x: auto !important;
+}
+
+/* Override any max-width restrictions */
+.ssa-booking-app *,
+.ssa-calendar-wrapper *,
+.ssa-step * {
+    max-width: none !important;
+}
+
+/* Ensure the iframe can scroll horizontally if needed */
+html, body {
+    overflow-x: auto !important;
+    min-width: 800px !important;
+}
+
+/* For very wide screens, limit the maximum width but keep it spacious */
+@media (min-width: 1200px) {
+    .ssa-booking-app {
+        max-width: 1000px !important;
+        margin: 0 auto !important;
+    }
+}
+
+/* For medium screens, ensure minimum layout */
+@media (min-width: 768px) and (max-width: 1199px) {
+    .ssa-booking-app {
+        min-width: 800px !important;
+        width: 100% !important;
+    }
+}
+
+/* For smaller screens, allow stacking but with better spacing */
+@media (max-width: 767px) {
+    .ssa-calendar-wrapper,
+    .ssa-calendar-and-times {
+        flex-direction: column !important;
+        min-width: 100% !important;
+    }
+    
+    .ssa-calendar {
+        flex: none !important;
+        width: 100% !important;
+        margin-right: 0 !important;
+        margin-bottom: 20px !important;
+    }
+    
+    .ssa-time-selection,
+    .ssa-available-times {
+        flex: none !important;
+        width: 100% !important;
+        margin-left: 0 !important;
+    }
+}
+
+/* Fix for step progression bar */
+.ssa-booking-app .ssa-step-progress {
+    width: 100% !important;
+    min-width: 800px !important;
+}
+
+/* Ensure proper spacing between calendar and times */
+.ssa-booking-calendar {
+    display: flex !important;
+    gap: 30px !important;
+    width: 100% !important;
+    min-width: 800px !important;
+}
+
+/* Target specific SSA layout classes if they exist */
+.ssa-appointment-calendar-wrapper,
+.ssa-booking-calendar-container {
+    width: 100% !important;
+    min-width: 800px !important;
+    display: flex !important;
+    flex-direction: row !important;
+}

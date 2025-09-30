@@ -8,6 +8,7 @@ import "@/components/contact/GravityFormBase.css";
 import "@/components/contact/GravityFormResponsive.css";
 import "@/components/contact/GravityFormCalendar.css";
 import "@/components/contact/GravityFormFullWidth.css";
+import "@/components/contact/SSACalendarFullWidth.css";
 
 const PoolPavilionTab = () => {
   const [isLoading, setIsLoading] = useState(true);
