@@ -175,8 +175,8 @@ const PoolPavilionTab = () => {
             </a>
           </div>
           
-          <div className="max-w-6xl mx-auto">
-            <div className="bg-white rounded-xl shadow-2xl overflow-hidden relative gravity-form-container">
+          <div className="w-full" style={{ minWidth: '1200px' }}>
+            <div className="bg-white rounded-xl shadow-2xl overflow-hidden relative gravity-form-container" style={{ minWidth: '1200px' }}>
               {isLoading && (
                 <div className="absolute inset-0 flex items-center justify-center bg-white/90 z-20">
                   <div className="flex items-center gap-3 text-gray-600">
@@ -199,13 +199,13 @@ const PoolPavilionTab = () => {
               )}
               
               <iframe 
-                src="//psprop.net/gfembed/?f=36" 
-                width="100%" 
-                height="1400" 
+                src="//psprop.net/gfembed/?f=36&layout=wide&width=1200" 
+                width="1200" 
+                height="1600" 
                 frameBorder="0"
-                className={`gfiframe calendar-iframe w-full bg-white transition-opacity duration-300 ${hasError ? 'opacity-50' : 'opacity-100'}`}
+                className={`gfiframe calendar-iframe bg-white transition-opacity duration-300 ${hasError ? 'opacity-50' : 'opacity-100'}`}
                 title="Pool Pavilion Reservation Form - Book your pool pavilion rental online"
-                style={{ minWidth: '100%', maxWidth: '100%', minHeight: '1400px' }}
+                style={{ minWidth: '1200px', width: '1200px', minHeight: '1600px' }}
                 aria-label="Pool pavilion reservation booking form"
                 loading="lazy"
                 onLoad={handleIframeLoad}
