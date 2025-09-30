@@ -145,7 +145,7 @@ const PoolPavilionTab = () => {
         <div className="w-full">
           <div className="container mx-auto px-4 md:px-6 py-8 text-center">
             <h3 className="text-2xl font-bold mb-4 text-gray-800">Pool Pavilion Reservation</h3>
-            <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
+            <p className="text-gray-600 mb-6 max-w-4xl mx-auto text-center whitespace-nowrap">
               Complete your reservation using the form below. The form includes calendar functionality for date selection.
             </p>
             
