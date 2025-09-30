@@ -188,7 +188,7 @@ const EventRoomTab = () => {
               )}
               
               <iframe 
-                src="https://psprop.net/falcon-pointe-indoor-gathering-room-reservation/" 
+                src="https://psprop.net/falcon-pointe-indoor-gathering-room-reservation/?layout=horizontal&view=wide&responsive=false" 
                 width="1600" 
                 height="1800" 
                 frameBorder="0"
