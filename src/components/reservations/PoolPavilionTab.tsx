@@ -175,8 +175,8 @@ const PoolPavilionTab = () => {
             </a>
           </div>
           
-          <div className="w-full" style={{ minWidth: '1200px' }}>
-            <div className="bg-white rounded-xl shadow-2xl overflow-hidden relative gravity-form-container" style={{ minWidth: '1200px' }}>
+          <div className="w-full" style={{ minWidth: '1600px' }}>
+            <div className="bg-white rounded-xl shadow-2xl overflow-hidden relative" style={{ minWidth: '1600px' }}>
               {isLoading && (
                 <div className="absolute inset-0 flex items-center justify-center bg-white/90 z-20">
                   <div className="flex items-center gap-3 text-gray-600">
@@ -199,13 +199,13 @@ const PoolPavilionTab = () => {
               )}
               
               <iframe 
-                src="//psprop.net/gfembed/?f=36&layout=wide&width=1200" 
-                width="1200" 
-                height="1600" 
+                src="https://psprop.net/falcon-pointe-pool-pavilion-reservation/" 
+                width="1600" 
+                height="1800" 
                 frameBorder="0"
-                className={`gfiframe calendar-iframe bg-white transition-opacity duration-300 ${hasError ? 'opacity-50' : 'opacity-100'}`}
+                className={`w-full bg-white transition-opacity duration-300 ${hasError ? 'opacity-50' : 'opacity-100'}`}
                 title="Pool Pavilion Reservation Form - Book your pool pavilion rental online"
-                style={{ minWidth: '1200px', width: '1200px', minHeight: '1600px' }}
+                style={{ minWidth: '1600px', width: '1600px', minHeight: '1800px' }}
                 aria-label="Pool pavilion reservation booking form"
                 loading="lazy"
                 onLoad={handleIframeLoad}
