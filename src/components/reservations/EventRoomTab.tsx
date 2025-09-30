@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -10,37 +9,31 @@ import "@/components/contact/GravityFormResponsive.css";
 import "@/components/contact/GravityFormCalendar.css";
 import "@/components/contact/GravityFormFullWidth.css";
 import "@/components/contact/SSACalendarFullWidth.css";
-
 const EventRoomTab = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
-
   useEffect(() => {
     // Load Gravity Forms embed script with timeout
     const script = document.createElement('script');
     script.src = 'https://psprop.net/wp-content/plugins/gravity-forms-iframe-master/assets/scripts/gfembed.min.js';
     script.async = true;
-    
     const timeout = setTimeout(() => {
       console.warn('Gravity Forms script loading timeout');
       setHasError(true);
       setIsLoading(false);
     }, 10000); // 10 second timeout
-    
+
     script.onload = () => {
       clearTimeout(timeout);
       console.log('Gravity Forms embed script loaded');
     };
-    
     script.onerror = () => {
       clearTimeout(timeout);
       console.error('Failed to load Gravity Forms embed script');
       setHasError(true);
       setIsLoading(false);
     };
-    
     document.head.appendChild(script);
-    
     return () => {
       clearTimeout(timeout);
       // Cleanup script if component unmounts
@@ -50,18 +43,15 @@ const EventRoomTab = () => {
       }
     };
   }, []);
-
   const handleIframeLoad = () => {
     setIsLoading(false);
     setHasError(false);
   };
-
   const handleIframeError = () => {
     setIsLoading(false);
     setHasError(true);
   };
-  return (
-    <div className="space-y-6">
+  return <div className="space-y-6">
       {/* Enhanced Info Section */}
       <div className="px-2 md:px-4">
         <Card className="overflow-hidden border-0 shadow-lg hover:shadow-xl transition-shadow duration-300">
@@ -70,12 +60,7 @@ const EventRoomTab = () => {
               {/* Image Section */}
               <div className="w-full lg:w-2/5">
                 <div className="rounded-lg overflow-hidden border border-gray-200 shadow-md">
-                  <ImageDisplay 
-                    location="event-room" 
-                    fallbackSrc="https://ufhcicqixojqpyykjljw.supabase.co/storage/v1/object/public/site-images//OH%20yeah.jpg" 
-                    alt="Indoor Gathering Room" 
-                    className="w-full h-64 md:h-72 object-cover hover:scale-105 transition-transform duration-1000" 
-                  />
+                  <ImageDisplay location="event-room" fallbackSrc="https://ufhcicqixojqpyykjljw.supabase.co/storage/v1/object/public/site-images//OH%20yeah.jpg" alt="Indoor Gathering Room" className="w-full h-64 md:h-72 object-cover hover:scale-105 transition-transform duration-1000" />
                 </div>
               </div>
               
@@ -147,36 +132,25 @@ const EventRoomTab = () => {
         <div className="w-full">
           <div className="container mx-auto px-4 md:px-6 py-8 text-center">
             <h3 className="text-2xl font-bold mb-4 text-gray-800">Indoor Gathering Room Reservation</h3>
-            <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
+            <p className="text-gray-600 mb-6 max-w-2xl mx-auto text-center">
               Complete your reservation using the form below. The form includes calendar functionality for date selection.
             </p>
-            <a 
-              href="https://psprop.net/falcon-pointe-indoor-gathering-room-reservation/" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium shadow-lg hover:shadow-xl"
-              aria-label="Open Indoor Gathering Room reservation form in new tab"
-            >
-              Having trouble viewing the form? Open in new tab
-              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-              </svg>
-            </a>
+            
           </div>
           
           <div className="w-full flex justify-center overflow-x-auto pb-8">
-            <div className="bg-white rounded-xl shadow-2xl overflow-hidden relative" style={{ minWidth: '1800px', width: '1800px' }}>
-              {isLoading && (
-                <div className="absolute inset-0 flex items-center justify-center bg-white/90 z-20">
+            <div className="bg-white rounded-xl shadow-2xl overflow-hidden relative" style={{
+            minWidth: '1800px',
+            width: '1800px'
+          }}>
+              {isLoading && <div className="absolute inset-0 flex items-center justify-center bg-white/90 z-20">
                   <div className="flex items-center gap-3 text-gray-600">
                     <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
                     <span className="text-lg">Loading reservation form...</span>
                   </div>
-                </div>
-              )}
+                </div>}
               
-              {hasError && (
-                <div className="bg-orange-50 border border-orange-200 rounded-lg p-6 m-6">
+              {hasError && <div className="bg-orange-50 border border-orange-200 rounded-lg p-6 m-6">
                   <div className="flex items-center gap-3 text-orange-700 mb-3">
                     <AlertCircle className="h-6 w-6" />
                     <span className="font-semibold text-lg">Form temporarily unavailable</span>
@@ -184,30 +158,17 @@ const EventRoomTab = () => {
                   <p className="text-orange-600">
                     Please use the "Open in new tab" button above to access the reservation form directly.
                   </p>
-                </div>
-              )}
+                </div>}
               
-              <iframe 
-                src="https://psprop.net/falcon-pointe-indoor-gathering-room-reservation/" 
-                width="1800" 
-                height="1800" 
-                frameBorder="0"
-                className={`w-full bg-white transition-opacity duration-300 ${hasError ? 'opacity-50' : 'opacity-100'}`}
-                title="Indoor Gathering Room Reservation Form - Book your event room rental online"
-                style={{ minWidth: '1800px', width: '1800px', minHeight: '1800px' }}
-                aria-label="Indoor gathering room reservation booking form"
-                loading="lazy"
-                onLoad={handleIframeLoad}
-                onError={handleIframeError}
-                sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals"
-                allow="fullscreen"
-              />
+              <iframe src="https://psprop.net/falcon-pointe-indoor-gathering-room-reservation/" width="1800" height="1800" frameBorder="0" className={`w-full bg-white transition-opacity duration-300 ${hasError ? 'opacity-50' : 'opacity-100'}`} title="Indoor Gathering Room Reservation Form - Book your event room rental online" style={{
+              minWidth: '1800px',
+              width: '1800px',
+              minHeight: '1800px'
+            }} aria-label="Indoor gathering room reservation booking form" loading="lazy" onLoad={handleIframeLoad} onError={handleIframeError} sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals" allow="fullscreen" />
             </div>
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default EventRoomTab;
