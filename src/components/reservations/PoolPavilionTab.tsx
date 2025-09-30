@@ -4,6 +4,10 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Separator } from "@/components/ui/separator";
 import TwoImageSlideshow from "@/components/ui/TwoImageSlideshow";
 import { CheckCircle, Info, Users, AlertCircle } from "lucide-react";
+import "@/components/contact/GravityFormBase.css";
+import "@/components/contact/GravityFormResponsive.css";
+import "@/components/contact/GravityFormCalendar.css";
+import "@/components/contact/GravityFormFullWidth.css";
 
 const PoolPavilionTab = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -148,65 +152,68 @@ const PoolPavilionTab = () => {
         </Card>
       </div>
       
-      {/* Full Page Embed - Full Width Section */}
-      <div className="w-full bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg overflow-hidden shadow-lg">
-        <div className="text-center py-6 px-4">
-          <h3 className="text-xl font-semibold mb-3 text-gray-800">Pool Pavilion Reservation</h3>
-          <p className="text-gray-600 mb-4">
-            Complete your reservation using the form below.
-          </p>
-          <div className="mb-4">
+      {/* Full Width Iframe Section - Break out of container */}
+      <div className="w-screen relative left-1/2 right-1/2 -mx-[50vw] bg-gradient-to-br from-blue-50 to-indigo-50">
+        <div className="container mx-auto px-4 md:px-6 py-8">
+          <div className="text-center mb-8">
+            <h3 className="text-2xl font-bold mb-4 text-gray-800">Pool Pavilion Reservation</h3>
+            <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
+              Complete your reservation using the form below. The form includes calendar functionality for date selection.
+            </p>
             <a 
               href="https://psprop.net/falcon-pointe-pool-pavilion-reservation/" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors text-sm font-medium"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium shadow-lg hover:shadow-xl"
               aria-label="Open Pool Pavilion reservation form in new tab"
             >
               Having trouble viewing the form? Open in new tab
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
               </svg>
             </a>
           </div>
-        </div>
-        <div className="w-full pb-6 relative">
-          {isLoading && (
-            <div className="absolute inset-0 flex items-center justify-center bg-white/80 z-10 rounded-lg">
-              <div className="flex items-center gap-2 text-gray-600">
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary"></div>
-                <span>Loading reservation form...</span>
-              </div>
-            </div>
-          )}
           
-          {hasError && (
-            <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-4">
-              <div className="flex items-center gap-2 text-orange-700 mb-2">
-                <AlertCircle className="h-4 w-4" />
-                <span className="font-medium">Form temporarily unavailable</span>
-              </div>
-              <p className="text-sm text-orange-600">
-                Please use the "Open in new tab" button above to access the reservation form directly.
-              </p>
+          <div className="max-w-6xl mx-auto">
+            <div className="bg-white rounded-xl shadow-2xl overflow-hidden relative gravity-form-container">
+              {isLoading && (
+                <div className="absolute inset-0 flex items-center justify-center bg-white/90 z-20">
+                  <div className="flex items-center gap-3 text-gray-600">
+                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
+                    <span className="text-lg">Loading reservation form...</span>
+                  </div>
+                </div>
+              )}
+              
+              {hasError && (
+                <div className="bg-orange-50 border border-orange-200 rounded-lg p-6 m-6">
+                  <div className="flex items-center gap-3 text-orange-700 mb-3">
+                    <AlertCircle className="h-6 w-6" />
+                    <span className="font-semibold text-lg">Form temporarily unavailable</span>
+                  </div>
+                  <p className="text-orange-600">
+                    Please use the "Open in new tab" button above to access the reservation form directly.
+                  </p>
+                </div>
+              )}
+              
+              <iframe 
+                src="//psprop.net/gfembed/?f=36" 
+                width="100%" 
+                height="1400" 
+                frameBorder="0"
+                className={`gfiframe calendar-iframe w-full bg-white transition-opacity duration-300 ${hasError ? 'opacity-50' : 'opacity-100'}`}
+                title="Pool Pavilion Reservation Form - Book your pool pavilion rental online"
+                style={{ minWidth: '100%', maxWidth: '100%', minHeight: '1400px' }}
+                aria-label="Pool pavilion reservation booking form"
+                loading="lazy"
+                onLoad={handleIframeLoad}
+                onError={handleIframeError}
+                sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals"
+                allow="fullscreen"
+              />
             </div>
-          )}
-          
-          <iframe 
-            src="//psprop.net/gfembed/?f=36" 
-            width="100%" 
-            height="1200" 
-            frameBorder="0"
-            className={`gfiframe w-full rounded-lg bg-white shadow-inner mx-auto block transition-opacity duration-300 ${hasError ? 'opacity-50' : 'opacity-100'}`}
-            title="Pool Pavilion Reservation Form - Book your pool pavilion rental online"
-            style={{ minWidth: '100%', maxWidth: '100%' }}
-            aria-label="Pool pavilion reservation booking form"
-            loading="lazy"
-            onLoad={handleIframeLoad}
-            onError={handleIframeError}
-            sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals"
-            allow="fullscreen"
-          />
+          </div>
         </div>
       </div>
     </div>

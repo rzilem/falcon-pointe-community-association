@@ -1,0 +1,76 @@
+/* Full-width iframe styling for reservations */
+.w-screen {
+  width: 100vw !important;
+}
+
+/* Full-width container breakout styles */
+.full-width-form-container {
+  width: 100vw !important;
+  position: relative;
+  left: 50% !important;
+  right: 50% !important;
+  margin-left: -50vw !important;
+  margin-right: -50vw !important;
+}
+
+/* Enhanced iframe styling for full-width forms */
+.gfiframe.calendar-iframe {
+  min-height: 1400px !important;
+  height: 1400px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  border: none !important;
+  background: white !important;
+  display: block !important;
+}
+
+/* Ensure form content uses full available width */
+.gravity-form-container .gform_wrapper {
+  max-width: 100% !important;
+  width: 100% !important;
+  padding: 20px !important;
+}
+
+.gravity-form-container .gform_body {
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
+.gravity-form-container .gfield {
+  margin-bottom: 20px !important;
+}
+
+/* Calendar widget specific styling */
+.gravity-form-container .ui-datepicker {
+  position: absolute !important;
+  z-index: 9999 !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .gfiframe.calendar-iframe {
+    min-height: 1200px !important;
+    height: 1200px !important;
+  }
+  
+  .gravity-form-container .gform_wrapper {
+    padding: 16px !important;
+  }
+  
+  .gravity-form-container .gfield {
+    margin-bottom: 16px !important;
+  }
+}
+
+/* Prevent horizontal scrolling on mobile */
+@media (max-width: 640px) {
+  .full-width-form-container {
+    margin-left: -50vw !important;
+    margin-right: -50vw !important;
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+  }
+}
