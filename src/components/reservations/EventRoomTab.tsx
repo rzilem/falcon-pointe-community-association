@@ -144,8 +144,8 @@ const EventRoomTab = () => {
       
       {/* Full Width Iframe Section - Break out of container */}
       <div className="w-screen relative left-1/2 right-1/2 -mx-[50vw] bg-gradient-to-br from-green-50 to-emerald-50">
-        <div className="container mx-auto px-4 md:px-6 py-8">
-          <div className="text-center mb-8">
+        <div className="w-full">
+          <div className="container mx-auto px-4 md:px-6 py-8 text-center">
             <h3 className="text-2xl font-bold mb-4 text-gray-800">Indoor Gathering Room Reservation</h3>
             <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
               Complete your reservation using the form below. The form includes calendar functionality for date selection.
@@ -164,8 +164,8 @@ const EventRoomTab = () => {
             </a>
           </div>
           
-          <div className="w-full" style={{ minWidth: '1600px' }}>
-            <div className="bg-white rounded-xl shadow-2xl overflow-hidden relative" style={{ minWidth: '1600px' }}>
+          <div className="w-full flex justify-center overflow-x-auto pb-8">
+            <div className="bg-white rounded-xl shadow-2xl overflow-hidden relative" style={{ minWidth: '1600px', width: '1600px' }}>
               {isLoading && (
                 <div className="absolute inset-0 flex items-center justify-center bg-white/90 z-20">
                   <div className="flex items-center gap-3 text-gray-600">
