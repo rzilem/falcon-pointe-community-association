@@ -15,10 +15,10 @@ const Board = () => {
       image: "/lovable-uploads/6c2a5abb-a4c0-42a6-b7e0-39f8bbfdbf83.png"
     },
     {
-      name: "Carol Serna",
+      name: "Jerron Knuthson",
       position: "Vice President",
       bio: "Bringing years of community leadership experience to Falcon Pointe.",
-      email: "carol.serna@falconpointecommunity.com",
+      email: "jerron.knuthson@falconpointecommunity.com",
       image: "/lovable-uploads/229f09a0-dd6e-4287-a457-2523b2859beb.png"
     },
     {
