@@ -1,11 +1,8 @@
-
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { MapPin, Phone, Clock, Mail, Building2 } from "lucide-react";
-
 const ContactInfo = () => {
-  return (
-    <Card>
+  return <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Building2 className="h-5 w-5 text-primary" />
@@ -45,13 +42,11 @@ const ContactInfo = () => {
           <Clock className="h-5 w-5 mt-1 text-primary" />
           <div>
             <h3 className="font-semibold">Office Hours</h3>
-            <p className="text-gray-600">Monday - Friday: 9:00 AM - 5:30 PM</p>
+            <p className="text-gray-600">Monday - Friday: 9:00 AM - 5:00 PM</p>
             <p className="text-gray-600">Saturday - Sunday: Closed</p>
           </div>
         </div>
       </CardContent>
-    </Card>
-  );
+    </Card>;
 };
-
 export default ContactInfo;
