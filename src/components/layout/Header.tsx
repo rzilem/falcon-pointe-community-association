@@ -1,14 +1,16 @@
 
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Settings } from "lucide-react";
 import { NavigationMenu, NavigationMenuList } from '@/components/ui/navigation-menu';
 import DropdownNav from './DropdownNav';
 import MobileNav from "./MobileNav";
 import ImageDisplay from '@/components/cms/ImageDisplay';
+import { useAuth } from '@/context/AuthContext';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { isAdmin } = useAuth();
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -79,6 +81,24 @@ const Header = () => {
               >
                 Contact
               </Link>
+
+              {isAdmin && (
+                <NavigationMenu>
+                  <NavigationMenuList>
+                    <DropdownNav 
+                      title="Admin" 
+                      items={[
+                        { title: "Dashboard", href: "/admin", description: "Admin overview" },
+                        { title: "Images", href: "/admin/images", description: "Manage site images" },
+                        { title: "Content", href: "/admin/content", description: "Manage content" },
+                        { title: "Events", href: "/admin/events", description: "Manage events" },
+                        { title: "Documents", href: "/admin/documents", description: "Manage documents" },
+                        { title: "Test", href: "/admin/test", description: "Test page" },
+                      ]}
+                    />
+                  </NavigationMenuList>
+                </NavigationMenu>
+              )}
             </div>
           </nav>
 

@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import DOMPurify from 'dompurify';
-import AdminNav from '@/components/admin/AdminNav';
+import { AdminLayout } from '@/components/admin/AdminLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -108,8 +108,7 @@ const Test = () => {
   };
 
   return (
-    <div>
-      <AdminNav />
+    <AdminLayout>
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-8">Test Page - Embeds & iFrames</h1>
         
@@ -371,7 +370,7 @@ const Test = () => {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </AdminLayout>
   );
 };
 

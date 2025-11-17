@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-import Layout from "@/components/layout/Layout";
+import { AdminLayout } from "@/components/admin/AdminLayout";
 import AdminRouteGuard from "@/components/admin/AdminRouteGuard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ImageUploadForm from "@/components/admin/images/ImageUploadForm";
@@ -67,8 +67,8 @@ const AdminImages = () => {
   };
 
   return (
-    <AdminRouteGuard>
-      <Layout>
+    <AdminLayout>
+      <AdminRouteGuard>
         <div className="container mx-auto px-4 py-8">
           <div className="mb-6">
             <h1 className="text-3xl font-bold mb-2">Image Management</h1>
@@ -121,8 +121,8 @@ const AdminImages = () => {
             </TabsContent>
           </Tabs>
         </div>
-      </Layout>
-    </AdminRouteGuard>
+      </AdminRouteGuard>
+    </AdminLayout>
   );
 };
 
