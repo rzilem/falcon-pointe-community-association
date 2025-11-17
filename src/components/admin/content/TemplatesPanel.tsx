@@ -6,10 +6,21 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useConfirmation } from '@/hooks/useConfirmation';
 import { toast } from 'sonner';
 import TemplatesTab from './TemplatesTab';
+import { ConfirmationDialog } from '@/components/ui/confirmation-dialog';
 
 const TemplatesPanel: React.FC = () => {
   const { content, loading, fetchContent, deleteContent } = useContentManagement();
-  const { openConfirmation } = useConfirmation();
+  const {
+    isConfirmationOpen,
+    closeConfirmation,
+    handleConfirmAction,
+    confirmationTitle,
+    confirmationDescription,
+    confirmationVariant,
+    confirmationButtonLabel,
+    cancelButtonLabel,
+    openConfirmation
+  } = useConfirmation();
   const [templates, setTemplates] = useState<SiteContent[]>([]);
   const [activeTab, setActiveTab] = useState('static');
 
@@ -95,6 +106,17 @@ const TemplatesPanel: React.FC = () => {
           />
         </TabsContent>
       </Tabs>
+
+      <ConfirmationDialog
+        isOpen={isConfirmationOpen}
+        onClose={closeConfirmation}
+        onConfirm={handleConfirmAction}
+        title={confirmationTitle}
+        description={confirmationDescription}
+        confirmLabel={confirmationButtonLabel}
+        cancelLabel={cancelButtonLabel}
+        variant={confirmationVariant}
+      />
     </div>
   );
 };
