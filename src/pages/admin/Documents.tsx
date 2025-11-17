@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-import Layout from "@/components/layout/Layout";
+import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Document } from "@/types/document";
 import { toast } from "sonner";
 import DocumentUploader from "@/components/documents/DocumentUploader";
@@ -45,7 +45,7 @@ const AdminDocuments = () => {
   };
 
   return (
-    <Layout>
+    <AdminLayout>
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-8">Document Management</h1>
 
@@ -82,7 +82,7 @@ const AdminDocuments = () => {
           </div>
         </div>
       </div>
-    </Layout>
+    </AdminLayout>
   );
 };
 

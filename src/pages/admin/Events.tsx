@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AdminNav from '@/components/admin/AdminNav';
+import { AdminLayout } from '@/components/admin/AdminLayout';
 import { useAuth } from '@/context/AuthContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -164,8 +164,7 @@ const Events = () => {
   };
 
   return (
-    <div>
-      <AdminNav />
+    <AdminLayout>
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-8">Events Management</h1>
 
@@ -369,7 +368,7 @@ const Events = () => {
         cancelLabel={cancelButtonLabel}
         variant={confirmationVariant}
       />
-    </div>
+    </AdminLayout>
   );
 };
 

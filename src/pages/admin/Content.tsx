@@ -1,7 +1,7 @@
 
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AdminNav from '@/components/admin/AdminNav';
+import { AdminLayout } from '@/components/admin/AdminLayout';
 import { useAuth } from '@/context/AuthContext';
 import { ConfirmationDialog } from '@/components/ui/confirmation-dialog';
 import { useConfirmation } from '@/hooks/useConfirmation';
@@ -29,8 +29,7 @@ const Content = () => {
   }, [isAdmin, navigate]);
 
   return (
-    <div>
-      <AdminNav />
+    <AdminLayout>
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-8">Content Management</h1>
         
@@ -47,7 +46,7 @@ const Content = () => {
         cancelLabel={cancelButtonLabel}
         variant={confirmationVariant}
       />
-    </div>
+    </AdminLayout>
   );
 };
 

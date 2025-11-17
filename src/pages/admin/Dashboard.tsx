@@ -1,10 +1,9 @@
-
 import React, { useState, useEffect } from 'react';
-import AdminNav from '@/components/admin/AdminNav';
+import { AdminLayout } from '@/components/admin/AdminLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { supabase } from '@/integrations/supabase/client';
-import { Image, FileText, File, AlertTriangle, TestTube } from 'lucide-react';
+import { Image, FileText, File, AlertTriangle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getErrorQueue } from '@/utils/errorTracking';
 
@@ -34,7 +33,6 @@ const Dashboard = () => {
       setLoading(true);
       setError(null);
       
-      // Fetch all statistics in parallel for better performance
       const [imagesResult, contentResult, documentsResult, eventsResult] = await Promise.all([
         supabase.from('site_images').select('id', { count: 'exact', head: true }),
         supabase.from('site_content').select('id', { count: 'exact', head: true }),
@@ -42,7 +40,6 @@ const Dashboard = () => {
         supabase.from('events').select('id', { count: 'exact', head: true })
       ]);
       
-      // Check for any errors but don't throw for missing tables
       if (imagesResult.error) console.warn('Images fetch error:', imagesResult.error);
       if (contentResult.error) console.warn('Content fetch error:', contentResult.error);
       if (documentsResult.error) console.warn('Documents fetch error:', documentsResult.error);
@@ -88,8 +85,7 @@ const Dashboard = () => {
   );
 
   return (
-    <div>
-      <AdminNav />
+    <AdminLayout>
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-8">Admin Dashboard</h1>
         
@@ -104,108 +100,108 @@ const Dashboard = () => {
           </Card>
         )}
         
-        {/* Stats Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <StatCard title="Images" value={stats.imagesCount} icon={Image} loading={loading} />
           <StatCard title="Content" value={stats.contentCount} icon={FileText} loading={loading} />
           <StatCard title="Documents" value={stats.documentsCount} icon={File} loading={loading} />
-          <StatCard title="Errors" value={errors.length} icon={AlertTriangle} loading={false} />
+          <StatCard title="Events" value={stats.eventsCount} icon={FileText} loading={loading} />
         </div>
-        
-        {/* Management Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Link to="/admin/images" className="group">
-            <Card className="h-full hover:shadow-lg transition-all duration-200 cursor-pointer group-hover:scale-[1.02]">
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          <Link to="/admin/images">
+            <Card className="hover:shadow-md transition-shadow cursor-pointer">
               <CardHeader>
-                <CardTitle className="flex items-center">
-                  <Image className="mr-2 h-5 w-5" />
-                  Image Management
+                <CardTitle className="flex items-center gap-2">
+                  <Image className="h-5 w-5" />
+                  Manage Images
                 </CardTitle>
-                <CardDescription>Manage site images and media content</CardDescription>
+                <CardDescription>
+                  Upload and manage site images
+                </CardDescription>
               </CardHeader>
-              <CardContent>
-                <p className="text-sm text-gray-500">
-                  Upload, replace, and organize images across the website.
-                  Add, edit, or delete images used on various pages.
-                </p>
-              </CardContent>
             </Card>
           </Link>
-          
-          <Link to="/admin/content" className="group">
-            <Card className="h-full hover:shadow-lg transition-all duration-200 cursor-pointer group-hover:scale-[1.02]">
+
+          <Link to="/admin/content">
+            <Card className="hover:shadow-md transition-shadow cursor-pointer">
               <CardHeader>
-                <CardTitle className="flex items-center">
-                  <FileText className="mr-2 h-5 w-5" />
-                  Content Management
+                <CardTitle className="flex items-center gap-2">
+                  <FileText className="h-5 w-5" />
+                  Manage Content
                 </CardTitle>
-                <CardDescription>Update site content and information</CardDescription>
+                <CardDescription>
+                  Edit website content and blog posts
+                </CardDescription>
               </CardHeader>
-              <CardContent>
-                <p className="text-sm text-gray-500">
-                  Edit text content, announcements, and site information.
-                  Manage descriptions, rules, and other important text.
-                </p>
-              </CardContent>
             </Card>
           </Link>
-          
-          <Link to="/admin/events" className="group">
-            <Card className="h-full hover:shadow-lg transition-all duration-200 cursor-pointer group-hover:scale-[1.02]">
+
+          <Link to="/admin/events">
+            <Card className="hover:shadow-md transition-shadow cursor-pointer">
               <CardHeader>
-                <CardTitle className="flex items-center">
-                  <FileText className="mr-2 h-5 w-5" />
-                  Event Management
+                <CardTitle className="flex items-center gap-2">
+                  <FileText className="h-5 w-5" />
+                  Manage Events
                 </CardTitle>
-                <CardDescription>Manage community events and announcements</CardDescription>
+                <CardDescription>
+                  Create and manage community events
+                </CardDescription>
               </CardHeader>
-              <CardContent>
-                <p className="text-sm text-gray-500">
-                  Create, edit, and organize community events.
-                  Manage event details, images, and scheduling.
-                </p>
-              </CardContent>
             </Card>
           </Link>
-          
-          <Link to="/admin/documents" className="group">
-            <Card className="h-full hover:shadow-lg transition-all duration-200 cursor-pointer group-hover:scale-[1.02]">
+
+          <Link to="/admin/documents">
+            <Card className="hover:shadow-md transition-shadow cursor-pointer">
               <CardHeader>
-                <CardTitle className="flex items-center">
-                  <File className="mr-2 h-5 w-5" />
-                  Document Management
+                <CardTitle className="flex items-center gap-2">
+                  <File className="h-5 w-5" />
+                  Manage Documents
                 </CardTitle>
-                <CardDescription>Manage association documents and forms</CardDescription>
+                <CardDescription>
+                  Upload and organize documents
+                </CardDescription>
               </CardHeader>
-              <CardContent>
-                <p className="text-sm text-gray-500">
-                  Upload and organize important documents like bylaws, 
-                  forms, meeting minutes, and community guidelines.
-                </p>
-              </CardContent>
-            </Card>
-          </Link>
-          
-          <Link to="/admin/test" className="group">
-            <Card className="h-full hover:shadow-lg transition-all duration-200 cursor-pointer group-hover:scale-[1.02]">
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <TestTube className="mr-2 h-5 w-5" />
-                  Test Page
-                </CardTitle>
-                <CardDescription>Test embeds, iframes, and integrations</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-gray-500">
-                  Safe environment to test various embeds, iframes, and third-party 
-                  integrations before implementing them on the live site.
-                </p>
-              </CardContent>
             </Card>
           </Link>
         </div>
+
+        {errors.length > 0 && (
+          <Card className="border-destructive">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-destructive">
+                <AlertTriangle className="h-5 w-5" />
+                Recent Errors ({errors.length})
+              </CardTitle>
+              <CardDescription>
+                Errors tracked from the error tracking system
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2 max-h-60 overflow-y-auto">
+                {errors.slice(0, 10).map((errorItem, index) => (
+                  <div key={index} className="text-sm p-2 bg-muted rounded">
+                    <div className="font-mono text-xs mb-1">
+                      {new Date(errorItem.timestamp).toLocaleString()}
+                    </div>
+                    <div className="font-semibold">{errorItem.error.message}</div>
+                    {errorItem.error.stack && (
+                      <details className="mt-1">
+                        <summary className="cursor-pointer text-muted-foreground">
+                          View stack trace
+                        </summary>
+                        <pre className="text-xs mt-1 overflow-x-auto">
+                          {errorItem.error.stack}
+                        </pre>
+                      </details>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
       </div>
-    </div>
+    </AdminLayout>
   );
 };
 
