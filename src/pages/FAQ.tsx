@@ -1,6 +1,7 @@
 
 import React from "react";
 import Layout from "@/components/layout/Layout";
+import { Link } from "react-router-dom";
 import { 
   Accordion,
   AccordionContent,
@@ -65,6 +66,13 @@ const FAQ = () => {
                     <li>Access cards available through the Falcon Pointe Office Staff</li>
                     <li>Pool rules must be followed at all times</li>
                   </ul>
+                </div>
+                <div>
+                  <h3 className="font-semibold">Amenity Reservations</h3>
+                  <p>Community amenities such as the Event Room and Pool Pavilion are available for reservation by residents.</p>
+                  <p className="mt-2">
+                    Visit our <Link to="/reservations" className="text-primary hover:underline font-medium">Amenity Reservations page</Link> to check availability and make a reservation.
+                  </p>
                 </div>
               </div>
             </AccordionContent>
