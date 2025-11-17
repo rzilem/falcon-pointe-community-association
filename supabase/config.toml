@@ -73,3 +73,6 @@ verify_jwt = false
 
 [functions.secure-contact]
 verify_jwt = false
+
+[functions.generate-blog-image]
+verify_jwt = true

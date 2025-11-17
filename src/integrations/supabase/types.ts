@@ -174,6 +174,7 @@ export type Database = {
           slug: string | null
           title: string | null
           updated_at: string
+          use_ai_image_generation: boolean | null
         }
         Insert: {
           active?: boolean | null
@@ -190,6 +191,7 @@ export type Database = {
           slug?: string | null
           title?: string | null
           updated_at?: string
+          use_ai_image_generation?: boolean | null
         }
         Update: {
           active?: boolean | null
@@ -206,6 +208,7 @@ export type Database = {
           slug?: string | null
           title?: string | null
           updated_at?: string
+          use_ai_image_generation?: boolean | null
         }
         Relationships: []
       }
