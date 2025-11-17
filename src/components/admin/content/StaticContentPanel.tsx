@@ -5,9 +5,20 @@ import { useStaticContent } from '@/hooks/useStaticContent';
 import StaticForm from './StaticForm';
 import CollapsibleContentSection from './CollapsibleContentSection';
 import AdminPanel from './AdminPanel';
+import { ConfirmationDialog } from '@/components/ui/confirmation-dialog';
 
 const StaticContentPanel: React.FC = () => {
-  const { openConfirmation } = useConfirmation();
+  const {
+    isConfirmationOpen,
+    closeConfirmation,
+    handleConfirmAction,
+    confirmationTitle,
+    confirmationDescription,
+    confirmationVariant,
+    confirmationButtonLabel,
+    cancelButtonLabel,
+    openConfirmation
+  } = useConfirmation();
   const {
     loading,
     openSections,
@@ -55,6 +66,17 @@ const StaticContentPanel: React.FC = () => {
           </div>
         )}
       </AdminPanel>
+
+      <ConfirmationDialog
+        isOpen={isConfirmationOpen}
+        onClose={closeConfirmation}
+        onConfirm={handleConfirmAction}
+        title={confirmationTitle}
+        description={confirmationDescription}
+        confirmLabel={confirmationButtonLabel}
+        cancelLabel={cancelButtonLabel}
+        variant={confirmationVariant}
+      />
     </div>
   );
 };

@@ -10,9 +10,20 @@ import AdminPanel from './AdminPanel';
 import { useBlogPosts } from '@/hooks/useBlogPosts';
 import { useAuth } from '@/context/AuthContext';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { ConfirmationDialog } from '@/components/ui/confirmation-dialog';
 
 const BlogPostsPanel: React.FC = () => {
-  const { openConfirmation } = useConfirmation();
+  const {
+    isConfirmationOpen,
+    closeConfirmation,
+    handleConfirmAction,
+    confirmationTitle,
+    confirmationDescription,
+    confirmationVariant,
+    confirmationButtonLabel,
+    cancelButtonLabel,
+    openConfirmation
+  } = useConfirmation();
   const { isAdmin, user } = useAuth();
   const [editingPost, setEditingPost] = useState<SiteContent | null>(null);
   
@@ -119,6 +130,17 @@ const BlogPostsPanel: React.FC = () => {
           onSave={handleUpdateContent}
         />
       )}
+
+      <ConfirmationDialog
+        isOpen={isConfirmationOpen}
+        onClose={closeConfirmation}
+        onConfirm={handleConfirmAction}
+        title={confirmationTitle}
+        description={confirmationDescription}
+        confirmLabel={confirmationButtonLabel}
+        cancelLabel={cancelButtonLabel}
+        variant={confirmationVariant}
+      />
     </div>
   );
 };
