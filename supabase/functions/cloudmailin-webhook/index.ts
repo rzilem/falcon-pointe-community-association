@@ -17,7 +17,7 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    // Verify webhook authentication
+    // Verify webhook authentication using HTTP Basic Auth
     const authHeader = req.headers.get('authorization')
     const webhookSecret = Deno.env.get('CLOUDMAILIN_WEBHOOK_SECRET')
     
@@ -29,9 +29,37 @@ const handler = async (req: Request): Promise<Response> => {
       })
     }
 
-    if (!authHeader || authHeader !== `Bearer ${webhookSecret}`) {
-      console.error('Unauthorized webhook request')
-      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+    // Cloudmailin uses HTTP Basic Authentication
+    if (!authHeader || !authHeader.startsWith('Basic ')) {
+      console.error('Missing or invalid Authorization header. Expected Basic Authentication.')
+      console.error('Received header:', authHeader ? 'Present but not Basic' : 'Missing')
+      return new Response(JSON.stringify({ error: 'Unauthorized - Basic Authentication required' }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 401,
+      })
+    }
+
+    try {
+      // Decode Base64 credentials (format: username:password)
+      const base64Credentials = authHeader.split('Basic ')[1]
+      const credentials = atob(base64Credentials)
+      const [username, password] = credentials.split(':')
+      
+      console.log('Authentication attempt with username:', username)
+      
+      // Validate password against webhook secret
+      if (password !== webhookSecret) {
+        console.error('Invalid webhook credentials - password mismatch')
+        return new Response(JSON.stringify({ error: 'Unauthorized - Invalid credentials' }), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 401,
+        })
+      }
+      
+      console.log('Webhook authenticated successfully')
+    } catch (error) {
+      console.error('Error decoding Basic Auth credentials:', error)
+      return new Response(JSON.stringify({ error: 'Unauthorized - Invalid credentials format' }), {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         status: 401,
       })
