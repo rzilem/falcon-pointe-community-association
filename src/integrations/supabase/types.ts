@@ -167,7 +167,7 @@ export type Database = {
           featured_image: string | null
           id: string
           last_updated_by: string | null
-          last_updated_ip: unknown | null
+          last_updated_ip: unknown
           last_updated_user_agent: string | null
           section: string
           section_type: string | null
@@ -183,7 +183,7 @@ export type Database = {
           featured_image?: string | null
           id?: string
           last_updated_by?: string | null
-          last_updated_ip?: unknown | null
+          last_updated_ip?: unknown
           last_updated_user_agent?: string | null
           section: string
           section_type?: string | null
@@ -199,7 +199,7 @@ export type Database = {
           featured_image?: string | null
           id?: string
           last_updated_by?: string | null
-          last_updated_ip?: unknown | null
+          last_updated_ip?: unknown
           last_updated_user_agent?: string | null
           section?: string
           section_type?: string | null
@@ -217,7 +217,7 @@ export type Database = {
           created_by: string | null
           description: string | null
           id: string
-          last_updated_ip: unknown | null
+          last_updated_ip: unknown
           last_updated_user_agent: string | null
           location: string
           path: string
@@ -230,7 +230,7 @@ export type Database = {
           created_by?: string | null
           description?: string | null
           id?: string
-          last_updated_ip?: unknown | null
+          last_updated_ip?: unknown
           last_updated_user_agent?: string | null
           location: string
           path: string
@@ -243,7 +243,7 @@ export type Database = {
           created_by?: string | null
           description?: string | null
           id?: string
-          last_updated_ip?: unknown | null
+          last_updated_ip?: unknown
           last_updated_user_agent?: string | null
           location?: string
           path?: string
@@ -277,10 +277,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      generate_slug: {
-        Args: { title: string }
-        Returns: string
-      }
+      generate_slug: { Args: { title: string }; Returns: string }
       get_public_profile: {
         Args: { profile_id: string }
         Returns: {
@@ -288,14 +285,8 @@ export type Database = {
           username: string
         }[]
       }
-      has_role: {
-        Args: { _role: string; _user_id: string }
-        Returns: boolean
-      }
-      is_current_user_admin: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
+      has_role: { Args: { _role: string; _user_id: string }; Returns: boolean }
+      is_current_user_admin: { Args: never; Returns: boolean }
     }
     Enums: {
       [_ in never]: never
