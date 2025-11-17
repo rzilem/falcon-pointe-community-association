@@ -3,6 +3,7 @@ import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
 import { parseWebhookData } from './emailParser.ts';
 import { cleanEmailSubject } from './subjectCleaner.ts';
+import { extractCleanContent } from './contentCleaner.ts';
 import { AnnouncementData } from './types.ts';
 
 const corsHeaders = {
@@ -93,20 +94,11 @@ const handler = async (req: Request): Promise<Response> => {
     const cleanedSubject = cleanEmailSubject(webhookData.subject);
     console.log("Cleaned subject:", cleanedSubject);
 
-    // Use HTML content if available, fallback to plain text, then sanitize
-    const rawContent = webhookData.html || webhookData.plain || 'No content available';
-    
-    // Sanitize content to prevent XSS and other attacks
-    const emailContent = rawContent
-      .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '') // Remove scripts
-      .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '') // Remove iframes  
-      .replace(/<object\b[^<]*(?:(?!<\/object>)<[^<]*)*<\/object>/gi, '') // Remove objects
-      .replace(/<embed\b[^<]*(?:(?!<\/embed>)<[^<]*)*<\/embed>/gi, '') // Remove embeds
-      .replace(/javascript:/gi, '') // Remove javascript: URLs
-      .replace(/on\w+\s*=/gi, '') // Remove event handlers
-      .replace(/<link\b[^>]*>/gi, '') // Remove link tags
-      .replace(/<meta\b[^>]*>/gi, '') // Remove meta tags
-      .substring(0, 10000); // Limit content length
+    // Extract clean text content from email (removes all HTML, CSS, and styles)
+    const emailContent = extractCleanContent(
+      webhookData.html || '', 
+      webhookData.plain || ''
+    ).substring(0, 10000); // Limit content length
     
     console.log("Content processing result:", {
       originalHtmlLength: webhookData.html?.length || 0,
