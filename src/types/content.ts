@@ -12,6 +12,7 @@ export interface SiteContent {
   category?: string | null;
   featured_image?: string | null;
   description?: string | null;
+  use_ai_image_generation?: boolean;
 }
 
 export interface ContentFilter {

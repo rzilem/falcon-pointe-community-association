@@ -8,7 +8,7 @@ import { SiteContent } from '@/types/content';
 import { useAuth } from '@/context/AuthContext';
 import UnifiedImageUpload from '../images/UnifiedImageUpload';
 import RichTextEditor from './RichTextEditor';
-import { RefreshCw, Lock, Unlock } from 'lucide-react';
+import { RefreshCw, Lock, Unlock, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { generateSlug, isValidSlug, debounce } from '@/utils/slugUtils';
 
@@ -30,6 +30,8 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, isOpen, onClose, 
   const [saving, setSaving] = useState(false);
   const [isSlugLocked, setIsSlugLocked] = useState(true); // Default locked for existing posts
   const [isSlugValid, setIsSlugValid] = useState(true);
+  const [useAiGeneration, setUseAiGeneration] = useState(post.use_ai_image_generation !== false);
+  const [generatingImage, setGeneratingImage] = useState(false);
 
   const categoryOptions = [
     { value: 'general', label: 'General' },
@@ -71,6 +73,7 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, isOpen, onClose, 
     setCategory(post.category || 'general');
     setActive(post.active !== false);
     setFeaturedImage(post.featured_image || null);
+    setUseAiGeneration(post.use_ai_image_generation !== false);
     setIsSlugLocked(true); // Reset to locked for existing posts
   }, [post]);
 
@@ -101,6 +104,46 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, isOpen, onClose, 
     toast.info(isSlugLocked ? 'Slug unlocked for auto-generation' : 'Slug locked from auto-generation');
   };
 
+  const handleGenerateAiImage = async () => {
+    if (!title || !content) {
+      toast.error('Title and content are required for AI image generation');
+      return;
+    }
+
+    setGeneratingImage(true);
+
+    try {
+      const { supabase } = await import('@/integrations/supabase/client');
+      const { data, error } = await supabase.functions.invoke('generate-blog-image', {
+        body: { 
+          title, 
+          content: content.substring(0, 500),
+          postId: post.id
+        }
+      });
+
+      if (error) {
+        if (error.message?.includes('429')) {
+          toast.error('Rate limit exceeded. Please try again later.');
+        } else if (error.message?.includes('402')) {
+          toast.error('AI credits exhausted. Please add credits to continue.');
+        } else {
+          toast.error('Failed to generate image: ' + error.message);
+        }
+      } else if (data?.imageUrl) {
+        setFeaturedImage(data.imageUrl);
+        toast.success('AI image generated successfully!');
+      } else {
+        toast.error('No image was generated');
+      }
+    } catch (error) {
+      console.error('Error generating AI image:', error);
+      toast.error('Failed to generate image');
+    } finally {
+      setGeneratingImage(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -129,7 +172,8 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, isOpen, onClose, 
         category,
         active,
         last_updated_by: user?.id,
-        featured_image: featuredImage
+        featured_image: featuredImage,
+        use_ai_image_generation: useAiGeneration
       });
       
       toast.success('Blog post updated successfully');
@@ -243,13 +287,61 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({ post, isOpen, onClose, 
             />
           </div>
           
-          <div className="grid gap-2">
-            <Label>Featured Image (Optional)</Label>
-            <UnifiedImageUpload
-              onImageUploaded={(url) => setFeaturedImage(url || null)}
-              existingImageUrl={featuredImage}
-              location={`blog-${post.section}`}
-            />
+          <div className="grid gap-4">
+            <div className="flex items-center justify-between">
+              <Label>Featured Image</Label>
+              <div className="flex items-center space-x-2">
+                <Switch
+                  id="edit-use-ai-generation"
+                  checked={useAiGeneration}
+                  onCheckedChange={setUseAiGeneration}
+                />
+                <Label htmlFor="edit-use-ai-generation" className="text-sm cursor-pointer">
+                  Use AI to generate image
+                </Label>
+              </div>
+            </div>
+
+            {useAiGeneration ? (
+              <div className="space-y-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handleGenerateAiImage}
+                  disabled={!title || !content || generatingImage}
+                  className="w-full"
+                >
+                  {generatingImage ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Generating AI Image...
+                    </>
+                  ) : (
+                    <>
+                      <RefreshCw className="mr-2 h-4 w-4" />
+                      {featuredImage ? 'Regenerate AI Image' : 'Generate Image with AI'}
+                    </>
+                  )}
+                </Button>
+                {featuredImage && (
+                  <div className="mt-2">
+                    <img src={featuredImage} alt="AI Generated" className="w-full h-48 object-cover rounded" />
+                    <p className="text-xs text-muted-foreground mt-1">AI-generated image</p>
+                  </div>
+                )}
+                {!title || !content ? (
+                  <p className="text-sm text-muted-foreground">
+                    Add title and content to generate an AI image
+                  </p>
+                ) : null}
+              </div>
+            ) : (
+              <UnifiedImageUpload
+                onImageUploaded={(url) => setFeaturedImage(url || null)}
+                existingImageUrl={featuredImage}
+                location={`blog-${post.section}`}
+              />
+            )}
           </div>
           
           <div className="flex items-center space-x-2">

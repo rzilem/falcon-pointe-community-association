@@ -108,31 +108,56 @@ const handler = async (req: Request): Promise<Response> => {
       contentPreview: emailContent.substring(0, 200) + "..."
     });
 
-    // Get the default announcement image from site_images
+    // Try to generate AI image first
     let featuredImagePath = null;
-    try {
-      const { data: defaultImage } = await supabase
-        .from('site_images')
-        .select('path')
-        .eq('location', 'announcement-default')
-        .eq('active', true)
-        .limit(1)
-        .maybeSingle();
-      
-      if (defaultImage) {
-        // Get the public URL for the default image
-        const { data: urlData } = supabase.storage
-          .from('site-images')
-          .getPublicUrl(defaultImage.path);
-        
-        featuredImagePath = urlData.publicUrl;
-        console.log("Using default announcement image:", featuredImagePath);
-      } else {
-        console.log("No default announcement image found");
+    let useAiGeneration = true; // Default to AI generation for email announcements
+    
+    if (useAiGeneration) {
+      try {
+        console.log("Attempting to generate AI image for announcement");
+        const { data: aiImageData, error: aiError } = await supabase.functions.invoke('generate-blog-image', {
+          body: {
+            title: cleanedSubject,
+            content: emailContent.substring(0, 500),
+            postId: `announcement-${Date.now()}`
+          }
+        });
+
+        if (aiError) {
+          console.error("AI image generation error:", aiError);
+        } else if (aiImageData?.imageUrl) {
+          featuredImagePath = aiImageData.imageUrl;
+          console.log("Successfully generated AI image:", featuredImagePath);
+        }
+      } catch (error) {
+        console.error("Error calling AI image generation:", error);
       }
-    } catch (error) {
-      console.log("Error fetching default announcement image:", error);
-      // Continue without featured image
+    }
+
+    // Fall back to default image if AI generation failed or disabled
+    if (!featuredImagePath) {
+      try {
+        const { data: defaultImage } = await supabase
+          .from('site_images')
+          .select('path')
+          .eq('location', 'announcement-default')
+          .eq('active', true)
+          .limit(1)
+          .maybeSingle();
+        
+        if (defaultImage) {
+          const { data: urlData } = supabase.storage
+            .from('site-images')
+            .getPublicUrl(defaultImage.path);
+          
+          featuredImagePath = urlData.publicUrl;
+          console.log("Using default announcement image (AI fallback):", featuredImagePath);
+        } else {
+          console.log("No default announcement image found");
+        }
+      } catch (error) {
+        console.log("Error fetching default announcement image:", error);
+      }
     }
 
     // Create the announcement from the email
@@ -147,10 +172,10 @@ const handler = async (req: Request): Promise<Response> => {
       updated_at: new Date().toISOString()
     };
 
-    // Add featured image if we have the default one
+    // Add featured image and AI generation flag
     const insertData = featuredImagePath 
-      ? { ...announcementData, featured_image: featuredImagePath }
-      : announcementData;
+      ? { ...announcementData, featured_image: featuredImagePath, use_ai_image_generation: true }
+      : { ...announcementData, use_ai_image_generation: true };
 
     console.log("Creating announcement with data:", {
       section: insertData.section,
