@@ -21,15 +21,15 @@ const FAQ = () => {
               <div className="space-y-4">
                 <div>
                   <h3 className="font-semibold">Assessment Fees</h3>
-                  <p>HOA dues are $[AMOUNT] per [PERIOD] and are due on [DATE].</p>
+                  <p>HOA dues are $95.00 per month and are due on the 1st.</p>
                 </div>
                 <div>
                   <h3 className="font-semibold">Payment Methods</h3>
                   <p>Payments can be made through:</p>
                   <ul className="list-disc ml-6 mt-2">
-                    <li>Online through [PAYMENT_SYSTEM]</li>
-                    <li>Mail to: [MAILING_ADDRESS]</li>
-                    <li>Auto-draft available through [SYSTEM_NAME]</li>
+                    <li>Online through <a href="mailto:owner@psprop.net" className="text-primary hover:underline">owner@psprop.net</a></li>
+                    <li>Mail to: Falcon Pointe Community Association, Inc., PO Box 65583, Phoenix, AZ 85082</li>
+                    <li>Auto-draft available through <a href="mailto:owner@psprop.net" className="text-primary hover:underline">owner@psprop.net</a></li>
                   </ul>
                 </div>
               </div>
@@ -44,7 +44,7 @@ const FAQ = () => {
                   <h3 className="font-semibold">Architectural Changes</h3>
                   <p>All exterior modifications require prior approval from the Architectural Review Committee (ARC).</p>
                   <ul className="list-disc ml-6 mt-2">
-                    <li>Submit requests through [SYSTEM_NAME]</li>
+                    <li>Submit requests through <a href="https://owner.psprop.net" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">owner.psprop.net</a>, under the Requests tab</li>
                     <li>Include detailed plans and specifications</li>
                     <li>Allow up to 30 days for review</li>
                   </ul>
@@ -61,8 +61,8 @@ const FAQ = () => {
                   <h3 className="font-semibold">Pool Access</h3>
                   <p>The pool is accessible to all residents in good standing with their HOA dues.</p>
                   <ul className="list-disc ml-6 mt-2">
-                    <li>Hours: [POOL_HOURS]</li>
-                    <li>Access cards available through [CONTACT_INFO]</li>
+                    <li>Hours: 365 days a year, 24 hours a day</li>
+                    <li>Access cards available through the Falcon Pointe Office Staff</li>
                     <li>Pool rules must be followed at all times</li>
                   </ul>
                 </div>
@@ -76,11 +76,12 @@ const FAQ = () => {
               <div className="space-y-4">
                 <div>
                   <h3 className="font-semibold">Management Company</h3>
+                  <p><strong>PS Property Management</strong></p>
                   <p>For questions or concerns, contact:</p>
                   <ul className="list-disc ml-6 mt-2">
-                    <li>Phone: [PHONE_NUMBER]</li>
-                    <li>Email: [EMAIL_ADDRESS]</li>
-                    <li>Office Hours: [OFFICE_HOURS]</li>
+                    <li>Phone: <a href="tel:+15126701400" className="text-primary hover:underline">(512) 670-1400</a></li>
+                    <li>Email: <a href="mailto:manager@falconpointecommunity.com" className="text-primary hover:underline">manager@falconpointecommunity.com</a></li>
+                    <li>Office Hours: Monday - Friday: 9:00 AM - 5:00 PM</li>
                   </ul>
                 </div>
               </div>
