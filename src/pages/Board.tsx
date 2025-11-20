@@ -16,8 +16,8 @@ const Board = () => {
     },
     {
       name: "Jerron Knuthson",
-      position: "Vice President",
-      bio: "Bringing years of community leadership experience to Falcon Pointe.",
+      position: "Member at Large",
+      bio: "Representing community interests and supporting board initiatives.",
       email: "jerron.knuthson@falconpointecommunity.com",
       image: "/lovable-uploads/229f09a0-dd6e-4287-a457-2523b2859beb.png"
     },
@@ -37,8 +37,8 @@ const Board = () => {
     },
     {
       name: "Jeremy Morrow",
-      position: "Member at Large",
-      bio: "Representing community interests and supporting board initiatives.",
+      position: "Vice President",
+      bio: "Bringing years of community leadership experience to Falcon Pointe.",
       email: "jeremy.morrow@falconpointecommunity.com",
       image: "/lovable-uploads/1e3c41bc-f71c-4013-957d-4fa60e414905.png"
     }
